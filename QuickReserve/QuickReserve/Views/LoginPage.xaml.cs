@@ -18,5 +18,10 @@ namespace QuickReserve.Views
             
             this.BindingContext = new LoginViewModel();
         }
+
+        protected void GoToUserRegisterPage(object sender, EventArgs e)
+        {
+            App.Current.MainPage = new NavigationPage(new UserRegisterPage());
+        }
     }
 }
