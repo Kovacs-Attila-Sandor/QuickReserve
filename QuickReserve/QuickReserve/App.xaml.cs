@@ -1,4 +1,5 @@
-﻿using QuickReserve.Services;
+﻿using Firebase.Database;
+using QuickReserve.Services;
 using QuickReserve.Views;
 using System;
 using Xamarin.Forms;
@@ -8,7 +9,6 @@ namespace QuickReserve
 {
     public partial class App : Application
     {
-
         public App()
         {
             InitializeComponent();

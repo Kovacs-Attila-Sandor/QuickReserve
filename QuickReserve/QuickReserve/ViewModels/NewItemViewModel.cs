@@ -49,7 +49,7 @@ namespace QuickReserve.ViewModels
 
         private async void OnSave()
         {
-            Item newItem = new Item()
+            User newItem = new User()
             {
                 Id = Guid.NewGuid().ToString(),
                 Text = Text,
