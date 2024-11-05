@@ -12,10 +12,6 @@ namespace QuickReserve.Views
     {
         public User Item { get; set; }
 
-        public NewItemPage()
-        {
-            InitializeComponent();
-            BindingContext = new NewItemViewModel();
-        }
+        
     }
 }

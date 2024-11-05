@@ -22,7 +22,5 @@ namespace QuickReserve.Services
                 new Item { Id = Guid.NewGuid().ToString(), Text = "Sixth item", Description="This is an item description." }
             };
         }
-
-        
     }
 }
