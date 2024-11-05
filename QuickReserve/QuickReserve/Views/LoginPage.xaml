@@ -5,10 +5,31 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="QuickReserve.Views.LoginPage"
-             Shell.NavBarIsVisible="False">
+             NavigationPage.HasNavigationBar="False"
+             >
     <ContentPage.Content>
-        <StackLayout Padding="10,0,10,0" VerticalOptions="Center">
-            <Button VerticalOptions="Center" Text="Login" Command="{Binding LoginCommand}"/>
-        </StackLayout>
+        <RelativeLayout>
+            <Image
+                Aspect="AspectFill"
+                Source="background1.png"
+                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
+                IsEnabled="False"/>
+            <StackLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                         RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
+                         Margin="30,30,30,30">
+                <Label Text="Welcome to the Quick Reserve App"
+                   FontSize="Large"
+                   HorizontalOptions="Center"
+                   TextColor="White" />
+                <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand" Padding="20">
+                    <Entry x:Name="txtusername" Placeholder="Username" TextColor="GhostWhite" />
+                    <Entry x:Name="txtPasswod" Placeholder="Password" TextColor="GhostWhite" />
+                    <Button  CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent" FontSize="15" WidthRequest="200" FontAttributes="Bold"    Text="Login"/>
+                    <Button  CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent"  FontSize="15" WidthRequest="200" FontAttributes="Bold" Text="Register as guest"/>
+                    <Button  CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent" FontSize="15" WidthRequest="200" FontAttributes="Bold" Text="Register as restaurant"/>
+                </StackLayout>
+            </StackLayout>
+        </RelativeLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -142,4 +142,10 @@
       <Name>QuickReserve</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\background1.png" />
+    <Content Include="Resources\background.jpg" />
+    <Content Include="Resources\background.png" />
+    <Content Include="Resources\logo.png" />
+  </ItemGroup>
 </Project>
