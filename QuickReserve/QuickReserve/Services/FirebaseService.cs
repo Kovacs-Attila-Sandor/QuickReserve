@@ -11,7 +11,7 @@ namespace QuickReserve.Services
 
         static FirebaseService()
         {
-            firebaseClient = new FirebaseClient("https://quickreserve-9b03a-default-rtdb.firebaseio.com/");
+            firebaseClient = new FirebaseClient("https://quickreserve-5ac72-default-rtdb.firebaseio.com/");
         }
 
         // Nyilvános elérési pont a FirebaseClient-hez

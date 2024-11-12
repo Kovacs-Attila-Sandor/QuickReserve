@@ -4,14 +4,17 @@ using System.Text;
 
 namespace QuickReserve.Models
 {
-    internal class Reservation
+    public class Reservation
     {
-        public long ReservationId { get; set; }
-        public long UserId { get; set; }
-        public long TableId { get; set; }
+        public string ReservationId { get; set; }
+        public string UserId { get; set; }
+        public string RestaurantId { get; set; }
+        public string TableId { get; set; }
         public DateTime ReservationDate { get; set; }
         public TimeSpan ReservationTime { get; set; }
         public int GuestCount { get; set; }
         public DateTime CreatedAt { get; set; }
+
+        public Reservation() { }
     }
 }

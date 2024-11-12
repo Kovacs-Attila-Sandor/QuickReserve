@@ -4,12 +4,18 @@ using System.Text;
 
 namespace QuickReserve.Models
 {
-    internal class Order
+    public class Order
     {
-        public long OrderId { get; set; }
-        public long UserId { get; set; }
-        public long ReservationId { get; set; }
+        public string OrderId { get; set; }
+        public string UserId { get; set; }
+        public string ReservationId { get; set; }
         public double TotalAmount { get; set; }
         public string OrderStatus { get; set; }
+        public List<OrderItem> OrderItems { get; set; }
+
+        public Order()
+        {
+            OrderItems = new List<OrderItem>();
+        }
     }
 }
