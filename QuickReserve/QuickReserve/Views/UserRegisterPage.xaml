@@ -22,8 +22,8 @@
            TextColor="White" />
                 <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand" Padding="20">
                     <Entry x:Name="txtUsername" Placeholder="Username" TextColor="GhostWhite" />
-                    <Entry x:Name="txtPasswod" Placeholder="Password" TextColor="GhostWhite" />
-                    <Entry x:Name="txtConfirmPasswod" Placeholder="ConfirmPassword" TextColor="GhostWhite" />
+                    <Entry x:Name="txtPassword" Placeholder="Password" TextColor="GhostWhite" />
+                    <Entry x:Name="txtConfirmPassword" Placeholder="ConfirmPassword" TextColor="GhostWhite" />
                     <Entry x:Name="txtEmail" Placeholder="Email" TextColor="GhostWhite" />
                     <Entry x:Name="txtPhonenum" Placeholder="Tel." TextColor="GhostWhite" />
                     <Button Clicked="GoToLoginPage" CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent" FontSize="15" WidthRequest="200" FontAttributes="Bold"   Text="Back to Login"/>
