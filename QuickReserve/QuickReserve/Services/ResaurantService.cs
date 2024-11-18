@@ -15,7 +15,7 @@ namespace QuickReserve.Services
             try
             {
                 // Az új étterem ID-jának automatikus generálása
-                restaurant.RestaurantId = (await GenerateNextId()).ToString();
+                restaurant.RestaurantId = Guid.NewGuid().ToString();
 
                 // Étterem adatainak mentése a "Restaurant" gyűjteménybe a RestaurantId alapján
                 await FirebaseService

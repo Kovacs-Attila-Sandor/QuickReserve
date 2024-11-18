@@ -22,6 +22,7 @@ namespace QuickReserve
 
         protected override async void OnStart()
         {
+            /*
             var restaurant = new Restaurant
             {
                 RestaurantId = "restaurant123",
@@ -91,6 +92,7 @@ namespace QuickReserve
             };
             RestaurantService restaurantService = new RestaurantService();
             await restaurantService.addRestaurant(restaurant);
+            */
         }
 
         protected override void OnSleep()

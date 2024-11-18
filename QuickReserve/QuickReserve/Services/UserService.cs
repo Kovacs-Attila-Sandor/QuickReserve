@@ -3,6 +3,7 @@ using Firebase.Database.Query;
 using Newtonsoft.Json;
 using QuickReserve.Models;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace QuickReserve.Services
@@ -15,7 +16,7 @@ namespace QuickReserve.Services
             try
             {
                 // Az új felhasználó ID-jának automatikus generálása
-                user.UserId = (await GenerateNextId()).ToString();
+                user.UserId = Guid.NewGuid().ToString();    
 
                 // Felhasználó adatainak mentése a "Users" gyűjteménybe a felhasználói azonosítóval
                 await FirebaseService
@@ -55,42 +56,53 @@ namespace QuickReserve.Services
             }
         }
 
-        // Az ID generálása, amely az utolsó használt ID + 1
-        private async Task<int> GenerateNextId()
+        // Felhasználó lekérése a Firebase-ből a UserName alapján
+        public async Task<User> GetUserByName(string userName)
         {
-            var firebaseClient = FirebaseService.Client;
-
             try
             {
-                // Próbáljuk lekérdezni a 'lastUsedId' értékét a Firebase-ből
-                var lastUsedId = await firebaseClient
+                // Lekérjük az összes felhasználót a "Users" gyűjteményből
+                var allUsers = await FirebaseService
+                    .Client
                     .Child("Users")
-                    .Child("lastUsedId")
-                    .OnceSingleAsync<int>();
+                    .OnceAsync<User>();
 
-                // Az új ID a legutolsó ID + 1
-                int newId = lastUsedId + 1;
+                // Megkeressük az első olyan felhasználót, amelynek UserName tulajdonsága megegyezik a keresett névvel
+                var user = allUsers
+                    .Select(u => u.Object)  // Csak a felhasználói objektumokat vesszük figyelembe
+                    .FirstOrDefault(u => u.Name == userName);  // Feltétel a UserName-re
 
-                // Elmentjük az új ID-t a Firebase-be
-                await firebaseClient
-                    .Child("Users")
-                    .Child("lastUsedId")
-                    .PutAsync(newId);
-
-                return newId;  // Az új generált ID-t visszaadjuk
+                return user;  // Ha találtunk egyezést, visszaadjuk a felhasználót
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error generating next ID: {ex.Message}");
+                Console.WriteLine($"Error fetching user by name: {ex.Message}");
+                return null;  // Hiba esetén null-t adunk vissza
+            }
+        }
 
-                // Ha nem található a lastUsedId kulcs, vagy más hiba történik, akkor kezdjük 1-től
-                // Érdemes lehet a Firebase konzolban manuálisan beállítani az első 'lastUsedId' értéket is
-                await firebaseClient
+        public async Task<bool> ValidateUserCredentials(string userName, string password)
+        {
+            try
+            {
+                // Lekérjük az összes felhasználót a "Users" gyűjteményből
+                var allUsers = await FirebaseService
+                    .Client
                     .Child("Users")
-                    .Child("lastUsedId")
-                    .PutAsync(1); // Kezdjük az ID-t 1-től
+                    .OnceAsync<User>();
 
-                return 1;  // Ha hiba történik, akkor az első ID-t (1) használjuk
+                // Megkeressük az első olyan felhasználót, amelynek UserName és Password tulajdonságai megegyeznek a keresett értékekkel
+                var user = allUsers
+                    .Select(u => u.Object)  // Csak a felhasználói objektumokat vesszük figyelembe
+                    .FirstOrDefault(u => u.Name == userName && u.Password == password);  // Feltételek a UserName és Password-ra
+
+                // Ha találtunk egyezést, visszatérünk true-val, ellenkező esetben false
+                return user != null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error validating user credentials: {ex.Message}");
+                return false;  // Hiba esetén false-t adunk vissza
             }
         }
 

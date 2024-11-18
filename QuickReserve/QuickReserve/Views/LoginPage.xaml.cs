@@ -1,4 +1,5 @@
-﻿using QuickReserve.ViewModels;
+﻿using QuickReserve.Services;
+using QuickReserve.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,5 +24,31 @@ namespace QuickReserve.Views
         {
             App.Current.MainPage = new NavigationPage(new UserRegisterPage());
         }
+
+        public async void Login(object sender, EventArgs e)
+        {
+            UserService userService = new UserService();
+
+            if (!string.IsNullOrEmpty(txtUsername.Text.Trim()) && !string.IsNullOrEmpty(txtPassword.Text.Trim()))
+            {
+                // Ellenőrizzük, hogy a felhasználónevet és a jelszót helyesen adták-e meg
+                if (await userService.ValidateUserCredentials(txtUsername.Text.Trim(), txtPassword.Text.Trim()))
+                {
+                    // Ha a bejelentkezés sikeres
+                    await DisplayAlert("LOGIN", "Login successful", "OK");
+                }
+                else
+                {
+                    // Ha a felhasználó nem létezik vagy helytelenek a hitelesítő adatok
+                    await DisplayAlert("LOGIN ERROR", "This Username does not exist or incorrect password", "OK");
+                }
+            }
+            else
+            {
+                // Ha a felhasználó nem adott meg minden szükséges adatot
+                await DisplayAlert("LOGIN ERROR", "Please enter both username and password", "OK");
+            }
+        }
+
     }
 }
