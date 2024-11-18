@@ -7,50 +7,49 @@ using System.Threading.Tasks;
 
 namespace QuickReserve.Services
 {
-    public class UserService
+    public class ReservationService
     {
-        // Felhasználó hozzáadása a Firebase adatbázishoz
-        public async Task<bool> AddUser(User user)
+        // Foglalás hozzáadása a Firebase adatbázishoz
+        public async Task<bool> AddReservation(Reservation reservation)
         {
             try
             {
-                // Az új felhasználó ID-jának automatikus generálása
-                user.UserId = (await GenerateNextId()).ToString();
+                // Az új foglalás ID-jának automatikus generálása
+                reservation.ReservationId = (await GenerateNextId()).ToString();
 
-                // Felhasználó adatainak mentése a "Users" gyűjteménybe a felhasználói azonosítóval
+                // Foglalás adatainak mentése a "Reservation" gyűjteménybe a ReservationId alapján
                 await FirebaseService
                     .Client
-                    .Child("Users")  // "Users" gyűjtemény
-                    .Child(user.UserId.ToString())  // Az int típusú UserId stringgé konvertálva
-                    .PutAsync(JsonConvert.SerializeObject(user));  // Az adatokat JSON formátumban mentjük
+                    .Child("Reservation")  // "Reservation" gyűjtemény
+                    .Child(reservation.ReservationId.ToString())  // Az ID stringgé konvertálva
+                    .PutAsync(JsonConvert.SerializeObject(reservation));  // Az adatokat JSON formátumban mentjük
 
                 return true;  // Ha sikeres volt a mentés
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error adding user: {ex.Message}");
+                Console.WriteLine($"Hiba a foglalás mentése során: {ex.Message}");
                 return false;  // Hiba esetén false
             }
         }
 
-
-        // Felhasználó lekérése a Firebase-ből a UserId alapján
-        public async Task<User> GetUserById(string userId)
+        // Foglalás lekérése a Firebase-ből a ReservationId alapján
+        public async Task<Reservation> GetReservationById(string reservationId)
         {
             try
             {
-                // Lekérjük a felhasználót a "Users" gyűjteményből a megadott UserId alapján
-                var userData = await FirebaseService
+                // Lekérjük a foglalás adatokat a "Reservation" gyűjteményből a megadott ReservationId alapján
+                var reservationData = await FirebaseService
                     .Client
-                    .Child("Users")  // "Users" gyűjtemény
-                    .Child(userId)  // A UserId már string
-                    .OnceSingleAsync<User>();  // Az adatokat User típusra deszerializáljuk
+                    .Child("Reservation")  // "Reservation" gyűjtemény
+                    .Child(reservationId)  // A ReservationId már string
+                    .OnceSingleAsync<Reservation>();  // Az adatokat Reservation típusra deszerializáljuk
 
-                return userData;  // A felhasználó adatait visszaadjuk
+                return reservationData;  // A lekért foglalás adatokat visszaadjuk
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error fetching user: {ex.Message}");
+                Console.WriteLine($"Hiba a foglalás lekérése során: {ex.Message}");
                 return null;  // Hiba esetén null-t adunk vissza
             }
         }
@@ -64,7 +63,7 @@ namespace QuickReserve.Services
             {
                 // Próbáljuk lekérdezni a 'lastUsedId' értékét a Firebase-ből
                 var lastUsedId = await firebaseClient
-                    .Child("Users")
+                    .Child("Reservation")
                     .Child("lastUsedId")
                     .OnceSingleAsync<int>();
 
@@ -73,7 +72,7 @@ namespace QuickReserve.Services
 
                 // Elmentjük az új ID-t a Firebase-be
                 await firebaseClient
-                    .Child("Users")
+                    .Child("Reservation")
                     .Child("lastUsedId")
                     .PutAsync(newId);
 
@@ -81,18 +80,17 @@ namespace QuickReserve.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error generating next ID: {ex.Message}");
+                Console.WriteLine($"Hiba az ID generálásakor: {ex.Message}");
 
                 // Ha nem található a lastUsedId kulcs, vagy más hiba történik, akkor kezdjük 1-től
                 // Érdemes lehet a Firebase konzolban manuálisan beállítani az első 'lastUsedId' értéket is
                 await firebaseClient
-                    .Child("Users")
+                    .Child("Reservation")
                     .Child("lastUsedId")
                     .PutAsync(1); // Kezdjük az ID-t 1-től
 
                 return 1;  // Ha hiba történik, akkor az első ID-t (1) használjuk
             }
         }
-
     }
 }
