@@ -1,3 +1,4 @@
+using System;
 using QuickReserve.Models;
 using QuickReserve.Services;
 using System;
@@ -5,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Xamarin.Essentials;
@@ -24,7 +26,6 @@ namespace QuickReserve.Views
         {
             App.Current.MainPage = new NavigationPage(new LoginPage());
         }
-
         private async void RegisterAsGuest(object sender, EventArgs e)
         {
             UserService userService = new UserService();
@@ -55,23 +56,6 @@ namespace QuickReserve.Views
                     else await DisplayAlert("SAVING ERROR", "Your password is not matching", "OK");
                 }
                 else await DisplayAlert("SAVING ERROR", "This Username is already used", "OK");
-
-        private async void Regiser(object sender, EventArgs e)
-        {
-            if (!string.IsNullOrEmpty(txtUsername.Text) && !string.IsNullOrEmpty(txtPasswod.Text) && !string.IsNullOrEmpty(txtConfirmPasswod.Text) && !string.IsNullOrEmpty(txtEmail.Text) && !string.IsNullOrEmpty(txtPhonenum.Text))
-            {            
-                    if (string.Equals(txtPasswod.Text, txtConfirmPasswod))
-                    {
-                        User user = new User()
-                        {
-                            Name = txtUsername.Text,
-                            Password = txtPasswod.Text,
-                            Email = txtEmail.Text,
-                            PhoneNumber = txtPhonenum.Text,
-                            Role = "USER"
-                        };
-                    }
-                    else await DisplayAlert("SAVING ERROR", "Your password is incorrect", "OK");
             }
             else await DisplayAlert("SAVING ERROR", "Something is empty", "OK");
         }

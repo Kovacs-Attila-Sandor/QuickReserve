@@ -27,7 +27,7 @@
                     <Entry x:Name="txtEmail" Placeholder="Email" TextColor="GhostWhite" />
                     <Entry x:Name="txtPhonenum" Placeholder="Tel." TextColor="GhostWhite" />
                     <Button Clicked="GoToLoginPage" CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent" FontSize="15" WidthRequest="200" FontAttributes="Bold"   Text="Back to Login"/>
-                    <Button Clicked="Regiser" CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent"  FontSize="15" WidthRequest="200" FontAttributes="Bold" Text="Register as guest"/>
+                    <Button Clicked="RegisterAsGuest" CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent"  FontSize="15" WidthRequest="200" FontAttributes="Bold" Text="Register as guest"/>
                     <Button  CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent" FontSize="15" WidthRequest="200" FontAttributes="Bold" Text="Register as restaurant"/>
                 </StackLayout>
             </StackLayout>

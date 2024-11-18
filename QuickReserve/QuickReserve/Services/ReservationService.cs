@@ -15,7 +15,7 @@ namespace QuickReserve.Services
             try
             {
                 // Az új foglalás ID-jának automatikus generálása
-                reservation.ReservationId = (await GenerateNextId()).ToString();
+                reservation.ReservationId = Guid.NewGuid().ToString();
 
                 // Foglalás adatainak mentése a "Reservation" gyűjteménybe a ReservationId alapján
                 await FirebaseService
