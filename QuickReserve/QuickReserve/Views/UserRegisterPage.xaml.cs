@@ -26,6 +26,12 @@ namespace QuickReserve.Views
         {
             App.Current.MainPage = new NavigationPage(new LoginPage());
         }
+
+
+        protected void GoToRestaurantRegisterPage(object sender, EventArgs e)
+        {
+            App.Current.MainPage = new NavigationPage(new RestaurantRegisterPage());
+        }
         private async void RegisterAsGuest(object sender, EventArgs e)
         {
             UserService userService = new UserService();
