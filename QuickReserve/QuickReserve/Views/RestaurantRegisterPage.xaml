@@ -1,12 +1,49 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="QuickReserve.Views.RestaurantRegisterPage">
+             x:Class="QuickReserve.Views.RestaurantRegisterPage"
+             NavigationPage.HasNavigationBar="False"
+             >
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        
+        <RelativeLayout>
+            <Image
+                 Aspect="AspectFill"
+                 Source="background1.png"
+                 RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                 RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
+                 IsEnabled="False"/>    
+            <StackLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                  RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
+                  Margin="30,30,30,30">
+                <Label Text="Welcome to the Quick Reserve App"
+                    FontSize="Large"
+                    HorizontalOptions="Center"
+                    TextColor="White" />
+                <StackLayout>
+                    <ScrollView  VerticalScrollBarVisibility="Always">
+                        <StackLayout>
+                            <Entry x:Name="txtUsername" Placeholder="Username" TextColor="GhostWhite" />
+                            <Entry x:Name="txtPassword" Placeholder="Password" TextColor="GhostWhite" />
+                            <Entry x:Name="txtConfirmPassword" Placeholder="ConfirmPassword" TextColor="GhostWhite" />
+                            <Entry x:Name="txtEmail" Placeholder="Email" TextColor="GhostWhite" />
+                            <Entry x:Name="txtPhonenum" Placeholder="Tel." TextColor="GhostWhite" />
+                            <Entry x:Name="txtCountry" Placeholder="Country" TextColor="GhostWhite" />
+                            <Entry x:Name="txtCity" Placeholder="City" TextColor="GhostWhite" />
+                            <Entry x:Name="txtStreet" Placeholder="Street" TextColor="GhostWhite" />
+                            <Entry x:Name="txtNumber" Placeholder="Number" TextColor="GhostWhite" />
+                            <Entry x:Name="txtShortDescriprion" Placeholder="Short Description" TextColor="GhostWhite" />
+                            <Entry x:Name="txtLongDescriprion" Placeholder="Long Description" TextColor="GhostWhite" />
+
+                        </StackLayout>
+                    </ScrollView>
+                    <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand" Padding="20">
+                        <Button Clicked="GoToLoginPage" CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent" FontSize="15" WidthRequest="200" FontAttributes="Bold"   Text="Back to Login"/>
+                        <Button Clicked="GoToUserRegisterPage" CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent"  FontSize="15" WidthRequest="200" FontAttributes="Bold" Text="Register as guest"/>
+                        <Button  CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent" FontSize="15" WidthRequest="200" FontAttributes="Bold" Text="Register as restaurant"/>
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+        </RelativeLayout>
     </ContentPage.Content>
 </ContentPage>
