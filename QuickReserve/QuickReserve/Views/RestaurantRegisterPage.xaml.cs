@@ -16,5 +16,15 @@ namespace QuickReserve.Views
         {
             InitializeComponent();
         }
+
+        protected void GoToUserRegisterPage(object sender, EventArgs e)
+        {
+            App.Current.MainPage = new NavigationPage(new UserRegisterPage());
+        }
+
+        protected void GoToLoginPage(object sender, EventArgs e)
+        {
+            App.Current.MainPage = new NavigationPage(new LoginPage());
+        }
     }
 }
