@@ -15,12 +15,16 @@
             <StackLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                  RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
                  Margin="30,30,30,30">
-                <Label Text="Welcome to the Quick Reserve App"
+
+                <Label Text="Profile"
            FontSize="Large"
            HorizontalOptions="Center"
            TextColor="White" />
+                <Button Text="Back" TextColor="GhostWhite" CornerRadius="50" BorderWidth="2" FontSize="14" FontAttributes="Bold" BackgroundColor="Transparent" BorderColor="GhostWhite" Clicked="GoToAboutPage" VerticalOptions="StartAndExpand" HorizontalOptions="StartAndExpand" />
 
-              
+
+
+
 
             </StackLayout>
         </RelativeLayout>

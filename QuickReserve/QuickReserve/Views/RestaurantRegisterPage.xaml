@@ -36,6 +36,9 @@
                             <Entry x:Name="txtShortDescriprion" Placeholder="Short Description" TextColor="GhostWhite" />
                             <Entry x:Name="txtLongDescriprion" Placeholder="Long Description" TextColor="GhostWhite" />
                             <Button Clicked="GoToAddMenuPage" CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent"  FontSize="15" WidthRequest="200" FontAttributes="Bold" Text="Add Menu"/>
+                            <Button Clicked="GoToCreateLayoutPage" CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent" FontSize="15" WidthRequest="200" FontAttributes="Bold" Text="Add Layout"/>
+
+
 
                         </StackLayout>
                     </ScrollView>

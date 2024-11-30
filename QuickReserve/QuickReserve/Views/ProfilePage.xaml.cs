@@ -16,5 +16,11 @@ namespace QuickReserve.Views
         {
             InitializeComponent();
         }
+
+        protected void GoToAboutPage(object sender, EventArgs e)
+        {
+            App.Current.MainPage = new NavigationPage(new AboutPage());
+        }
+
     }
 }

@@ -1,10 +1,9 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="QuickReserve.Views.AboutPage"
              xmlns:vm="clr-namespace:QuickReserve.ViewModels"
-             NavigationPage.HasNavigationBar="False"
-             >
+             NavigationPage.HasNavigationBar="False">
 
     <ContentPage.Content>
         <RelativeLayout>
@@ -13,40 +12,30 @@
                  Source="background1.png"
                  RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                  RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
-                 IsEnabled="False"/>    
+                 IsEnabled="False"/>
             <StackLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
               RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
               Margin="30,30,30,30">
 
                 <Button Text="Profile" TextColor="GhostWhite" CornerRadius="50" BorderWidth="2" FontSize="14" FontAttributes="Bold" BackgroundColor="Transparent" BorderColor="GhostWhite" Clicked="GoToProfilePage" VerticalOptions="StartAndExpand" HorizontalOptions="EndAndExpand" />
 
-
                 <ListView x:Name="lstmoments">
                     <ListView.ItemTemplate>
-                        <DataTemplate >
-                            <ViewCell >
+                        <DataTemplate>
+                            <ViewCell>
                                 <StackLayout Orientation="Horizontal" Padding="10">
-                                    <!-- Image Here write the source if the saved image -->
-                                    <Image 
-                                           WidthRequest="50" 
-                                           HeightRequest="50" 
-                                           VerticalOptions="Center" />
-
-                                    <!-- Label -->
+                                    <Image WidthRequest="50" HeightRequest="50" VerticalOptions="Center" />
                                     <Label Text="Welcome to the Quick Reserve App"
-                                       FontSize="Large"
-                                       HorizontalOptions="Center"
-                                       TextColor="White" />
-
-                                    <!-- Button -->
-                                    <Button 
-                                            Text="See Detailes"  
-                                            CornerRadius="50" 
-                                            TextColor="GhostWhite" 
-                                            BorderColor="GhostWhite" 
-                                            BorderWidth="2" 
-                                            BackgroundColor="Transparent" 
-                                            FontSize="15" 
+                                           FontSize="Large"
+                                           HorizontalOptions="Center"
+                                           TextColor="White" />
+                                    <Button Text="See Details"
+                                            CornerRadius="50"
+                                            TextColor="GhostWhite"
+                                            BorderColor="GhostWhite"
+                                            BorderWidth="2"
+                                            BackgroundColor="Transparent"
+                                            FontSize="15"
                                             FontAttributes="Bold" />
 
                                 </StackLayout>

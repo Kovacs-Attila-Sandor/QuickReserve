@@ -18,7 +18,7 @@ namespace QuickReserve.Views
         }
         protected void AddItem(object sender, EventArgs e)
         {
-            
+
         }
         protected void AddLayout(object sender, EventArgs e)
         {

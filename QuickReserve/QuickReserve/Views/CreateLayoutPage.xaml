@@ -2,24 +2,38 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="QuickReserve.Views.CreateLayoutPage"
-             NavigationPage.HasNavigationBar="False"
-             >
+             NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
         <RelativeLayout>
+            <!-- Background Image -->
             <Image
-        Aspect="AspectFill"
-        Source="background1.png"
-        RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
-        RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
-        IsEnabled="False"/>
+                Aspect="AspectFill"
+                Source="background1.png"
+                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
+                IsEnabled="False"/>
             <StackLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
-                 RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
-                 Margin="30,30,30,30">
-                
+             RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
+             Margin="30,30,30,30">
 
-                
+                <!-- Dynamic Grid (buttons will be added here) -->
+                <Grid x:Name="DynamicGrid"
+                  RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                  RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
+                  HorizontalOptions="CenterAndExpand"
+                  VerticalOptions="CenterAndExpand">
+                    <!-- Buttons will be added dynamically in code-behind -->
+                </Grid>
 
+                <!-- Finish Registration Button -->
+                <StackLayout HorizontalOptions="Center" VerticalOptions="End" Padding="20">
+                    <Button Clicked="GoToLoginPage" CornerRadius="50" TextColor="GhostWhite"
+                        BackgroundColor="Transparent" FontSize="15" WidthRequest="200"
+                        FontAttributes="Bold" Text="Finish Registration"/>
+                </StackLayout>
             </StackLayout>
+
         </RelativeLayout>
     </ContentPage.Content>
 </ContentPage>
+
