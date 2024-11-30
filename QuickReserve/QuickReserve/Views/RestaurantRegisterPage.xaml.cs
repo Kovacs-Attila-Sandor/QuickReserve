@@ -71,7 +71,7 @@ namespace QuickReserve.Views
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Error", $"An error occurred: {ex.Message}", "OK");
+                await DisplayAlert("Error", $"An  error occurred: {ex.Message}", "OK");
             }
         }
 
