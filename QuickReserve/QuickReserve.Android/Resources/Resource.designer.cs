@@ -15188,9 +15188,6 @@ namespace QuickReserve.Droid
 			// aapt resource value: 0x7F030201
 			public const int keyboardIcon = 2130903553;
 			
-			// aapt resource value: 0x7F0301FF
-			public const int keyPositionType = 2130903551;
-			
 			// aapt resource value: 0x7F030202
 			public const int keylines = 2130903554;
 			
@@ -15817,9 +15814,6 @@ namespace QuickReserve.Droid
 			
 			// aapt resource value: 0x7F0302D1
 			public const int navigationViewStyle = 2130903761;
-			
-			// aapt resource value: 0x7F0302D4
-			public const int nestedScrollable = 2130903764;
 			
 			// aapt resource value: 0x7F0302D2
 			public const int negativeButtonText = 2130903762;
@@ -17674,57 +17668,6 @@ namespace QuickReserve.Droid
 			// aapt resource value: 0x7F0500E8
 			public const int tooltip_background_light = 2131034344;
 			
-			// aapt resource value: 0x7F0500D8
-			public const int radiobutton_themeable_attribute_color = 2131034328;
-			
-			// aapt resource value: 0x7F0500D9
-			public const int ripple_material_dark = 2131034329;
-			
-			// aapt resource value: 0x7F0500DA
-			public const int ripple_material_light = 2131034330;
-			
-			// aapt resource value: 0x7F0500DB
-			public const int secondary_text_default_material_dark = 2131034331;
-			
-			// aapt resource value: 0x7F0500DC
-			public const int secondary_text_default_material_light = 2131034332;
-			
-			// aapt resource value: 0x7F0500DD
-			public const int secondary_text_disabled_material_dark = 2131034333;
-			
-			// aapt resource value: 0x7F0500DE
-			public const int secondary_text_disabled_material_light = 2131034334;
-			
-			// aapt resource value: 0x7F0500DF
-			public const int switch_thumb_disabled_material_dark = 2131034335;
-			
-			// aapt resource value: 0x7F0500E0
-			public const int switch_thumb_disabled_material_light = 2131034336;
-			
-			// aapt resource value: 0x7F0500E1
-			public const int switch_thumb_material_dark = 2131034337;
-			
-			// aapt resource value: 0x7F0500E2
-			public const int switch_thumb_material_light = 2131034338;
-			
-			// aapt resource value: 0x7F0500E3
-			public const int switch_thumb_normal_material_dark = 2131034339;
-			
-			// aapt resource value: 0x7F0500E4
-			public const int switch_thumb_normal_material_light = 2131034340;
-			
-			// aapt resource value: 0x7F0500E5
-			public const int test_mtrl_calendar_day = 2131034341;
-			
-			// aapt resource value: 0x7F0500E6
-			public const int test_mtrl_calendar_day_selected = 2131034342;
-			
-			// aapt resource value: 0x7F0500E7
-			public const int tooltip_background_dark = 2131034343;
-			
-			// aapt resource value: 0x7F0500E8
-			public const int tooltip_background_light = 2131034344;
-			
 			static Color()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
@@ -18488,9 +18431,6 @@ namespace QuickReserve.Droid
 			// aapt resource value: 0x7F0600F9
 			public const int mtrl_btn_text_btn_padding_left = 2131099897;
 			
-			// aapt resource value: 0x7F0600F9
-			public const int mtrl_btn_text_btn_padding_left = 2131099897;
-			
 			// aapt resource value: 0x7F0600FA
 			public const int mtrl_btn_text_btn_padding_right = 2131099898;
 			
@@ -18514,9 +18454,6 @@ namespace QuickReserve.Droid
 			
 			// aapt resource value: 0x7F060101
 			public const int mtrl_calendar_content_padding = 2131099905;
-			
-			// aapt resource value: 0x7F060108
-			public const int mtrl_calendar_days_of_week_height = 2131099912;
 			
 			// aapt resource value: 0x7F060108
 			public const int mtrl_calendar_days_of_week_height = 2131099912;
@@ -21442,9 +21379,6 @@ namespace QuickReserve.Droid
 			// aapt resource value: 0x7F080007
 			public const int SHIFT = 2131230727;
 			
-			// aapt resource value: 0x7F080007
-			public const int SHIFT = 2131230727;
-			
 			// aapt resource value: 0x7F0801B2
 			public const int shortcut = 2131231154;
 			
@@ -21456,15 +21390,6 @@ namespace QuickReserve.Droid
 			
 			// aapt resource value: 0x7F0801B5
 			public const int showTitle = 2131231157;
-			
-			// aapt resource value: 0x7F080008
-			public const int SHOW_ALL = 2131230728;
-			
-			// aapt resource value: 0x7F080009
-			public const int SHOW_PATH = 2131230729;
-			
-			// aapt resource value: 0x7F08000A
-			public const int SHOW_PROGRESS = 2131230730;
 			
 			// aapt resource value: 0x7F080008
 			public const int SHOW_ALL = 2131230728;
@@ -21510,24 +21435,6 @@ namespace QuickReserve.Droid
 			
 			// aapt resource value: 0x7F0801C1
 			public const int special_effects_controller_view_tag = 2131231169;
-			
-			// aapt resource value: 0x7F0801C2
-			public const int spinner = 2131231170;
-			
-			// aapt resource value: 0x7F0801C3
-			public const int spline = 2131231171;
-			
-			// aapt resource value: 0x7F0801C4
-			public const int split_action_bar = 2131231172;
-			
-			// aapt resource value: 0x7F0801C5
-			public const int spread = 2131231173;
-			
-			// aapt resource value: 0x7F0801C6
-			public const int spread_inside = 2131231174;
-			
-			// aapt resource value: 0x7F0801C7
-			public const int spring = 2131231175;
 			
 			// aapt resource value: 0x7F0801C2
 			public const int spinner = 2131231170;
@@ -21604,9 +21511,6 @@ namespace QuickReserve.Droid
 			// aapt resource value: 0x7F08000B
 			public const int SYM = 2131230731;
 			
-			// aapt resource value: 0x7F08000B
-			public const int SYM = 2131230731;
-			
 			// aapt resource value: 0x7F0801DA
 			public const int tabMode = 2131231194;
 			
@@ -21652,9 +21556,6 @@ namespace QuickReserve.Droid
 			// aapt resource value: 0x7F0801E8
 			public const int test_checkbox_android_button_tint = 2131231208;
 			
-			// aapt resource value: 0x7F0801E8
-			public const int test_checkbox_android_button_tint = 2131231208;
-			
 			// aapt resource value: 0x7F0801E9
 			public const int test_checkbox_app_button_tint = 2131231209;
 			
@@ -21672,171 +21573,6 @@ namespace QuickReserve.Droid
 			
 			// aapt resource value: 0x7F0801EE
 			public const int textEnd = 2131231214;
-			
-			// aapt resource value: 0x7F0801F6
-			public const int textinput_counter = 2131231222;
-			
-			// aapt resource value: 0x7F0801F7
-			public const int textinput_error = 2131231223;
-			
-			// aapt resource value: 0x7F0801F8
-			public const int textinput_helper_text = 2131231224;
-			
-			// aapt resource value: 0x7F0801F9
-			public const int textinput_placeholder = 2131231225;
-			
-			// aapt resource value: 0x7F0801FA
-			public const int textinput_prefix_text = 2131231226;
-			
-			// aapt resource value: 0x7F0801FB
-			public const int textinput_suffix_text = 2131231227;
-			
-			// aapt resource value: 0x7F0801EF
-			public const int textSpacerNoButtons = 2131231215;
-			
-			// aapt resource value: 0x7F0801F0
-			public const int textSpacerNoTitle = 2131231216;
-			
-			// aapt resource value: 0x7F0801F1
-			public const int textStart = 2131231217;
-			
-			// aapt resource value: 0x7F0801F2
-			public const int textTop = 2131231218;
-			
-			// aapt resource value: 0x7F0801F3
-			public const int text_input_end_icon = 2131231219;
-			
-			// aapt resource value: 0x7F0801F4
-			public const int text_input_error_icon = 2131231220;
-			
-			// aapt resource value: 0x7F0801F5
-			public const int text_input_start_icon = 2131231221;
-			
-			// aapt resource value: 0x7F0801FC
-			public const int time = 2131231228;
-			
-			// aapt resource value: 0x7F0801FD
-			public const int title = 2131231229;
-			
-			// aapt resource value: 0x7F0801FE
-			public const int titleDividerNoCustom = 2131231230;
-			
-			// aapt resource value: 0x7F0801FF
-			public const int title_template = 2131231231;
-			
-			// aapt resource value: 0x7F080200
-			public const int toggle = 2131231232;
-			
-			// aapt resource value: 0x7F080201
-			public const int toolbar = 2131231233;
-			
-			// aapt resource value: 0x7F080202
-			public const int top = 2131231234;
-			
-			// aapt resource value: 0x7F080203
-			public const int topPanel = 2131231235;
-			
-			// aapt resource value: 0x7F08000C
-			public const int TOP_END = 2131230732;
-			
-			// aapt resource value: 0x7F08000D
-			public const int TOP_START = 2131230733;
-			
-			// aapt resource value: 0x7F080204
-			public const int touch_outside = 2131231236;
-			
-			// aapt resource value: 0x7F080205
-			public const int transitionToEnd = 2131231237;
-			
-			// aapt resource value: 0x7F080206
-			public const int transitionToStart = 2131231238;
-			
-			// aapt resource value: 0x7F080207
-			public const int transition_current_scene = 2131231239;
-			
-			// aapt resource value: 0x7F080208
-			public const int transition_layout_save = 2131231240;
-			
-			// aapt resource value: 0x7F080209
-			public const int transition_position = 2131231241;
-			
-			// aapt resource value: 0x7F08020A
-			public const int transition_scene_layoutid_cache = 2131231242;
-			
-			// aapt resource value: 0x7F08020B
-			public const int transition_transform = 2131231243;
-			
-			// aapt resource value: 0x7F08020C
-			public const int triangle = 2131231244;
-			
-			// aapt resource value: 0x7F08020D
-			public const int @unchecked = 2131231245;
-			
-			// aapt resource value: 0x7F08020E
-			public const int uniform = 2131231246;
-			
-			// aapt resource value: 0x7F08020F
-			public const int unlabeled = 2131231247;
-			
-			// aapt resource value: 0x7F080210
-			public const int up = 2131231248;
-			
-			// aapt resource value: 0x7F080211
-			public const int useLogo = 2131231249;
-			
-			// aapt resource value: 0x7F080212
-			public const int vertical_only = 2131231250;
-			
-			// aapt resource value: 0x7F080213
-			public const int view_offset_helper = 2131231251;
-			
-			// aapt resource value: 0x7F080214
-			public const int view_transition = 2131231252;
-			
-			// aapt resource value: 0x7F080215
-			public const int view_tree_lifecycle_owner = 2131231253;
-			
-			// aapt resource value: 0x7F080216
-			public const int view_tree_saved_state_registry_owner = 2131231254;
-			
-			// aapt resource value: 0x7F080217
-			public const int view_tree_view_model_store_owner = 2131231255;
-			
-			// aapt resource value: 0x7F080218
-			public const int visible = 2131231256;
-			
-			// aapt resource value: 0x7F080219
-			public const int visible_removing_fragment_view_tag = 2131231257;
-			
-			// aapt resource value: 0x7F08021A
-			public const int volume_item_container = 2131231258;
-			
-			// aapt resource value: 0x7F08021B
-			public const int west = 2131231259;
-			
-			// aapt resource value: 0x7F08021D
-			public const int withinBounds = 2131231261;
-			
-			// aapt resource value: 0x7F08021C
-			public const int withText = 2131231260;
-			
-			// aapt resource value: 0x7F08021E
-			public const int wrap = 2131231262;
-			
-			// aapt resource value: 0x7F08021F
-			public const int wrap_content = 2131231263;
-			
-			// aapt resource value: 0x7F080220
-			public const int wrap_content_constrained = 2131231264;
-			
-			// aapt resource value: 0x7F080221
-			public const int x_left = 2131231265;
-			
-			// aapt resource value: 0x7F080222
-			public const int x_right = 2131231266;
-			
-			// aapt resource value: 0x7F080223
-			public const int zero_corner_chip = 2131231267;
 			
 			// aapt resource value: 0x7F0801F6
 			public const int textinput_counter = 2131231222;
@@ -22118,21 +21854,6 @@ namespace QuickReserve.Droid
 			// aapt resource value: 0x7F090021
 			public const int status_bar_notification_info_maxnum = 2131296289;
 			
-			// aapt resource value: 0x7F09001D
-			public const int mtrl_card_anim_duration_ms = 2131296285;
-			
-			// aapt resource value: 0x7F09001E
-			public const int mtrl_chip_anim_duration = 2131296286;
-			
-			// aapt resource value: 0x7F09001F
-			public const int mtrl_tab_indicator_anim_duration_ms = 2131296287;
-			
-			// aapt resource value: 0x7F090020
-			public const int show_password_duration = 2131296288;
-			
-			// aapt resource value: 0x7F090021
-			public const int status_bar_notification_info_maxnum = 2131296289;
-			
 			static Integer()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
@@ -22178,12 +21899,6 @@ namespace QuickReserve.Droid
 			
 			// aapt resource value: 0x7F0A000A
 			public const int mtrl_fast_out_slow_in = 2131361802;
-			
-			// aapt resource value: 0x7F0A000B
-			public const int mtrl_linear = 2131361803;
-			
-			// aapt resource value: 0x7F0A000C
-			public const int mtrl_linear_out_slow_in = 2131361804;
 			
 			// aapt resource value: 0x7F0A000B
 			public const int mtrl_linear = 2131361803;
@@ -22425,9 +22140,6 @@ namespace QuickReserve.Droid
 			
 			// aapt resource value: 0x7F0B0049
 			public const int mr_chooser_list_item = 2131427401;
-			
-			// aapt resource value: 0x7F0B004A
-			public const int mr_controller_material_dialog_b = 2131427402;
 			
 			// aapt resource value: 0x7F0B004A
 			public const int mr_controller_material_dialog_b = 2131427402;
@@ -24665,21 +24377,6 @@ namespace QuickReserve.Droid
 			// aapt resource value: 0x7F0F01B5
 			public const int Theme_AppCompat = 2131689909;
 			
-			// aapt resource value: 0x7F0F0234
-			public const int ThemeOverlay_MaterialComponents_Toolbar_Primary = 2131690036;
-			
-			// aapt resource value: 0x7F0F0235
-			public const int ThemeOverlay_MaterialComponents_Toolbar_Surface = 2131690037;
-			
-			// aapt resource value: 0x7F0F0236
-			public const int ThemeOverlay_MediaRouter_Dark = 2131690038;
-			
-			// aapt resource value: 0x7F0F0237
-			public const int ThemeOverlay_MediaRouter_Light = 2131690039;
-			
-			// aapt resource value: 0x7F0F01B5
-			public const int Theme_AppCompat = 2131689909;
-			
 			// aapt resource value: 0x7F0F01B6
 			public const int Theme_AppCompat_CompactMenu = 2131689910;
 			
@@ -24689,14 +24386,8 @@ namespace QuickReserve.Droid
 			// aapt resource value: 0x7F0F01B8
 			public const int Theme_AppCompat_DayNight_DarkActionBar = 2131689912;
 			
-			// aapt resource value: 0x7F0F01B8
-			public const int Theme_AppCompat_DayNight_DarkActionBar = 2131689912;
-			
 			// aapt resource value: 0x7F0F01B9
 			public const int Theme_AppCompat_DayNight_Dialog = 2131689913;
-			
-			// aapt resource value: 0x7F0F01BC
-			public const int Theme_AppCompat_DayNight_DialogWhenLarge = 2131689916;
 			
 			// aapt resource value: 0x7F0F01BC
 			public const int Theme_AppCompat_DayNight_DialogWhenLarge = 2131689916;
@@ -24715,12 +24406,6 @@ namespace QuickReserve.Droid
 			
 			// aapt resource value: 0x7F0F01C1
 			public const int Theme_AppCompat_DialogWhenLarge = 2131689921;
-			
-			// aapt resource value: 0x7F0F01BF
-			public const int Theme_AppCompat_Dialog_Alert = 2131689919;
-			
-			// aapt resource value: 0x7F0F01C0
-			public const int Theme_AppCompat_Dialog_MinWidth = 2131689920;
 			
 			// aapt resource value: 0x7F0F01BF
 			public const int Theme_AppCompat_Dialog_Alert = 2131689919;
