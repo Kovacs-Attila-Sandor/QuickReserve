@@ -21,5 +21,6 @@ namespace QuickReserve.Views
         {
             App.Current.MainPage = new NavigationPage(new AboutPage());
         }
+
     }
 }

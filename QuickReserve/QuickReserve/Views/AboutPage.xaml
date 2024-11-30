@@ -37,6 +37,7 @@
                                             BackgroundColor="Transparent"
                                             FontSize="15"
                                             FontAttributes="Bold" />
+
                                 </StackLayout>
                             </ViewCell>
                         </DataTemplate>
