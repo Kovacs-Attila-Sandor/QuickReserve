@@ -22,16 +22,15 @@
                    FontSize="Large"
                    HorizontalOptions="Center"
                    TextColor="White" />
-                
-               
-                    <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand" Padding="20">
-                        <Entry x:Name="txtUsername" Placeholder="Username" TextColor="GhostWhite" />
-                        <Entry x:Name="txtPassword" Placeholder="Password" TextColor="GhostWhite" />
-                        <Button Clicked="Login" CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent" FontSize="15" WidthRequest="200" FontAttributes="Bold"    Text="Login"/>
-                        <Button Clicked="GoToUserRegisterPage" CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent"  FontSize="15" WidthRequest="200" FontAttributes="Bold" Text="Register as guest"/>
-                        <Button Clicked="GoToRestaurantRegisterPage" CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent" FontSize="15" WidthRequest="200" FontAttributes="Bold" Text="Register as restaurant"/>
-                    </StackLayout>
-              
+
+
+                <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand" Padding="20">
+                    <Entry x:Name="txtUsername" Placeholder="Username" TextColor="GhostWhite" />
+                    <Entry x:Name="txtPassword" IsPassword="True" Placeholder="Password" TextColor="GhostWhite" />
+                    <Button Clicked="Login" CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent" FontSize="15" WidthRequest="200" FontAttributes="Bold"    Text="Login"/>
+                    <Button Clicked="GoToUserRegisterPage" CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent"  FontSize="15" WidthRequest="200" FontAttributes="Bold" Text="Register as guest"/>
+                    <Button Clicked="GoToRestaurantRegisterPage" CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent" FontSize="15" WidthRequest="200" FontAttributes="Bold" Text="Register as restaurant"/>
+                </StackLayout>
             </StackLayout>
         </RelativeLayout>
     </ContentPage.Content>
