@@ -41,6 +41,7 @@ namespace QuickReserve.Views
                 {
                     // Ha a bejelentkezés sikeres
                     await DisplayAlert("LOGIN", "Login successful", "OK");
+                    App.Current.MainPage = new NavigationPage(new AboutPage());
                 }
                 else
                 {

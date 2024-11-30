@@ -10,25 +10,23 @@ using Xamarin.Forms.Xaml;
 namespace QuickReserve.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class RestaurantRegisterPage : ContentPage
+    public partial class AddMenuPage : ContentPage
     {
-        public RestaurantRegisterPage()
+        public AddMenuPage()
         {
             InitializeComponent();
         }
-
-        protected void GoToUserRegisterPage(object sender, EventArgs e)
+        protected void AddItem(object sender, EventArgs e)
         {
-            App.Current.MainPage = new NavigationPage(new UserRegisterPage());
-        }
 
+        }
+        protected void AddLayout(object sender, EventArgs e)
+        {
+            App.Current.MainPage = new NavigationPage(new CreateLayoutPage());
+        }
         protected void GoToLoginPage(object sender, EventArgs e)
         {
             App.Current.MainPage = new NavigationPage(new LoginPage());
-        }
-        protected void GoToAddMenuPage(object sender, EventArgs e)
-        {
-            App.Current.MainPage = new NavigationPage(new AddMenuPage());
         }
     }
 }

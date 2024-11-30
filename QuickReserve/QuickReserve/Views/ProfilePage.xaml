@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="QuickReserve.Views.ProfilePage"
+             NavigationPage.HasNavigationBar="False"
+             >
+    <ContentPage.Content>
+        <RelativeLayout>
+            <Image
+        Aspect="AspectFill"
+        Source="background1.png"
+        RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+        RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
+        IsEnabled="False"/>
+            <StackLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                 RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
+                 Margin="30,30,30,30">
+                <Label Text="Profile"
+           FontSize="Large"
+           HorizontalOptions="Center"
+           TextColor="White" />
+                <Button Text="Back" TextColor="GhostWhite" CornerRadius="50" BorderWidth="2" FontSize="14" FontAttributes="Bold" BackgroundColor="Transparent" BorderColor="GhostWhite" Clicked="GoToAboutPage" VerticalOptions="StartAndExpand" HorizontalOptions="StartAndExpand" />
+
+
+
+
+            </StackLayout>
+        </RelativeLayout>
+    </ContentPage.Content>
+</ContentPage>

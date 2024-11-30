@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickReserve.Android", "Qui
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickReserve.iOS", "QuickReserve\QuickReserve.iOS\QuickReserve.iOS.csproj", "{268076DB-B335-48A9-9C64-D3943A658513}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickReserve", "QuickReserve\QuickReserve\QuickReserve.csproj", "{1692E497-A40E-4300-AEC0-75DD529AB21F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickReserve", "QuickReserve\QuickReserve\QuickReserve.csproj", "{1692E497-A40E-4300-AEC0-75DD529AB21F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -107,7 +107,6 @@ Global
 		{268076DB-B335-48A9-9C64-D3943A658513}.Debug|ARM.Deploy.0 = Debug|iPhoneSimulator
 		{268076DB-B335-48A9-9C64-D3943A658513}.Debug|iPhone.ActiveCfg = Debug|iPhone
 		{268076DB-B335-48A9-9C64-D3943A658513}.Debug|iPhone.Build.0 = Debug|iPhone
-		{268076DB-B335-48A9-9C64-D3943A658513}.Debug|iPhone.Deploy.0 = Debug|iPhone
 		{268076DB-B335-48A9-9C64-D3943A658513}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
 		{268076DB-B335-48A9-9C64-D3943A658513}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
 		{268076DB-B335-48A9-9C64-D3943A658513}.Debug|iPhoneSimulator.Deploy.0 = Debug|iPhoneSimulator
