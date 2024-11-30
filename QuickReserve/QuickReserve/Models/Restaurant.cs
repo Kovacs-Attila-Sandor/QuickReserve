@@ -17,5 +17,7 @@ namespace QuickReserve.Models
         public string LongDescription { get; set; }
         public List<Food> Foods { get; set; } = new List<Food>();
         public List<Table> Tables { get; set; } = new List<Table>();
+
+        public string imgstring { get; set; }
     }
 }
