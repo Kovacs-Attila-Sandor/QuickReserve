@@ -26,5 +26,9 @@ namespace QuickReserve.Views
         {
             App.Current.MainPage = new NavigationPage(new LoginPage());
         }
+        protected void GoToAddMenuPage(object sender, EventArgs e)
+        {
+            App.Current.MainPage = new NavigationPage(new AddMenuPage());
+        }
     }
 }
