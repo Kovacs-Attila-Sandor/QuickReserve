@@ -3,6 +3,7 @@ using Firebase.Database.Query;
 using Newtonsoft.Json;
 using QuickReserve.Models;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace QuickReserve.Services
@@ -53,43 +54,86 @@ namespace QuickReserve.Services
                 return null;  // Hiba esetén null-t adunk vissza
             }
         }
-
-        // Az ID generálása, amely az utolsó használt ID + 1
-        private async Task<int> GenerateNextId()
+        
+        public async Task<string> AddRestaurantAndGetId(Restaurant restaurant)
         {
-            var firebaseClient = FirebaseService.Client;
-
             try
             {
-                // Próbáljuk lekérdezni a 'lastUsedId' értékét a Firebase-ből
-                var lastUsedId = await firebaseClient
+                // Generálj egy egyedi azonosítót az étteremhez
+                restaurant.RestaurantId = Guid.NewGuid().ToString();
+
+                // Az étterem adatainak mentése a Firebase adatbázisba
+                await FirebaseService
+                    .Client
                     .Child("Restaurant")
-                    .Child("lastUsedId")
-                    .OnceSingleAsync<int>();
+                    .Child(restaurant.RestaurantId)
+                    .PutAsync(JsonConvert.SerializeObject(restaurant));
 
-                // Az új ID a legutolsó ID + 1
-                int newId = lastUsedId + 1;
-
-                // Elmentjük az új ID-t a Firebase-be
-                await firebaseClient
-                    .Child("Restaurant")
-                    .Child("lastUsedId")
-                    .PutAsync(newId);
-
-                return newId;  // Az új generált ID-t visszaadjuk
+                return restaurant.RestaurantId; // Visszaadjuk az étterem ID-t
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error generating next ID: {ex.Message}");
+                Console.WriteLine($"Error adding restaurant: {ex.Message}");
+                return null; // Hiba esetén null-t adunk vissza
+            }
+        }
+        public async Task<bool> AddFoodToRestaurant(string restaurantId, Food food)
+        {
+            try
+            {
+                // Lekérjük az adott éttermet a Firebase adatbázisból
+                var restaurant = await GetRestaurantById(restaurantId);
+                if (restaurant != null)
+                {
+                    // Hozzáadjuk az új ételt az étterem Foods listájához
+                    restaurant.Foods.Add(food);
 
-                // Ha nem található a lastUsedId kulcs, vagy más hiba történik, akkor kezdjük 1-től
-                // Érdemes lehet a Firebase konzolban manuálisan beállítani az első 'lastUsedId' értéket is
-                await firebaseClient
-                    .Child("Restaurant")
-                    .Child("lastUsedId")
-                    .PutAsync(1); // Kezdjük az ID-t 1-től
+                    // Frissítjük az étterem adatait a Firebase adatbázisban
+                    await FirebaseService
+                        .Client
+                        .Child("Restaurant")
+                        .Child(restaurantId)
+                        .PutAsync(JsonConvert.SerializeObject(restaurant));
 
-                return 1;  // Ha hiba történik, akkor az első ID-t (1) használjuk
+                    return true; // Sikeres hozzáadás
+                }
+                return false; // Ha az étterem nem található
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error adding food to restaurant: {ex.Message}");
+                return false; // Hiba esetén false
+            }
+        }
+        public async Task<bool> AddTablesToRestaurant(string restaurantId, List<Table> tables)
+        {
+            try
+            {
+                // Lekérjük az adott éttermet
+                var restaurant = await GetRestaurantById(restaurantId);
+                if (restaurant != null)
+                {
+                    // Hozzáadjuk az asztalokat az étteremhez
+                    if (restaurant.Tables == null)
+                        restaurant.Tables = new List<Table>();
+
+                    restaurant.Tables.AddRange(tables);
+
+                    // Frissítjük az étterem adatait a Firebase adatbázisban
+                    await FirebaseService
+                        .Client
+                        .Child("Restaurant")
+                        .Child(restaurantId)
+                        .PutAsync(JsonConvert.SerializeObject(restaurant));
+
+                    return true; // Sikeres mentés
+                }
+                return false; // Ha az étterem nem található
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error adding tables to restaurant: {ex.Message}");
+                return false; // Hiba esetén false
             }
         }
     }

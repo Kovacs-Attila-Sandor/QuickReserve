@@ -4,6 +4,7 @@
              x:Class="QuickReserve.Views.CreateLayoutPage"
              NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
+        
         <RelativeLayout>
             <!-- Background Image -->
             <Image
@@ -15,6 +16,14 @@
             <StackLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
              RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
              Margin="30,30,30,30">
+                <Frame BackgroundColor="DarkGray"  Padding="10" CornerRadius="10" HasShadow="False" HorizontalOptions="Center" VerticalOptions="StartAndExpand" Margin="0,20,0,20">
+                    <Label Text="Add Layout" 
+                       FontSize="24" 
+                       FontAttributes="Bold" 
+                       HorizontalOptions="Center" 
+                       VerticalOptions="Center" 
+                       TextColor="White" />
+                </Frame>
 
                 <!-- Dynamic Grid (buttons will be added here) -->
                 <Grid x:Name="DynamicGrid"
@@ -27,9 +36,11 @@
 
                 <!-- Finish Registration Button -->
                 <StackLayout HorizontalOptions="Center" VerticalOptions="End" Padding="20">
-                    <Button Clicked="GoToLoginPage" CornerRadius="50" TextColor="GhostWhite"
+                    <Frame BackgroundColor="LightGray"  Padding="10" CornerRadius="10" HasShadow="False" HorizontalOptions="Center" VerticalOptions="StartAndExpand" Margin="0,20,0,20">
+                        <Button Clicked="GoToLoginPage" CornerRadius="50" TextColor="GhostWhite"
                         BackgroundColor="Transparent" FontSize="15" WidthRequest="200"
                         FontAttributes="Bold" Text="Finish Registration"/>
+                    </Frame>
                 </StackLayout>
             </StackLayout>
 

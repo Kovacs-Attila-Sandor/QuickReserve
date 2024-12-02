@@ -25,7 +25,7 @@ namespace QuickReserve
             /*
             var restaurant = new Restaurant
             {
-                RestaurantId = "restaurant123",
+                
                 Name = "The Gourmet Kitchen",
                 Address = new Location
                 {
