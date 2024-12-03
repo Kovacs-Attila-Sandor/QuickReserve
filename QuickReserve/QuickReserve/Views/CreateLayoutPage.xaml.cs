@@ -1,4 +1,6 @@
-﻿using System;
+﻿using QuickReserve.Models;
+using QuickReserve.Services;
+using System;
 
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +15,10 @@ namespace QuickReserve.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CreateLayoutPage : ContentPage
     {
-        public CreateLayoutPage()
+        private string _restaurantId;
+        public CreateLayoutPage(string restaurantId)
         {
+            _restaurantId = restaurantId;
             InitializeComponent();
 
             // Create the grid dynamically
@@ -37,8 +41,6 @@ namespace QuickReserve.Views
             {
                 for (int col = 0; col < 7; col++)
                 {
-
-
                     var button = new Button
                     {
                         Text =  null,
@@ -92,8 +94,56 @@ namespace QuickReserve.Views
         }
 
         // Navigate to the LoginPage when "Finish Registration" button is clicked
-        protected void GoToLoginPage(object sender, EventArgs e)
+        protected async void GoToLoginPage(object sender, EventArgs e)
         {
+            try
+            {
+                // Gyűjtsük össze az összes asztalt a DynamicGrid-ből
+                var tables = new List<Table>();
+
+                int tableCounter = 1; // Az asztalok számozásához
+
+                foreach (var child in DynamicGrid.Children)
+                {
+                    if (child is Button button && !string.IsNullOrEmpty(button.Text))
+                    {
+                        // Hozzunk létre egy új asztal objektumot
+                        var table = new Table
+                        {
+                            TableId = Guid.NewGuid().ToString(),
+                            TableNumber = tableCounter++, // Automatikusan növekvő asztalszám
+                            Capacity = int.Parse(button.Text), // A gomb szövegéből kapjuk meg a kapacitást
+                            AvailabilityStatus = "Available", // Alapértelmezett státusz
+                            Location = new TableLocation
+                            {
+                                Row = Grid.GetRow(button),
+                                Column = Grid.GetColumn(button)
+                            }
+                        };
+
+                        tables.Add(table); // Adjunk hozzá az asztalt a listához
+                    }
+                }
+
+                // Hívjuk meg a mentési metódust
+                var restaurantService = new RestaurantService();
+                bool isSaved = await restaurantService.AddTablesToRestaurant(_restaurantId, tables);
+
+                if (isSaved)
+                {
+                    await DisplayAlert("Success", "Tables saved successfully!", "OK");
+                    App.Current.MainPage = new NavigationPage(new LoginPage());
+                }
+                else
+                {
+                    await DisplayAlert("Error", "Failed to save tables.", "OK");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error saving tables: {ex.Message}");
+                await DisplayAlert("Error", "Failed to save tables.", "OK");
+            }
             App.Current.MainPage = new NavigationPage(new LoginPage());
         }
     }

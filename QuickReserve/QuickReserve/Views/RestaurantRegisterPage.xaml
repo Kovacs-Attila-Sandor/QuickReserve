@@ -35,11 +35,8 @@
                             <Entry x:Name="txtNumber" Placeholder="Number" TextColor="GhostWhite" />
                             <Entry x:Name="txtShortDescriprion" Placeholder="Short Description" TextColor="GhostWhite" />
                             <Entry x:Name="txtLongDescriprion" Placeholder="Long Description" TextColor="GhostWhite" />
-                            <Button Clicked="GoToAddMenuPage" CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent"  FontSize="15" WidthRequest="200" FontAttributes="Bold" Text="Add Menu"/>
-                            <Button Clicked="GoToCreateLayoutPage" CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent" FontSize="15" WidthRequest="200" FontAttributes="Bold" Text="Add Layout"/>
-
-
-
+                            <ImageButton Source="add_image_icon.png" Clicked="PickImage" />
+                            <Image x:Name="SelectedImage" HeightRequest="200" />
                         </StackLayout>
                     </ScrollView>
                     <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand" Padding="20">
