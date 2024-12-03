@@ -4,7 +4,7 @@ using System.Text;
 
 namespace QuickReserve.Models
 {
-    public class Location
+    public class LocationRes
     {       
         public string Country { get; set; }
         public string City { get; set; }

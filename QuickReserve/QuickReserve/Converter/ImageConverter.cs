@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Text;
+using Xamarin.Forms;
 
-public static class ImageConverter
+namespace QuickReserve.Converter
 {
-    public static string ConvertToBase64(string imagePath)
     {
-        byte[] imageBytes = File.ReadAllBytes(imagePath);
-        return Convert.ToBase64String(imageBytes);
     }
 }
