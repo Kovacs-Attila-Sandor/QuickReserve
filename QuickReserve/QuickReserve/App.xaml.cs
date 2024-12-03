@@ -5,6 +5,7 @@ using QuickReserve.Views;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 

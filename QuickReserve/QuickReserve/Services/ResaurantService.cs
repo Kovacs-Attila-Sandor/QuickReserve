@@ -77,6 +77,34 @@ namespace QuickReserve.Services
                 return null; // Hiba esetén null-t adunk vissza
             }
         }
+
+        public async Task<List<Restaurant>> GetAllRestaurants()
+        {
+            try
+            {
+                // Fetch all the restaurants from the "Restaurant" collection
+                var restaurantData = await FirebaseService
+                    .Client
+                    .Child("Restaurant")  // "Restaurant" collection
+                    .OnceAsync<Restaurant>();  // Fetch all restaurants as a list of Restaurant objects
+
+                // Convert the fetched data into a List<Restaurant>
+                List<Restaurant> restaurants = new List<Restaurant>();
+                foreach (var item in restaurantData)
+                {
+                    var restaurant = item.Object;
+                    restaurants.Add(restaurant);
+                }
+
+                return restaurants;  // Return the list of all restaurants
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching all restaurants: {ex.Message}");
+                return null;  // Return null in case of an error
+            }
+        }
+
         public async Task<bool> AddFoodToRestaurant(string restaurantId, Food food)
         {
             try
@@ -135,6 +163,6 @@ namespace QuickReserve.Services
                 Console.WriteLine($"Error adding tables to restaurant: {ex.Message}");
                 return false; // Hiba esetén false
             }
-        }
+        }       
     }
 }
