@@ -15,9 +15,8 @@ namespace QuickReserve.Models
 
     public class TableLocation
     {
-        public int StartRow { get; set; }
-        public int StartColumn { get; set; }
-        public int EndRow { get; set; }
-        public int EndColumn { get; set; }
+        public int Row { get; set; }
+        public int Column { get; set; }
+        
     }
 }

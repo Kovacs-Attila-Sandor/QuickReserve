@@ -52,45 +52,6 @@ namespace QuickReserve.Services
                 Console.WriteLine($"Hiba a foglalás lekérése során: {ex.Message}");
                 return null;  // Hiba esetén null-t adunk vissza
             }
-        }
-
-        // Az ID generálása, amely az utolsó használt ID + 1
-        private async Task<int> GenerateNextId()
-        {
-            var firebaseClient = FirebaseService.Client;
-
-            try
-            {
-                // Próbáljuk lekérdezni a 'lastUsedId' értékét a Firebase-ből
-                var lastUsedId = await firebaseClient
-                    .Child("Reservation")
-                    .Child("lastUsedId")
-                    .OnceSingleAsync<int>();
-
-                // Az új ID a legutolsó ID + 1
-                int newId = lastUsedId + 1;
-
-                // Elmentjük az új ID-t a Firebase-be
-                await firebaseClient
-                    .Child("Reservation")
-                    .Child("lastUsedId")
-                    .PutAsync(newId);
-
-                return newId;  // Az új generált ID-t visszaadjuk
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Hiba az ID generálásakor: {ex.Message}");
-
-                // Ha nem található a lastUsedId kulcs, vagy más hiba történik, akkor kezdjük 1-től
-                // Érdemes lehet a Firebase konzolban manuálisan beállítani az első 'lastUsedId' értéket is
-                await firebaseClient
-                    .Child("Reservation")
-                    .Child("lastUsedId")
-                    .PutAsync(1); // Kezdjük az ID-t 1-től
-
-                return 1;  // Ha hiba történik, akkor az első ID-t (1) használjuk
-            }
-        }
+        }        
     }
 }
