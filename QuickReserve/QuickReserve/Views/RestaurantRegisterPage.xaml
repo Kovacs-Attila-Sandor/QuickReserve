@@ -10,43 +10,50 @@
                  RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                  RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
                  IsEnabled="False"/>
-            <StackLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+            
+                <StackLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                          RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
                          Margin="30,30,30,30">
-                <Label Text="Welcome to the Quick Reserve App"
+                    <Label Text="Welcome to the Quick Reserve App"
                        FontSize="Large"
                        HorizontalOptions="Center"
                        TextColor="White" />
-                <StackLayout>
-                    <ScrollView VerticalScrollBarVisibility="Always">
-                        <StackLayout>
-                            <Entry x:Name="txtUsername" Placeholder="Username" TextColor="GhostWhite" />
-                            <Entry x:Name="txtPassword" IsPassword="True" Placeholder="Password" TextColor="GhostWhite" />
-                            <Entry x:Name="txtConfirmPassword" IsPassword="True" Placeholder="ConfirmPassword" TextColor="GhostWhite" />
-                            <Entry x:Name="txtEmail" Placeholder="Email" TextColor="GhostWhite" />
-                            <Entry x:Name="txtPhonenum" Placeholder="Tel." TextColor="GhostWhite" />
-                            <Entry x:Name="txtCountry" Placeholder="Country" TextColor="GhostWhite" />
-                            <Entry x:Name="txtCity" Placeholder="City" TextColor="GhostWhite" />
-                            <Entry x:Name="txtStreet" Placeholder="Street" TextColor="GhostWhite" />
-                            <Entry x:Name="txtNumber" Placeholder="Number" TextColor="GhostWhite" />
-                            <Entry x:Name="txtShortDescriprion" Placeholder="Short Description" TextColor="GhostWhite" />
-                            <Entry x:Name="txtLongDescriprion" Placeholder="Long Description" TextColor="GhostWhite" />
-                            <Button Text="Pick an image" Clicked="PickImageButton_Clicked" />
-                            <Entry x:Name="txtBase64Image" IsVisible="False" />
-                            <!-- Hidden field to store Base64 -->
+                <Frame CornerRadius="20"
+BackgroundColor="Black"         
+ Opacity="0.75"         >
+                    <StackLayout>
+                        <ScrollView VerticalScrollBarVisibility="Always">
+                            <StackLayout>
+                                <Entry x:Name="txtUsername" Placeholder="Username" TextColor="GhostWhite" />
+                                <Entry x:Name="txtPassword" IsPassword="True" Placeholder="Password" TextColor="GhostWhite" />
+                                <Entry x:Name="txtConfirmPassword" IsPassword="True" Placeholder="ConfirmPassword" TextColor="GhostWhite" />
+                                <Entry x:Name="txtEmail" Placeholder="Email" TextColor="GhostWhite" />
+                                <Entry x:Name="txtPhonenum" Placeholder="Tel." TextColor="GhostWhite" />
+                                <Entry x:Name="txtCountry" Placeholder="Country" TextColor="GhostWhite" />
+                                <Entry x:Name="txtCity" Placeholder="City" TextColor="GhostWhite" />
+                                <Entry x:Name="txtStreet" Placeholder="Street" TextColor="GhostWhite" />
+                                <Entry x:Name="txtNumber" Placeholder="Number" TextColor="GhostWhite" />
+                                <Entry x:Name="txtShortDescriprion" Placeholder="Short Description" TextColor="GhostWhite" />
+                                <Entry x:Name="txtLongDescriprion" Placeholder="Long Description" TextColor="GhostWhite" />
+                                <Button Text="Pick an image" Clicked="PickImageButton_Clicked" CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" 
+                                BackgroundColor="Transparent" FontSize="15" WidthRequest="200" FontAttributes="Bold"/>
+                                <Entry x:Name="txtBase64Image" IsVisible="False" />
+                                <!-- Hidden field to store Base64 -->
 
-                            <!-- Image Control to show the selected image -->
-                            <Image x:Name="SelectedImage" IsVisible="False" WidthRequest="200" HeightRequest="200" />
-                        </StackLayout>
-                    </ScrollView>
-                    <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand" Padding="20">
-                        <Button Clicked="GoToLoginPage" CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" 
+                                <!-- Image Control to show the selected image -->
+                                <Image x:Name="SelectedImage" IsVisible="False" WidthRequest="200" HeightRequest="200" />
+                            </StackLayout>
+                        </ScrollView>
+                        <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand" Padding="20">
+                            <Button Clicked="GoToLoginPage" CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" 
                                 BackgroundColor="Transparent" FontSize="15" WidthRequest="200" FontAttributes="Bold" Text="Back to Login"/>
-                        <Button Clicked="GoToUserRegisterPage" CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent"  FontSize="15" WidthRequest="200" FontAttributes="Bold" Text="Register as guest"/>
-                        <Button Clicked="GoToAddMenuPage" CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent" FontSize="15" WidthRequest="200" FontAttributes="Bold" Text="Register as restaurant"/>
+                            <Button Clicked="GoToUserRegisterPage" CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent"  FontSize="15" WidthRequest="200" FontAttributes="Bold" Text="Register as guest"/>
+                            <Button Clicked="GoToAddMenuPage" CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent" FontSize="15" WidthRequest="200" FontAttributes="Bold" Text="Register as restaurant"/>
+                        </StackLayout>
                     </StackLayout>
-                </StackLayout>
+                </Frame>
             </StackLayout>
+           
         </RelativeLayout>
     </ContentPage.Content>
 </ContentPage>
