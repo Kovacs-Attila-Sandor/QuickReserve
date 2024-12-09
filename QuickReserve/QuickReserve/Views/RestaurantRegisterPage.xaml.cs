@@ -37,7 +37,8 @@ namespace QuickReserve.Views
 
             string password = txtPassword.Text?.Trim();
             string confirmPassword = txtConfirmPassword.Text?.Trim();
-
+            App.Current.MainPage = new NavigationPage(new AddMenuPage("02"));
+            /*
             if (!string.IsNullOrEmpty(txtUsername.Text) &&
                 !string.IsNullOrEmpty(txtPassword.Text) &&
                 !string.IsNullOrEmpty(txtConfirmPassword.Text) &&
@@ -100,6 +101,7 @@ namespace QuickReserve.Views
                     await DisplayAlert("SAVING ERROR", "This Username is already used", "OK");
             }
             else await DisplayAlert("SAVING ERROR", "Something is empty", "OK");
+            */
         }
 
         protected async void PickImageButton_Clicked(object sender, EventArgs e)

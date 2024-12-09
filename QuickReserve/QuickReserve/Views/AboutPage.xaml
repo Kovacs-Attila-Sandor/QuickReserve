@@ -6,38 +6,23 @@
              BackgroundColor="White">
 
     <ContentPage.Content>
-        <AbsoluteLayout>
+        <RelativeLayout>
 
-            <!-- Background Image with AbsoluteLayout to fill the entire screen -->
             <Image
-                Aspect="AspectFill"
-                Source="background1.png"
-                AbsoluteLayout.LayoutBounds="0, 0, 1, 1"  
-                AbsoluteLayout.LayoutFlags="All"
-                IsEnabled="False"/>
+     Aspect="AspectFill"
+     Source="background1.png"
+     RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+     RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
+     IsEnabled="False"/>
 
             <!-- Main content -->
-            <StackLayout Orientation="Vertical" Padding="20" Spacing="20" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" AbsoluteLayout.LayoutFlags="All">
+            <StackLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                  RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
+                  Margin="30,30,30,30">
 
                 <!-- Profile Button wrapped in Frame for shadow effect -->
-                <Frame Padding="0" 
-                       HasShadow="True" 
-                       CornerRadius="50" 
-                       BorderColor="Transparent" 
-                       BackgroundColor="#2980b9" 
-                       HeightRequest="60" 
-                       WidthRequest="200" 
-                       VerticalOptions="Start"
-                       HorizontalOptions="EndAndExpand">
-                    <Button Text="Profile" 
-                            TextColor="White" 
-                            FontSize="18" 
-                            FontAttributes="Bold" 
-                            BackgroundColor="Transparent" 
-                            BorderWidth="0" 
-                            CornerRadius="50" 
-                            Clicked="GoToProfilePage" />
-                </Frame>
+                <Button Text="Profile" TextColor="GhostWhite" CornerRadius="50" BorderWidth="2" FontSize="14" FontAttributes="Bold" BackgroundColor="Transparent" BorderColor="GhostWhite" Clicked="GoToProfilePage" VerticalOptions="StartAndExpand" HorizontalOptions="EndAndExpand" />
+
 
                 <!-- ListView to show Restaurants -->
                 <ListView x:Name="lstmoments" 
@@ -46,22 +31,25 @@
                           SeparatorVisibility="None"
                           BackgroundColor="Transparent">
                     <ListView.ItemTemplate>
+                       
                         <DataTemplate>
-                            <ViewCell>
-                                <!-- StackLayout wrapped in Frame for shadow and corner radius -->
+                           
+                                    <ViewCell>
                                 <Frame Padding="15" 
-                                       HasShadow="True" 
-                                       CornerRadius="20" 
-                                       BackgroundColor="DimGray" 
-                                       Margin="10"
-                                       VerticalOptions="FillAndExpand">
+       HasShadow="True" 
+       CornerRadius="20" 
+       BackgroundColor="Black" 
+       Opacity="0.75"
+       Margin="10"
+       VerticalOptions="FillAndExpand">
+
                                     <StackLayout Orientation="Vertical" Spacing="15">
                                         <!-- Restaurant Image -->
                                         <Frame WidthRequest="200"  
                                                HeightRequest="200"
                                                CornerRadius="20"
                                                HasShadow="True"
-                                               BackgroundColor="White"
+                                               BackgroundColor="GhostWhite"
                                                Padding="0">
                                             <Image WidthRequest="200"  
                                                    HeightRequest="200"
@@ -76,7 +64,7 @@
                                             <!-- Restaurant Name -->
                                             <Label Text="{Binding Name}" 
                                                    FontSize="22" 
-                                                   TextColor="White" 
+                                                   TextColor="GhostWhite" 
                                                    FontAttributes="Bold" 
                                                    HorizontalOptions="Start" 
                                                    LineBreakMode="TailTruncation"
@@ -84,23 +72,25 @@
                                             <!-- Restaurant Short Description -->
                                             <Label Text="{Binding ShortDescription}"
                                                    FontSize="14" 
-                                                   TextColor="#f39c12" 
+                                                   TextColor="GhostWhite" 
                                                    HorizontalOptions="Start" />
 
                                             <!-- Restaurant Rating -->
                                             <Label Text="{Binding Rating, StringFormat='Rating: {0}'}"
                                                    FontSize="14" 
-                                                   TextColor="#f39c12" 
+                                                   TextColor="GhostWhite" 
                                                    HorizontalOptions="Start" />
                                         </StackLayout>
                                     </StackLayout>
                                 </Frame>
                             </ViewCell>
+                                    
                         </DataTemplate>
+
                     </ListView.ItemTemplate>
                 </ListView>
             </StackLayout>
 
-        </AbsoluteLayout>
+        </RelativeLayout>
     </ContentPage.Content>
 </ContentPage>

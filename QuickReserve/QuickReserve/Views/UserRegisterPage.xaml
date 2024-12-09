@@ -20,16 +20,21 @@
            FontSize="Large"
            HorizontalOptions="Center"
            TextColor="White" />
-                <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand" Padding="20">
-                    <Entry x:Name="txtUsername" Placeholder="Username" TextColor="GhostWhite" />
-                    <Entry x:Name="txtPassword" IsPassword="True" Placeholder="Password" TextColor="GhostWhite" />
-                    <Entry x:Name="txtConfirmPassword" IsPassword="True" Placeholder="ConfirmPassword" TextColor="GhostWhite" />
-                    <Entry x:Name="txtEmail" Placeholder="Email" TextColor="GhostWhite" />
-                    <Entry x:Name="txtPhonenum" Placeholder="Tel." TextColor="GhostWhite" />
-                    <Button Clicked="GoToLoginPage" CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent" FontSize="15" WidthRequest="200" FontAttributes="Bold"   Text="Back to Login"/>
-                    <Button Clicked="RegisterAsGuest" CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent"  FontSize="15" WidthRequest="200" FontAttributes="Bold" Text="Register as guest"/>
-                    <Button Clicked="GoToRestaurantRegisterPage" CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent" FontSize="15" WidthRequest="200" FontAttributes="Bold" Text="Register as restaurant"/>
-                </StackLayout>
+                <Frame CornerRadius="20"
+       BackgroundColor="Black"         
+        Opacity="0.75"         
+       HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand">
+                    <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand" Padding="20">
+                        <Entry x:Name="txtUsername" Placeholder="Username" TextColor="GhostWhite" />
+                        <Entry x:Name="txtPassword" IsPassword="True" Placeholder="Password" TextColor="GhostWhite" />
+                        <Entry x:Name="txtConfirmPassword" IsPassword="True" Placeholder="ConfirmPassword" TextColor="GhostWhite" />
+                        <Entry x:Name="txtEmail" Placeholder="Email" TextColor="GhostWhite" />
+                        <Entry x:Name="txtPhonenum" Placeholder="Tel." TextColor="GhostWhite" />
+                        <Button Clicked="GoToLoginPage" CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent" FontSize="15" WidthRequest="200" FontAttributes="Bold"   Text="Back to Login"/>
+                        <Button Clicked="RegisterAsGuest" CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent"  FontSize="15" WidthRequest="200" FontAttributes="Bold" Text="Register as guest"/>
+                        <Button Clicked="GoToRestaurantRegisterPage" CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent" FontSize="15" WidthRequest="200" FontAttributes="Bold" Text="Register as restaurant"/>
+                    </StackLayout>
+                </Frame>
             </StackLayout>
         </RelativeLayout>
     </ContentPage.Content>
