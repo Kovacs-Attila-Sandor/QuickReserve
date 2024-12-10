@@ -24,7 +24,7 @@
                   Margin="30,30,30,30">
 
                     <!-- Profile Button wrapped in Frame for shadow effect -->
-                    <Button Text="Back" TextColor="GhostWhite" CornerRadius="50" BorderWidth="2" FontSize="14" FontAttributes="Bold" BackgroundColor="Transparent" BorderColor="GhostWhite" Clicked="GoToAboupage" VerticalOptions="StartAndExpand" HorizontalOptions="StartAndExpand" />
+                    <Button Text="Back" TextColor="GhostWhite" CornerRadius="50" BorderWidth="2" FontSize="14" FontAttributes="Bold" BackgroundColor="Transparent" BorderColor="GhostWhite" Clicked="GoToAboutpage" VerticalOptions="StartAndExpand" HorizontalOptions="StartAndExpand" />
 
 
                     <ScrollView>
@@ -94,6 +94,7 @@ VerticalOptions="FillAndExpand">
                     BackgroundColor="Transparent" 
                     Padding="15" 
                     CornerRadius="25" 
+                                    Clicked="GoToRestaurantLayoutpage"
                     HorizontalOptions="FillAndExpand" 
                     VerticalOptions="EndAndExpand" />
 

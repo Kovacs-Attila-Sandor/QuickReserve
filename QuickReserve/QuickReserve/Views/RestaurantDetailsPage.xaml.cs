@@ -11,9 +11,14 @@ namespace QuickReserve.Views
             InitializeComponent();
             BindingContext = selectedRestaurant; // Bind restaurant details to the page
         }
-        protected void GoToAboupage(object sender, EventArgs e)
+        protected void GoToAboutpage(object sender, EventArgs e)
         {
             App.Current.MainPage = new NavigationPage(new AboutPage());
+        }
+
+        protected void GoToRestaurantLayoutpage(object sender, EventArgs e)
+        {
+            App.Current.MainPage = new NavigationPage(new RestaurantLayoutPage());
         }
     }
 }

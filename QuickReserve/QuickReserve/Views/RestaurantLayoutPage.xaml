@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             x:Class="QuickReserve.Views.RestaurantLayoutPage"
+             NavigationPage.HasNavigationBar="False">
+
+
+
+    <ContentPage.Content>
+        <RelativeLayout>
+
+            <Image
+ Aspect="AspectFill"
+ Source="background1.png"
+ RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+ RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
+ IsEnabled="False"/>
+
+
+            <!-- Main content -->
+            <StackLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+              RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
+              Margin="30,30,30,30">
+                <StackLayout Orientation="Horizontal">
+                    <Button Text="Back" TextColor="GhostWhite" CornerRadius="50" BorderWidth="2" FontSize="14" FontAttributes="Bold" BackgroundColor="Transparent" BorderColor="GhostWhite" Clicked="GoToAboutPage" VerticalOptions="StartAndExpand" HorizontalOptions="StartAndExpand" />
+                    <Button Text="Confirm" TextColor="GhostWhite" CornerRadius="50" BorderWidth="2" FontSize="14" FontAttributes="Bold" BackgroundColor="Transparent" BorderColor="GhostWhite" Clicked="GoToAboutPage" VerticalOptions="StartAndExpand" HorizontalOptions="EndAndExpand" />
+                </StackLayout>
+                <Frame CornerRadius="20"
+BackgroundColor="Black"         
+ Opacity="0.75"         
+HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand">
+                    <StackLayout Orientation="Vertical" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+                        <DatePicker x:Name="reservationDatePicker"
+            MinimumDate="{x:Static sys:DateTime.Now}"
+            MaximumDate="{x:Static sys:DateTime.MaxValue}"
+            Date="{x:Static sys:DateTime.Now}" />
+
+                        <Picker x:Name="myPicker" Title="Select a time">
+                            <Picker.ItemsSource>
+                                <x:Array Type="{x:Type x:String}">
+                                    <x:String>O0:00-00:30</x:String>
+                                    <x:String>00:30-01:00</x:String>
+                                    <x:String>01:00-01:30</x:String>
+                                    <x:String>O1:30-02:00</x:String>
+                                    <x:String>02:00-02:30</x:String>
+                                    <x:String>02:30-03:00</x:String>
+                                    <x:String>O3:00-03:30</x:String>
+                                    <x:String>03:30-04:00</x:String>
+                                    <x:String>04:00-04:30</x:String>
+                                    <x:String>O4:30-05:00</x:String>
+                                    <x:String>05:00-05:30</x:String>
+                                    <x:String>05:30-06:00</x:String>
+                                    <x:String>O6:00-06:30</x:String>
+                                    <x:String>06:30-07:00</x:String>
+                                    <x:String>07:00-07:30</x:String>
+                                    <x:String>O7:30-08:00</x:String>
+                                    <x:String>08:00-08:30</x:String>
+                                    <x:String>08:30-09:00</x:String>
+                                    <x:String>O9:00-09:30</x:String>
+                                    <x:String>09:30-10:00</x:String>
+                                    <x:String>10:00-10:30</x:String>
+                                    <x:String>10:30-11:00</x:String>
+                                    <x:String>11:00-11:30</x:String>
+                                    <x:String>11:30-12:00</x:String>
+                                    <x:String>12:00-12:30</x:String>
+                                    <x:String>12:30-13:00</x:String>
+                                    <x:String>13:00-13:30</x:String>
+                                    <x:String>13:30-14:00</x:String>
+                                    <x:String>14:00-14:30</x:String>
+                                    <x:String>14:30-15:00</x:String>
+                                    <x:String>15:00-15:30</x:String>
+                                    <x:String>15:30-16:00</x:String>
+                                    <x:String>16:00-16:30</x:String>
+                                    <x:String>16:30-17:00</x:String>
+                                    <x:String>17:00-17:30</x:String>
+                                    <x:String>17:30-18:00</x:String>
+                                    <x:String>18:00-18:30</x:String>
+                                    <x:String>18:30-19:00</x:String>
+                                    <x:String>19:00-19:30</x:String>
+                                    <x:String>19:30-20:00</x:String>
+                                    <x:String>20:00-20:30</x:String>
+                                    <x:String>20:30-21:00</x:String>
+                                    <x:String>21:00-21:30</x:String>
+                                    <x:String>21:30-22:00</x:String>
+                                    <x:String>22:00-22:30</x:String>
+                                    <x:String>22:30-23:00</x:String>
+                                    <x:String>23:00-23:30</x:String>
+                                    <x:String>23:30-24:00</x:String>
+                                </x:Array>
+                            </Picker.ItemsSource>
+                        </Picker>
+                    </StackLayout>
+                </Frame>
+
+                <Frame CornerRadius="20"
+BackgroundColor="Black"         
+ Opacity="0.75"         
+HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand">
+
+                    <Grid x:Name="DynamicGrid"
+                  RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                  RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
+                  HorizontalOptions="CenterAndExpand"
+                  VerticalOptions="CenterAndExpand">
+                        <!-- Buttons will be added dynamically in code-behind -->
+                    </Grid>
+                </Frame>
+
+                
+            </StackLayout>
+        </RelativeLayout>
+    </ContentPage.Content>
+</ContentPage>
