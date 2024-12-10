@@ -1,7 +1,6 @@
 ﻿using Xamarin.Forms;
 using QuickReserve.Models;
-using QuickReserve.Converter;
-using System.Collections.Generic;
+using System;
 
 namespace QuickReserve.Views
 {
@@ -41,6 +40,10 @@ namespace QuickReserve.Views
                 // Frissítsd a jelenlegi indexet, ha előre lép
                 _currentIndex = newIndex;
             }
+        }
+        protected void GoToAboupage(object sender, EventArgs e)
+        {
+            App.Current.MainPage = new NavigationPage(new AboutPage());
         }
     }
 }

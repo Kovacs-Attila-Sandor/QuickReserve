@@ -12,28 +12,34 @@
                  RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                  RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
                  IsEnabled="False"/>
-            <StackLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+            
+                <StackLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                   RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
                   Margin="30,30,30,30">
-                <Frame BackgroundColor="Black"  Padding="10" CornerRadius="10" HasShadow="False" HorizontalOptions="Center" VerticalOptions="StartAndExpand" Margin="0,20,0,20">
-                    <Label Text="Add New Menu Item" 
+                   
+                        <Label Text="Add New Menu Item" 
                    FontSize="24" 
                    FontAttributes="Bold" 
                    HorizontalOptions="Center" 
                    VerticalOptions="Center" 
                    TextColor="White" />
-                </Frame>
 
-                <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand" Padding="20">
-                    <Entry x:Name="txtMenuItemName" Placeholder="Menu Item Name" TextColor="GhostWhite" />
-                    <Entry x:Name="txtMenuItemDescription" Placeholder="Menu Item Description" TextColor="GhostWhite"/>
-                    <Entry x:Name="txtMenuItemType" Placeholder="Menu Item Type" TextColor="GhostWhite" />
-                    <Entry x:Name="txtPrice" Placeholder="Menu Item Price" TextColor="GhostWhite" Keyboard="Numeric" />
-                    <Button Clicked="AddItem" CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent" FontSize="15" WidthRequest="200" FontAttributes="Bold"   Text="Add Menu Item"/>
-                    <Button Clicked="AddLayout" CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent"  FontSize="15" WidthRequest="200" FontAttributes="Bold" Text="Add Restaurant Layout"/>
-                    <Button Clicked="GoToLoginPage" CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent" FontSize="15" WidthRequest="200" FontAttributes="Bold" Text="Finish Registration"/>
-                </StackLayout>
+                <Frame CornerRadius="20"
+BackgroundColor="Black"         
+ Opacity="0.75"         
+HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand">
+                    <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand" Padding="20">
+                        <Entry x:Name="txtMenuItemName" Placeholder="Menu Item Name" TextColor="GhostWhite" />
+                        <Entry x:Name="txtMenuItemDescription" Placeholder="Menu Item Description" TextColor="GhostWhite"/>
+                        <Entry x:Name="txtMenuItemType" Placeholder="Menu Item Type" TextColor="GhostWhite" />
+                        <Entry x:Name="txtPrice" Placeholder="Menu Item Price" TextColor="GhostWhite" Keyboard="Numeric" />
+                        <Button Clicked="AddItem" CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent" FontSize="15" WidthRequest="200" FontAttributes="Bold"   Text="Add Menu Item"/>
+                        <Button Clicked="AddLayout" CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent"  FontSize="15" WidthRequest="200" FontAttributes="Bold" Text="Add Restaurant Layout"/>
+                        <Button Clicked="GoToLoginPage" CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent" FontSize="15" WidthRequest="200" FontAttributes="Bold" Text="Finish Registration"/>
+                    </StackLayout>
+                </Frame>
             </StackLayout>
+            
         </RelativeLayout>
     </ContentPage.Content>
 </ContentPage>

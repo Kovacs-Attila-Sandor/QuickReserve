@@ -25,31 +25,33 @@ namespace QuickReserve.Views
             var dynamicGrid = DynamicGrid;
 
             // Define 15 rows
-            for (int i = 0; i < 12; i++)
+            for (int i = 0; i < 10; i++)
             {
                 dynamicGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Star });
             }
 
             // Define 10 columns
-            for (int j = 0; j < 7; j++)
+            for (int j = 0; j < 6; j++)
             {
                 dynamicGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
             }
 
             // Add 15x10 buttons dynamically
-            for (int row = 0; row < 12; row++)
+            for (int row = 0; row < 10; row++)
             {
-                for (int col = 0; col < 7; col++)
+                for (int col = 0; col < 6; col++)
                 {
                     var button = new Button
                     {
-                        Text = null,
-                        FontSize = 12,
-                        BorderWidth = 3,
-                        BackgroundColor = Color.LightGray,
+                        Text =  null,
+                        FontSize=13,
+                        BorderWidth=3,
+                        FontAttributes = FontAttributes.Bold,
+                        TextColor =Color.Black,
+                        BackgroundColor=Color.LightGray,
                         HorizontalOptions = LayoutOptions.FillAndExpand,
                         VerticalOptions = LayoutOptions.FillAndExpand,
-                        IsVisible = true,
+                        IsVisible =true,
                         WidthRequest = 40, // Adjust the width of the buttons
                         HeightRequest = 40 // Adjust the height of the buttons
                     };

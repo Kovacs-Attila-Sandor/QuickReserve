@@ -132,13 +132,23 @@ namespace QuickReserve.Views
                 else
                 {
                     await DisplayAlert("SAVING ERROR", "This Username is already used", "OK");
-                }
             }
-            else
-            {
-                await DisplayAlert("SAVING ERROR", "Please fill in all fields and add at least one image.", "OK");
-            }
+            else await DisplayAlert("SAVING ERROR", "Something is empty", "OK");
         }
+
+        protected async void PickImageButton_Clicked(object sender, EventArgs e)
+        {
+            try
+            {
+                await Permissions.RequestAsync<Permissions.StorageRead>();
+                await Permissions.RequestAsync<Permissions.StorageWrite>();
+                // Check for storage permission to access photos
+                var status1 = await Permissions.CheckStatusAsync<Permissions.Photos>();
+                if (status1 != PermissionStatus.Granted)
+                {
+                    var result1 = await Permissions.RequestAsync<Permissions.Photos>();
+                    status1 = result1;
+                }
 
         protected async void GoToLoginPage(object sender, EventArgs e)
         {
