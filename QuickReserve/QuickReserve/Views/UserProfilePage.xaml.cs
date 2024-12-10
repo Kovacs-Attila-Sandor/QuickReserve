@@ -1,8 +1,10 @@
 ﻿using System;
 using Xamarin.Forms;
-using QuickReserve.Services; // Importálni kell a UserService-hez
-using QuickReserve.Models;   // Importálni kell a User osztályhoz
-using QuickReserve.Converter; // Importálni kell a konverterhez
+using QuickReserve.Services; 
+using QuickReserve.Models;   
+using QuickReserve.Converter;
+using System.IO;
+using System.Reflection;
 
 namespace QuickReserve.Views
 {
@@ -16,32 +18,37 @@ namespace QuickReserve.Views
             LoadUserData(userName);
         }
 
-        // Aszinkron metódus a felhasználó adatainak betöltésére
         private async void LoadUserData(string userName)
         {
             var userService = new UserService();
-            User = await userService.GetUserByName(userName); // Felhasználó adatainak lekérése
+            User = await userService.GetUserByName(userName);
 
             if (User != null)
             {
-                // Ha a profilkép base64 formátumban van, átalakítjuk ImageSource típusra
-                if (!string.IsNullOrEmpty(User.ProfileImage))
+                // Ha a felhasználó nem rendelkezik profilképpel, használjuk a placeholder képet
+                if (string.IsNullOrEmpty(User.ProfileImage))
                 {
-                    User.ProfileImageSource = ImageSource.FromResource("QuickReserve.Android.Resources.drawable.placeholder.png");
+                    User.ProfileImageSource = ImageSource.FromFile("placeholder.jpg");
                 }
                 else
                 {
-                    // Ha nincs profilkép, beállítjuk az alapértelmezett képet
-                    User.ProfileImageSource = ImageSource.FromFile("placeholder.png"); // Tedd a megfelelő mappába
+                    // Ha van profilkép, azt használjuk
+                    User.ProfileImageSource = ImageSource.FromStream(() =>
+                        new MemoryStream(Convert.FromBase64String(User.ProfileImage)));
                 }
 
-                // A felhasználó adatainak megjelenítése a UI-ban
-                BindingContext = this; // A bindingContext beállítása a User objektumra
+                
+                BindingContext = this; // Adatok megjelenítése
             }
             else
             {
                 await DisplayAlert("Error", "User not found", "OK");
-            }
+            }   
+        }
+
+        private async void OnBackToAboutClicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new AboutPage());
         }
     }
 }

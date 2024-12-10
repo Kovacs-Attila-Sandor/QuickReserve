@@ -25,7 +25,7 @@ namespace QuickReserve.Views
             var userService = new UserService();
             var userType = await userService.GetUserType(loggedInUserName);
             
-            if (userType == "RESTAURNAT")
+            if (userType == "RESTAURANT")
             {
                 App.Current.MainPage = new NavigationPage(new RestaurantProfilePage(loggedInUserName)); 
             }
