@@ -37,21 +37,31 @@ namespace QuickReserve.Views
 
         public async void Login(object sender, EventArgs e)
         {
+            // Az új UserService objektum létrehozása
             UserService userService = new UserService();
 
+            // Ellenőrizzük, hogy a felhasználónév és a jelszó nem üres
             if (!string.IsNullOrEmpty(txtUsername.Text.Trim()) && !string.IsNullOrEmpty(txtPassword.Text.Trim()))
             {
-                // Ellenőrizzük, hogy a felhasználónevet és a jelszót helyesen adták-e meg
-                if (await userService.ValidateUserCredentials(txtUsername.Text.Trim(), txtPassword.Text.Trim()))
+                try
                 {
-                    // Ha a bejelentkezés sikeres
-                    await DisplayAlert("LOGIN", "Login successful", "OK");
-                    App.Current.MainPage = new NavigationPage(new AboutPage());
+                    // Ellenőrizzük, hogy a felhasználónevet és a jelszót helyesen adták-e meg
+                    bool isValidUser = await userService.ValidateUserCredentials(txtUsername.Text.Trim(), txtPassword.Text.Trim());
+
+                    if (isValidUser)
+                    {                       
+                        App.Current.MainPage = new NavigationPage(new AboutPage());
+                    }
+                    else
+                    {
+                        // Ha a felhasználó nem létezik vagy helytelenek a hitelesítő adatok
+                        await DisplayAlert("LOGIN ERROR", "This Username does not exist or incorrect password", "OK");
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    // Ha a felhasználó nem létezik vagy helytelenek a hitelesítő adatok
-                    await DisplayAlert("LOGIN ERROR", "This Username does not exist or incorrect password", "OK");
+                    // Hiba esetén egyértelmű hibaüzenet megjelenítése
+                    await DisplayAlert("LOGIN ERROR", "An error occurred while logging in: " + ex.Message, "OK");
                 }
             }
             else
@@ -60,6 +70,7 @@ namespace QuickReserve.Views
                 await DisplayAlert("LOGIN ERROR", "Please enter both username and password", "OK");
             }
         }
+
 
     }
 }

@@ -3,8 +3,6 @@ using QuickReserve.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -15,29 +13,57 @@ namespace QuickReserve.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RestaurantRegisterPage : ContentPage
     {
+        private List<string> imageBase64List = new List<string>();
+
         public RestaurantRegisterPage()
         {
             InitializeComponent();
         }
 
-        protected void GoToUserRegisterPage(object sender, EventArgs e)
+        protected async void PickImageButton_Clicked(object sender, EventArgs e)
         {
-            App.Current.MainPage = new NavigationPage(new UserRegisterPage());
-        }
+            try
+            {
+                var result = await MediaPicker.PickPhotoAsync(new MediaPickerOptions
+                {
+                    Title = "Select a photo"
+                });
 
-        protected void GoToLoginPage(object sender, EventArgs e)
-        {
-            App.Current.MainPage = new NavigationPage(new LoginPage());
+                if (result != null)
+                {
+                    // Convert the selected image to Base64
+                    var stream = await result.OpenReadAsync();
+                    byte[] imageBytes = new byte[stream.Length];
+                    await stream.ReadAsync(imageBytes, 0, (int)stream.Length);
+                    string base64Image = Convert.ToBase64String(imageBytes);
+
+                    // Add the Base64 encoded image to the list
+                    imageBase64List.Add(base64Image);
+
+                    // Refresh the CollectionView
+                    var imageSourceList = new List<ImageSource>();
+                    foreach (var base64 in imageBase64List)
+                    {
+                        var bytes = Convert.FromBase64String(base64);
+                        imageSourceList.Add(ImageSource.FromStream(() => new MemoryStream(bytes)));
+                    }
+                    ImagePreviewCollection.ItemsSource = imageSourceList;
+                }
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", $"An error occurred: {ex.Message}", "OK");
+            }
         }
 
         protected async void GoToAddMenuPage(object sender, EventArgs e)
         {
             UserService userService = new UserService();
             RestaurantService restaurantService = new RestaurantService();
-
             string password = txtPassword.Text?.Trim();
             string confirmPassword = txtConfirmPassword.Text?.Trim();
 
+            // Ellenőrizzük, hogy minden mező ki van-e töltve és hogy van-e legalább egy kép
             if (!string.IsNullOrEmpty(txtUsername.Text) &&
                 !string.IsNullOrEmpty(txtPassword.Text) &&
                 !string.IsNullOrEmpty(txtConfirmPassword.Text) &&
@@ -48,12 +74,16 @@ namespace QuickReserve.Views
                 !string.IsNullOrEmpty(txtCountry.Text) &&
                 !string.IsNullOrEmpty(txtNumber.Text) &&
                 !string.IsNullOrEmpty(txtShortDescriprion.Text) &&
-                !string.IsNullOrEmpty(txtLongDescriprion.Text))
+                !string.IsNullOrEmpty(txtLongDescriprion.Text) &&
+                imageBase64List.Count > 0)  // Képek jelenléte is szükséges
             {
+                // Ellenőrizzük, hogy a felhasználónév már létezik-e
                 if (await userService.GetUserByName(txtUsername.Text.Trim()) == null)
                 {
+                    // Ellenőrizzük, hogy a két jelszó egyezik-e
                     if (string.Equals(password, confirmPassword))
                     {
+                        // Létrehozzuk a User objektumot
                         User user = new User()
                         {
                             Name = txtUsername.Text.Trim(),
@@ -64,27 +94,28 @@ namespace QuickReserve.Views
                         };
                         await userService.AddUser(user);
 
-                        // Create the restaurant object
+                        // Létrehozzuk a Restaurant objektumot
                         Restaurant restaurant = new Restaurant()
                         {
                             Name = txtUsername.Text.Trim(),
-                            Address = new LocationRes
+                            PhoneNumber = txtPhonenum.Text.Trim(),
+                            Email = txtEmail.Text.Trim(),
+                            ShortDescription = txtShortDescriprion.Text.Trim(),
+                            LongDescription = txtLongDescriprion.Text.Trim(),
+                            Address = new RestaurantLocation
                             {
                                 City = txtCity.Text.Trim(),
                                 Country = txtCountry.Text.Trim(),
                                 Street = txtStreet.Text.Trim(),
                                 Number = txtNumber.Text.Trim()
                             },
-                            PhoneNumber = txtPhonenum.Text.Trim(),
-                            Email = txtEmail.Text.Trim(),
-                            Rating = 0,
-                            ShortDescription = txtShortDescriprion.Text.Trim(),
-                            LongDescription = txtLongDescriprion.Text.Trim(),
-                            ImageBase64 = txtBase64Image.Text?.Trim() // Add the Base64 image
+                            ImageBase64List = new List<string>(imageBase64List) // Több kép hozzáadása
                         };
 
+                        // Étterem mentése és ID lekérése
                         string restaurantId = await restaurantService.AddRestaurantAndGetId(restaurant);
 
+                        // Ha sikerült menteni, navigáljunk az AddMenuPage-re
                         if (!string.IsNullOrEmpty(restaurantId))
                         {
                             await DisplayAlert("SAVING SUCCESS", "Restaurant added successfully", "OK");
@@ -94,73 +125,29 @@ namespace QuickReserve.Views
                             await DisplayAlert("SAVING ERROR", "There was an error adding the restaurant", "OK");
                     }
                     else
+                    {
                         await DisplayAlert("SAVING ERROR", "Your password is not matching", "OK");
-                }
-                else
-                    await DisplayAlert("SAVING ERROR", "This Username is already used", "OK");
-            }
-            else await DisplayAlert("SAVING ERROR", "Something is empty", "OK");
-        }
-
-        protected async void PickImageButton_Clicked(object sender, EventArgs e)
-        {
-            try
-            {
-                await Permissions.RequestAsync<Permissions.StorageRead>();
-                await Permissions.RequestAsync<Permissions.StorageWrite>();
-                // Check for storage permission to access photos
-                var status1 = await Permissions.CheckStatusAsync<Permissions.Photos>();
-                if (status1 != PermissionStatus.Granted)
-                {
-                    var result1 = await Permissions.RequestAsync<Permissions.Photos>();
-                    status1 = result1;
-                }
-
-                // Check for media permission (required in Android 33+)
-                var status2 = await Permissions.CheckStatusAsync<Permissions.Media>();
-                if (status2 != PermissionStatus.Granted)
-                {
-                    var result2 = await Permissions.RequestAsync<Permissions.Media>();
-                    status2 = result2;
-                }
-
-                // Make sure all permissions are granted
-                if (status1 == PermissionStatus.Granted && status2 == PermissionStatus.Granted)
-                {
-                    var result = await MediaPicker.PickPhotoAsync(new MediaPickerOptions
-                    {
-                        Title = "Select a photo"
-                    });
-
-                    if (result != null)
-                    {
-                        // Convert the selected image to Base64
-                        var stream = await result.OpenReadAsync();
-                        byte[] imageBytes = new byte[stream.Length];
-                        await stream.ReadAsync(imageBytes, 0, (int)stream.Length);
-                        string base64Image = Convert.ToBase64String(imageBytes);
-
-                        // Store the Base64 encoded image in the hidden Entry field
-                        txtBase64Image.Text = base64Image;
-
-                        // Show the image immediately
-                        SelectedImage.Source = ImageSource.FromStream(() => new MemoryStream(imageBytes));
-                        SelectedImage.IsVisible = true; // Make the Image visible
                     }
                 }
                 else
                 {
-                    // Both permissions are not granted
-                    string permissionStr = (status1 != PermissionStatus.Granted) ? "Photos" : "";
-                    permissionStr += (status2 != PermissionStatus.Granted) ? ((permissionStr.Length > 0) ? " and " : "") + "Storage" : "";
-                    await DisplayAlert("Permission Denied", "You need to grant permission to access " + permissionStr + ".", "OK");
+                    await DisplayAlert("SAVING ERROR", "This Username is already used", "OK");
                 }
             }
-            catch (Exception ex)
+            else
             {
-                // Handle errors during the image selection process
-                await DisplayAlert("Error", "An error occurred while selecting the image: " + ex.Message, "OK");
+                await DisplayAlert("SAVING ERROR", "Please fill in all fields and add at least one image.", "OK");
             }
+        }
+
+        protected async void GoToLoginPage(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new LoginPage());
+        }
+
+        protected async void GoToUserRegisterPage(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new UserRegisterPage());
         }
     }
 }

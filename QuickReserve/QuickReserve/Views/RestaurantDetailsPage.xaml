@@ -1,24 +1,35 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              x:Class="QuickReserve.Views.RestaurantDetailsPage"
-             BackgroundColor="#eef2f3">
+             BackgroundColor="#b7e8e6">
+
 
     <ScrollView>
         <StackLayout Padding="20" Spacing="20">
 
-            <!-- Image with Shadow Effect -->
-            <Frame Padding="0" 
-                   HasShadow="True" 
-                   CornerRadius="20" 
-                   BackgroundColor="#ffffff"
-                   Margin="0,0,0,10">
-                <Image Source="{Binding ImageSourceUri}" 
+            <!-- CarouselView for Multiple Images -->
+            <CarouselView ItemsSource="{Binding ImageSourceList}" 
+              HeightRequest="250" 
+              HorizontalOptions="FillAndExpand" 
+              VerticalOptions="FillAndExpand"
+              CurrentItemChanged="OnCarouselItemChanged">
+                <CarouselView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Padding="0" 
+                           HasShadow="True" 
+                           CornerRadius="20" 
+                           BackgroundColor="#ffffff">
+                                    <Image Source="{Binding .}" 
                        Aspect="AspectFill" 
                        HeightRequest="250" 
                        HorizontalOptions="FillAndExpand" 
                        VerticalOptions="FillAndExpand" />
-            </Frame>
+                        </Frame>
+                    </DataTemplate>
+                </CarouselView.ItemTemplate>
+            </CarouselView>
+
 
             <!-- Restaurant Name -->
             <Label Text="{Binding Name}" 
@@ -29,28 +40,93 @@
                    Margin="0,10" />
 
             <!-- Restaurant Address with Icon -->
-            <StackLayout Orientation="Horizontal" 
-                         HorizontalOptions="Center" 
-                         Spacing="5">
-                <Image Source="location_icon.png" 
-                       WidthRequest="20" 
-                       HeightRequest="20" 
-                       VerticalOptions="Center" />
-                <Label Text="{Binding Address.Country}" 
+            <StackLayout Padding="10">
+
+                <!-- Címek BoxView-en belül -->
+                <Frame Padding="10" 
+                   HasShadow="True" 
+                   CornerRadius="10" 
+                   BackgroundColor="#ecf0f1" 
+                   HorizontalOptions="Start">
+                    
+                    
+                    <StackLayout Spacing="10">
+                        <!-- Cím felirat -->
+                        <Label Text="Address:" 
+                   FontSize="20" 
+                   FontAttributes="Bold" 
+                   TextColor="#2c3e50" 
+                   HorizontalOptions="Start" 
+                   VerticalOptions="CenterAndExpand"/>
+
+                        <!-- Country -->
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Country:" 
+                       FontSize="16" 
+                       TextColor="#2c3e50" 
+                       VerticalOptions="Center" 
+                       WidthRequest="80" />
+                            <Label Text="{Binding Address.Country}" 
                        FontSize="16" 
                        TextColor="#7f8c8d" 
                        VerticalOptions="Center" />
+                        </StackLayout>
+
+                        <!-- City -->
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="City:" 
+                       FontSize="16" 
+                       TextColor="#2c3e50" 
+                       VerticalOptions="Center" 
+                       WidthRequest="80" />
+                            <Label Text="{Binding Address.City}" 
+                       FontSize="16" 
+                       TextColor="#7f8c8d" 
+                       VerticalOptions="Center" />
+                        </StackLayout>
+
+                        <!-- Street -->
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Street:" 
+                       FontSize="16" 
+                       TextColor="#2c3e50" 
+                       VerticalOptions="Center" 
+                       WidthRequest="80" />
+                            <Label Text="{Binding Address.Street}" 
+                       FontSize="16" 
+                       TextColor="#7f8c8d" 
+                       VerticalOptions="Center" />
+                        </StackLayout>
+
+                        <!-- Number -->
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Number:" 
+                       FontSize="16" 
+                       TextColor="#2c3e50" 
+                       VerticalOptions="Center" 
+                       WidthRequest="80" />
+                            <Label Text="{Binding Address.Number}" 
+                       FontSize="16" 
+                       TextColor="#7f8c8d" 
+                       VerticalOptions="Center" />
+                        </StackLayout>
+
+                    </StackLayout>
+                </Frame>
+
             </StackLayout>
+
+
 
             <!-- Restaurant Rating -->
             <StackLayout Orientation="Horizontal" 
-                         HorizontalOptions="Center" 
+                         HorizontalOptions="Start" 
                          Spacing="5">
                 <Image Source="star_icon.png" 
-                       WidthRequest="20" 
-                       HeightRequest="20" 
+                       WidthRequest="10" 
+                       HeightRequest="10" 
                        VerticalOptions="Center" />
-                <Label Text="{Binding Rating}" 
+                <Label Text="{Binding Rating, StringFormat='Rating: {0}'}" 
                        FontSize="18" 
                        TextColor="#f39c12" 
                        FontAttributes="Bold" 
@@ -59,14 +135,36 @@
 
             <!-- Restaurant Description -->
             <Frame Padding="10"
-                   CornerRadius="10"
-                   BackgroundColor="#ffffff"
-                   HasShadow="True">
-                <Label Text="{Binding LongDescription}" 
-                       FontSize="14" 
-                       TextColor="#34495e" 
-                       LineBreakMode="WordWrap" />
+               CornerRadius="10"
+               BackgroundColor="AliceBlue"
+               HasShadow="True"
+               Margin="10">
+
+                <!-- Description Title -->
+                <StackLayout>
+                    <Label Text="Description"
+               FontSize="24"
+               TextColor="#2c3e50"
+               FontAttributes="Bold"
+               Padding="10"
+               HorizontalTextAlignment="Start" />
+
+                    <!-- Long Description Text -->
+                    <Frame Padding="10"
+               BackgroundColor="#f0f0f0"
+               CornerRadius="5"
+               Margin="0,10">
+                        <Label Text="{Binding LongDescription}" 
+                   FontSize="14" 
+                   TextColor="#34495e" 
+                   LineBreakMode="WordWrap"                       
+                   HorizontalTextAlignment="Start"
+                   VerticalTextAlignment="Start"/>
+                    </Frame>
+                </StackLayout>
             </Frame>
+
+
 
             <!-- Book a Table Button -->
             <Button Text="Book a Table" 
@@ -74,9 +172,21 @@
                     TextColor="White" 
                     BackgroundColor="#2980b9" 
                     Padding="15" 
+                    Margin="10"
                     CornerRadius="25" 
                     HorizontalOptions="FillAndExpand" 
                     VerticalOptions="EndAndExpand" />
+            
+            <!-- View menu Button -->
+            <Button Text="View Menu" 
+                    FontSize="18" 
+                    TextColor="White" 
+                    BackgroundColor="#2980b9" 
+                    Padding="15" 
+                    Margin="10"
+                    CornerRadius="25" 
+                    HorizontalOptions="FillAndExpand" 
+                    VerticalOptions="EndAndExpand" />   
 
         </StackLayout>
     </ScrollView>

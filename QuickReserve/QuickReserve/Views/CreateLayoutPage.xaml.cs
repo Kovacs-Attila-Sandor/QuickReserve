@@ -43,25 +43,25 @@ namespace QuickReserve.Views
                 {
                     var button = new Button
                     {
-                        Text =  null,
-                        FontSize=12,
-                        BorderWidth=3,
-                        BackgroundColor=Color.LightGray,
+                        Text = null,
+                        FontSize = 12,
+                        BorderWidth = 3,
+                        BackgroundColor = Color.LightGray,
                         HorizontalOptions = LayoutOptions.FillAndExpand,
                         VerticalOptions = LayoutOptions.FillAndExpand,
-                        IsVisible =true,
+                        IsVisible = true,
                         WidthRequest = 40, // Adjust the width of the buttons
                         HeightRequest = 40 // Adjust the height of the buttons
                     };
                     button.Clicked += OnButtonClicked;
 
-                
+
 
                     // Add both elements to the grid in the same position
                     dynamicGrid.Children.Add(button, col, row);
-                    
 
-                    
+
+
 
                 }
             }
@@ -70,7 +70,7 @@ namespace QuickReserve.Views
         private async void OnButtonClicked(object sender, EventArgs e)
         {
             var button = sender as Button;
-        
+
 
             if (button.Text == null)
             {
@@ -148,4 +148,3 @@ namespace QuickReserve.Views
         }
     }
 }
-
