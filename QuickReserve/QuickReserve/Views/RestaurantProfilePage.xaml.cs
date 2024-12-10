@@ -10,17 +10,12 @@ using Xamarin.Forms.Xaml;
 namespace QuickReserve.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ProfilePage : ContentPage
+    public partial class RestaurantProfilePage : ContentPage
     {
-        public ProfilePage()
+        public RestaurantProfilePage(string userName)
         {
             InitializeComponent();
+            DisplayAlert("Restaurant", "RESTAURANT", "OK");
         }
-
-        protected void GoToAboutPage(object sender, EventArgs e)
-        {
-            App.Current.MainPage = new NavigationPage(new AboutPage());
-        }
-
     }
 }

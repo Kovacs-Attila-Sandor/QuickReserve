@@ -105,11 +105,12 @@
     <AndroidResource Include="Resources\mipmap-xxxhdpi\icon.png" />
     <AndroidResource Include="Resources\mipmap-xxxhdpi\launcher_foreground.png" />
     <Content Include="Resources\drawable\grey.png" />
+    <Content Include="Resources\drawable\placeholder.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties XamarinHotReloadDebuggerTimeoutExceptionQuickReserveAndroidHideInfoBar="True" XamarinHotReloadGenericExceptionInfoBarQuickReserveAndroidHideInfoBar="True" />
+      <UserProperties XamarinHotReloadGenericExceptionInfoBarQuickReserveAndroidHideInfoBar="True" XamarinHotReloadDebuggerTimeoutExceptionQuickReserveAndroidHideInfoBar="True" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

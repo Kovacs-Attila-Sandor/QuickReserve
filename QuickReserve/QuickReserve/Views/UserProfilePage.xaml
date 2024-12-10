@@ -1,0 +1,30 @@
+﻿<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="QuickReserve.Views.UserProfilePage">
+
+    <ContentPage.Content>
+        <StackLayout Padding="10" HorizontalOptions="CenterAndExpand">
+            <!-- Profilkép -->
+            <Image Source="{Binding User.ProfileImageSource}"
+                   Aspect="AspectFill"
+                   WidthRequest="120"
+                   HeightRequest="120"
+                   HorizontalOptions="Center" />
+
+            <!-- Felhasználó neve -->
+            <Label Text="{Binding User.Name}" FontSize="24" FontAttributes="Bold" VerticalOptions="Start" />
+
+            <!-- Felhasználó email címe -->
+            <Label Text="{Binding User.Email}" FontSize="18" VerticalOptions="Start" />
+
+            <!-- Felhasználó telefonszáma -->
+            <Label Text="{Binding User.PhoneNumber}" FontSize="18" VerticalOptions="Start" />
+
+            <!-- Felhasználó szerepe -->
+            <Label Text="{Binding User.Role}" FontSize="18" VerticalOptions="Start" />
+
+            <!-- Felhasználó létrehozási dátuma -->
+            <Label Text="{Binding User.CreatedAt}" FontSize="18" VerticalOptions="Start" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

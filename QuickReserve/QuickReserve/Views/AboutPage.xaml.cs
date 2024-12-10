@@ -19,9 +19,17 @@ namespace QuickReserve.Views
         }
 
         // Method to navigate to the profile page
-        protected void GoToProfilePage(object sender, EventArgs e)
+        protected async void GoToProfilePage(object sender, EventArgs e)
         {
-            App.Current.MainPage = new NavigationPage(new ProfilePage());
+            string loggedInUserName = App.Current.Properties["LoggedInUserName"].ToString();
+            var userService = new UserService();
+            var userType = await userService.GetUserType(loggedInUserName);
+            
+            if (userType == "RESTAURNAT")
+            {
+                App.Current.MainPage = new NavigationPage(new RestaurantProfilePage(loggedInUserName)); 
+            }
+            else App.Current.MainPage = new NavigationPage(new UserProfilePage(loggedInUserName));
         }
 
         // Fetch restaurants from Firebase and display them in ListView
@@ -49,16 +57,17 @@ namespace QuickReserve.Views
             }
         }
 
-
-        // Command to handle tapping on a restaurant
-        public ICommand RestaurantTappedCommand => new Command<Restaurant>(OnRestaurantTapped);
-
-        private async void OnRestaurantTapped(Restaurant selectedRestaurant)
+        private void OnItemTapped(object sender, ItemTappedEventArgs e)
         {
-            if (selectedRestaurant != null)
+            if (e.Item is Restaurant selectedRestaurant)
             {
-                await Navigation.PushAsync(new RestaurantDetailsPage(selectedRestaurant));
+                // Navigálás a RestaurantDetailsPage-re
+                Navigation.PushAsync(new RestaurantDetailsPage(selectedRestaurant));
             }
+
+             // A ListView automatikus kijelölésének eltávolítása
+             ((ListView)sender).SelectedItem = null;
         }
+        
     }
 }

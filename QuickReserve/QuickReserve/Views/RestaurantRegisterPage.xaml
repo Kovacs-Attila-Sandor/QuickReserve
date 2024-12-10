@@ -10,11 +10,11 @@
                  RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                  RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
                  IsEnabled="False"/>
-            
-                <StackLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+
+            <StackLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                          RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
                          Margin="30,30,30,30">
-                    <Label Text="Welcome to the Quick Reserve App"
+                <Label Text="Welcome to the Quick Reserve App"
                        FontSize="Large"
                        HorizontalOptions="Center"
                        TextColor="White" />
@@ -33,11 +33,20 @@
                             <Entry x:Name="txtShortDescriprion" Placeholder="Short Description" TextColor="GhostWhite" />
                             <Entry x:Name="txtLongDescriprion" Placeholder="Long Description" TextColor="GhostWhite" />
                             <Button Text="Pick an image" Clicked="PickImageButton_Clicked" />
-                            <Entry x:Name="txtBase64Image" IsVisible="False" />
-                            <!-- Hidden field to store Base64 -->
 
-                            <!-- Image Control to show the selected image -->
-                            <Image x:Name="SelectedImage" IsVisible="False" WidthRequest="200" HeightRequest="200" />
+                            <!-- CollectionView to preview selected images -->
+                            <CollectionView x:Name="ImagePreviewCollection" 
+                                            ItemsSource="{Binding}" 
+                                            Margin="0,20,0,0">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Image Source="{Binding}" 
+                                               HeightRequest="100" 
+                                               WidthRequest="100" 
+                                               Margin="10"/>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
                         </StackLayout>
                     </ScrollView>
                     <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand" Padding="20">
@@ -48,7 +57,6 @@
                     </StackLayout>
                 </StackLayout>
             </StackLayout>
-           
         </RelativeLayout>
     </ContentPage.Content>
 </ContentPage>

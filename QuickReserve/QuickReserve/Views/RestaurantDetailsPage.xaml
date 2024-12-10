@@ -1,103 +1,99 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              x:Class="QuickReserve.Views.RestaurantDetailsPage"
              BackgroundColor="#eef2f3"
-             NavigationPage.HasNavigationBar="False"
-             >
+             NavigationPage.HasNavigationBar="False">
 
     <ScrollView>
         <StackLayout Padding="20" Spacing="20">
 
-            <!-- Image with Shadow Effect -->
-            <Frame Padding="0" 
-                   HasShadow="True" 
-                   CornerRadius="20" 
-                   BackgroundColor="#ffffff"
-                   Margin="0,0,0,10">
-                <Image Source="{Binding ImageSourceUri}" 
-                       Aspect="AspectFill" 
-                       HeightRequest="250" 
-                       HorizontalOptions="FillAndExpand" 
-                       VerticalOptions="FillAndExpand" />
-            </Frame>
+            <!-- Image Carousel -->
+            <CarouselView x:Name="ImageCarousel"
+                      ItemsSource="{Binding ImageSourceList}"
+                      HeightRequest="250"
+                      Margin="0,0,0,10">
+                <CarouselView.ItemTemplate>
+                    <DataTemplate>
+                        <Image Source="{Binding .}" 
+                           Aspect="AspectFill" 
+                           HorizontalOptions="FillAndExpand" 
+                           VerticalOptions="FillAndExpand" />
+                    </DataTemplate>
+                </CarouselView.ItemTemplate>
+            </CarouselView>
 
             <!-- Restaurant Name -->
             <Label Text="{Binding Name}" 
-                   FontSize="28" 
-                   TextColor="GhostWhite" 
-                   FontAttributes="Bold" 
-                   HorizontalOptions="Center" 
-                   Margin="0,10" />
+               FontSize="28" 
+               TextColor="GhostWhite" 
+               FontAttributes="Bold" 
+               HorizontalOptions="Center" 
+               Margin="0,10" />
 
             <!-- Restaurant Address with Icon -->
             <StackLayout Orientation="Horizontal" 
-                         HorizontalOptions="Center" 
-                         Spacing="5">
+                     HorizontalOptions="Center" 
+                     Spacing="5">
                 <Image Source="location_icon.png" 
-                       WidthRequest="20" 
-                       HeightRequest="20" 
-                       VerticalOptions="Center" />
+                   WidthRequest="20" 
+                   HeightRequest="20" 
+                   VerticalOptions="Center" />
                 <Label Text="{Binding Address.Country}" 
-                       FontSize="16" 
-                       TextColor="GhostWhite" 
-                       VerticalOptions="Center" />
+                   FontSize="16" 
+                   TextColor="GhostWhite" 
+                   VerticalOptions="Center" />
             </StackLayout>
 
             <!-- Restaurant Rating -->
             <StackLayout Orientation="Horizontal" 
-                         HorizontalOptions="Center" 
-                         Spacing="5">
+                     HorizontalOptions="Center" 
+                     Spacing="5">
                 <Image Source="star_icon.png" 
-                       WidthRequest="20" 
-                       HeightRequest="20" 
-                       VerticalOptions="Center" />
+                   WidthRequest="20" 
+                   HeightRequest="20" 
+                   VerticalOptions="Center" />
                 <Label Text="{Binding Rating}" 
-                       FontSize="18" 
-                       TextColor="GhostWhite" 
-                       FontAttributes="Bold" 
-                       VerticalOptions="Center" />
-
+                   FontSize="18" 
+                   TextColor="GhostWhite" 
+                   FontAttributes="Bold" 
+                   VerticalOptions="Center" />
+            </StackLayout>
 
             <!-- Restaurant Description -->
             <Frame Padding="10"
-                   CornerRadius="10"
-                   BackgroundColor="#ffffff"
-                   HasShadow="True">
+               CornerRadius="10"
+               BackgroundColor="#ffffff"
+               HasShadow="True">
                 <Label Text="{Binding LongDescription}" 
-                       FontSize="14" 
-                       TextColor="#34495e" 
-                       LineBreakMode="WordWrap" />
+                   FontSize="14" 
+                   TextColor="#34495e" 
+                   LineBreakMode="WordWrap" />
             </Frame>
 
             <!-- Book a Table Button -->
             <Button Text="Book a Table" 
-                    FontSize="18" 
-                    TextColor="GhostWhite" 
-                    BackgroundColor="Transparent" 
-                    Padding="15" 
-                    Margin="10"
-                    CornerRadius="25" 
-                    HorizontalOptions="FillAndExpand" 
-                    VerticalOptions="EndAndExpand" />
-            
-            <!-- View menu Button -->
-            <Button Text="View Menu" 
-                    FontSize="18" 
-                    TextColor="White" 
-                    BackgroundColor="#2980b9" 
-                    Padding="15" 
-                    Margin="10"
-                    CornerRadius="25" 
-                    HorizontalOptions="FillAndExpand" 
-                    VerticalOptions="EndAndExpand" />   
+                FontSize="18" 
+                TextColor="GhostWhite" 
+                BackgroundColor="Transparent" 
+                Padding="15" 
+                Margin="10"
+                CornerRadius="25" 
+                HorizontalOptions="FillAndExpand" 
+                VerticalOptions="EndAndExpand" />
 
-                        </StackLayout>
-                    </Frame>
-                </ScrollView>
-                </StackLayout>
-            
-        </RelativeLayout>
-    </ContentPage.Content>
+            <!-- View Menu Button -->
+            <Button Text="View Menu" 
+                FontSize="18" 
+                TextColor="White" 
+                BackgroundColor="#2980b9" 
+                Padding="15" 
+                Margin="10"
+                CornerRadius="25" 
+                HorizontalOptions="FillAndExpand" 
+                VerticalOptions="EndAndExpand" />
+
+        </StackLayout>
+    </ScrollView>
 </ContentPage>
-    

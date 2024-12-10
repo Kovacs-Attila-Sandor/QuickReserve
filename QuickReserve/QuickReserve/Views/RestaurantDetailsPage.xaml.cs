@@ -1,6 +1,8 @@
 ﻿using Xamarin.Forms;
 using QuickReserve.Models;
 using System;
+using System.Collections.Generic;
+using QuickReserve.Converter;
 
 namespace QuickReserve.Views
 {
