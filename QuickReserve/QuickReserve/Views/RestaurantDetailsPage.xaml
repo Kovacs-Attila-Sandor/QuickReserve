@@ -3,8 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              x:Class="QuickReserve.Views.RestaurantDetailsPage"
-             BackgroundColor="#eef2f3"
-             NavigationPage.HasNavigationBar="False">
+             BackgroundColor="#eef2f3"             NavigationPage.HasNavigationBar="False">
 
     <ScrollView>
         <StackLayout Padding="20" Spacing="20">
@@ -96,4 +95,107 @@
 
         </StackLayout>
     </ScrollView>
+
+             NavigationPage.HasNavigationBar="False"
+             >
+
+
+    <ContentPage.Content>
+        <RelativeLayout>
+
+            <Image
+     Aspect="AspectFill"
+     Source="background1.png"
+     RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+     RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
+     IsEnabled="False"/>
+            
+
+                <!-- Main content -->
+                <StackLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                  RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
+                  Margin="30,30,30,30">
+
+                    <!-- Profile Button wrapped in Frame for shadow effect -->
+                    <Button Text="Back" TextColor="GhostWhite" CornerRadius="50" BorderWidth="2" FontSize="14" FontAttributes="Bold" BackgroundColor="Transparent" BorderColor="GhostWhite" Clicked="GoToAboutpage" VerticalOptions="StartAndExpand" HorizontalOptions="StartAndExpand" />
+
+
+                    <ScrollView>
+
+
+                    <Frame Padding="15" 
+HasShadow="True" 
+CornerRadius="20" 
+BackgroundColor="Black" 
+Opacity="0.75"
+Margin="10"
+            HorizontalOptions="FillAndExpand"
+VerticalOptions="FillAndExpand">
+                        <StackLayout Padding="20" Orientation="Vertical" Spacing="20" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+
+
+                            <Image Source="{Binding ImageSourceUri}" 
+                       Aspect="AspectFill" 
+                       HeightRequest="250" 
+                       HorizontalOptions="FillAndExpand" 
+                       VerticalOptions="FillAndExpand" />
+
+
+                            <!-- Restaurant Name -->
+                            <Label Text="{Binding Name}" 
+                   FontSize="28" 
+                   TextColor="GhostWhite" 
+                   FontAttributes="Bold" 
+                   HorizontalOptions="Center" 
+                   Margin="0,10" />
+
+
+                            <Image Source="location_icon.png" 
+                       WidthRequest="20" 
+                       HeightRequest="20" 
+                       VerticalOptions="Center" />
+                            <Label Text="{Binding Address.Country}" 
+                       FontSize="16" 
+                       TextColor="GhostWhite" 
+                       VerticalOptions="Center" />
+
+
+
+                            <Image Source="star_icon.png" 
+                       WidthRequest="20" 
+                       HeightRequest="20" 
+                       VerticalOptions="Center" />
+                            <Label Text="{Binding Rating}" 
+                       FontSize="18" 
+                       TextColor="GhostWhite" 
+                       FontAttributes="Bold" 
+                       VerticalOptions="Center" />
+
+
+                            <!-- Restaurant Description -->
+
+                            <Label Text="{Binding LongDescription}" 
+                       FontSize="14" 
+                       TextColor="GhostWhite" 
+                       LineBreakMode="WordWrap" />
+
+
+                            <!-- Book a Table Button -->
+                            <Button Text="Book a Table" 
+                    FontSize="18" 
+                    TextColor="GhostWhite" 
+                    BackgroundColor="Transparent" 
+                    Padding="15" 
+                    CornerRadius="25" 
+                                    Clicked="GoToRestaurantLayoutpage"
+                    HorizontalOptions="FillAndExpand" 
+                    VerticalOptions="EndAndExpand" />
+
+                        </StackLayout>
+                    </Frame>
+                </ScrollView>
+                </StackLayout>
+            
+        </RelativeLayout>
+    </ContentPage.Content>
 </ContentPage>

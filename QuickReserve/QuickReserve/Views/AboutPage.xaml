@@ -54,6 +54,12 @@
                        CornerRadius="20" 
                        BackgroundColor="DimGray" 
                        Margin="10">
+                                   HasShadow="True" 
+                                   CornerRadius="20" 
+                                   BackgroundColor="Black" 
+                                   Opacity="0.75"
+                                   Margin="10"
+                                   VerticalOptions="FillAndExpand">
                                     <StackLayout Orientation="Vertical" Spacing="15">
                                         <!-- Restaurant Image -->
                                         <Frame WidthRequest="200"  
