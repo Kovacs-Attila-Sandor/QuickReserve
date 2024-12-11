@@ -14,15 +14,39 @@ namespace QuickReserve.Views
         public AboutPage()
         {
             InitializeComponent();
-            BindingContext = this; // Kötelező ahhoz, hogy a parancs működjön.
+            BindingContext = this; 
             DisplayRestaurants();
         }
 
         // Method to navigate to the profile page
         protected void GoToProfilePage(object sender, EventArgs e)
         {
-            App.Current.MainPage = new NavigationPage(new ProfilePage());
+            string loggedInUserName = App.Current.Properties["LoggedInUserName"].ToString();
+            var userService = new UserService();
+            var userType = await userService.GetUserType(loggedInUserName);
+
+            Page targetPage;
+
+            if (userType == "RESTAURANT")
+            {
+                targetPage = new RestaurantProfilePage(loggedInUserName);
+            }
+            else
+            {
+                targetPage = new UserProfilePage(loggedInUserName);
+            }
+
+            // Ellenőrizd, hogy van-e már NavigationPage
+            if (App.Current.MainPage is NavigationPage navigationPage)
+            {
+                await navigationPage.PushAsync(targetPage);
+            }
+            else
+            {
+                App.Current.MainPage = new NavigationPage(targetPage);
+            }
         }
+
 
         // Fetch restaurants from Firebase and display them in ListView
         public async void DisplayRestaurants()
