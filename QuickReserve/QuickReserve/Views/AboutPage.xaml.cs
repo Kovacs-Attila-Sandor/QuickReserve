@@ -5,6 +5,7 @@ using QuickReserve.Models;
 using System.Collections.Generic;
 using System.IO;
 using QuickReserve.Converter;
+using System.Windows.Input;
 
 namespace QuickReserve.Views
 {
@@ -13,17 +14,31 @@ namespace QuickReserve.Views
         public AboutPage()
         {
             InitializeComponent();
+            BindingContext = this; // Kötelező ahhoz, hogy a parancs működjön.
             DisplayRestaurants();
         }
 
         // Method to navigate to the profile page
-        protected void GoToProfilePage(object sender, EventArgs e)
+        protected async void GoToProfilePage(object sender, EventArgs e)
         {
-            App.Current.MainPage = new NavigationPage(new ProfilePage());
+            string loggedInUserName = App.Current.Properties["LoggedInUserName"].ToString();
+            var userService = new UserService();
+            var userType = await userService.GetUserType(loggedInUserName);
+
+            if (userType == "RESTAURANT")
+            {
+                // Ha Restaurant típusú felhasználó, navigálunk a RestaurantProfilePage-re
+                await Navigation.PushAsync(new RestaurantProfilePage(loggedInUserName));
+            }
+            else
+            {
+                // Ha nem Restaurant típusú felhasználó, navigálunk a UserProfilePage-re
+                await Navigation.PushAsync(new UserProfilePage(loggedInUserName));
+            }
         }
 
-        // Fetch restaurants from Firebase and display them in ListView
 
+        // Fetch restaurants from Firebase and display them in ListView
         public async void DisplayRestaurants()
         {
             var restaurantService = new RestaurantService();
@@ -33,35 +48,32 @@ namespace QuickReserve.Views
             {
                 foreach (var restaurant in allRestaurants)
                 {
-                    // Ha van Base64 kép, akkor dekódoljuk és beállítjuk az ImageSourceUri-t
-                    if (!string.IsNullOrEmpty(restaurant.ImageBase64))
+                    if (!string.IsNullOrEmpty(restaurant.FirstImageBase64))
                     {
-                        // Directly call the static method from ImageConverter
-                        restaurant.ImageSourceUri = ImageConverter.ConvertBase64ToImageSource(restaurant.ImageBase64);
+                        // Az első kép dekódolása és beállítása
+                        restaurant.ImageSourceUri = ImageConverter.ConvertBase64ToImageSource(restaurant.FirstImageBase64);
                     }
                 }
 
-                lstmoments.ItemsSource = allRestaurants;  // ListView ItemsSource beállítása
+                lstmoments.ItemsSource = allRestaurants;
             }
             else
             {
-                // Hibaüzenet, ha nincs étterem
                 Console.WriteLine("No restaurants found.");
             }
         }
 
-
-        // Handle the item selection event to navigate to restaurant details
-        private async void OnRestaurantSelected(object sender, SelectedItemChangedEventArgs e)
+        private void OnItemTapped(object sender, ItemTappedEventArgs e)
         {
-            if (e.SelectedItem != null)
+            if (e.Item is Restaurant selectedRestaurant)
             {
-                var selectedRestaurant = e.SelectedItem as Restaurant;
-                if (selectedRestaurant != null)
-                {
-                    await Navigation.PushAsync(new RestaurantDetailsPage(selectedRestaurant));
-                }
+                // Navigálás a RestaurantDetailsPage-re
+                Navigation.PushAsync(new RestaurantDetailsPage(selectedRestaurant));
             }
-        }       
+
+             // A ListView automatikus kijelölésének eltávolítása
+             ((ListView)sender).SelectedItem = null;
+        }
+        
     }
 }
