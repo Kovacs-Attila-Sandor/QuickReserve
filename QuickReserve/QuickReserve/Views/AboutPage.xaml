@@ -50,11 +50,13 @@
                             <ViewCell>
                                 <!-- StackLayout wrapped in Frame for shadow and corner radius -->
                                 <Frame Padding="15" 
-                                       HasShadow="True" 
-                                       CornerRadius="20" 
-                                       BackgroundColor="DimGray" 
-                                       Margin="10"
-                                       VerticalOptions="FillAndExpand">
+                                   HasShadow="True" 
+                                   CornerRadius="20" 
+                                   BackgroundColor="Black" 
+                                   Opacity="0.75"
+                                   Margin="10"
+                                   VerticalOptions="FillAndExpand">
+
                                     <StackLayout Orientation="Vertical" Spacing="15">
                                         <!-- Restaurant Image -->
                                         <Frame WidthRequest="200"  

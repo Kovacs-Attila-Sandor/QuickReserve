@@ -6,8 +6,28 @@
              NavigationPage.HasNavigationBar="False"
              >
 
-    <ScrollView>
-        <StackLayout Padding="20" Spacing="20">
+
+    <ContentPage.Content>
+        <RelativeLayout>
+
+            <Image
+     Aspect="AspectFill"
+     Source="background1.png"
+     RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+     RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
+     IsEnabled="False"/>
+            
+
+                <!-- Main content -->
+                <StackLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                  RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
+                  Margin="30,30,30,30">
+
+                    <!-- Profile Button wrapped in Frame for shadow effect -->
+                    <Button Text="Back" TextColor="GhostWhite" CornerRadius="50" BorderWidth="2" FontSize="14" FontAttributes="Bold" BackgroundColor="Transparent" BorderColor="GhostWhite" Clicked="GoToAboutpage" VerticalOptions="StartAndExpand" HorizontalOptions="StartAndExpand" />
+
+
+                    <ScrollView>
 
             <!-- Image with Shadow Effect -->
             <Frame Padding="0" 
@@ -89,6 +109,7 @@
                     Padding="15" 
                     Margin="10"
                     CornerRadius="25" 
+                                    Clicked="GoToRestaurantLayoutpage"
                     HorizontalOptions="FillAndExpand" 
                     VerticalOptions="EndAndExpand" />   
 

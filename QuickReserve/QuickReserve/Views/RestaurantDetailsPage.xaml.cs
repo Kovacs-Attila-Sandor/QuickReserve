@@ -41,9 +41,14 @@ namespace QuickReserve.Views
                 _currentIndex = newIndex;
             }
         }
-        protected void GoToAboupage(object sender, EventArgs e)
+        protected void GoToAboutpage(object sender, EventArgs e)
         {
             App.Current.MainPage = new NavigationPage(new AboutPage());
+        }
+
+        protected void GoToRestaurantLayoutpage(object sender, EventArgs e)
+        {
+            App.Current.MainPage = new NavigationPage(new RestaurantLayoutPage());
         }
     }
 }
