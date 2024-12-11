@@ -24,13 +24,19 @@ namespace QuickReserve.Views
             string loggedInUserName = App.Current.Properties["LoggedInUserName"].ToString();
             var userService = new UserService();
             var userType = await userService.GetUserType(loggedInUserName);
-            
+
             if (userType == "RESTAURANT")
             {
-                App.Current.MainPage = new NavigationPage(new RestaurantProfilePage(loggedInUserName)); 
+                // Ha Restaurant típusú felhasználó, navigálunk a RestaurantProfilePage-re
+                await Navigation.PushAsync(new RestaurantProfilePage(loggedInUserName));
             }
-            else App.Current.MainPage = new NavigationPage(new UserProfilePage(loggedInUserName));
+            else
+            {
+                // Ha nem Restaurant típusú felhasználó, navigálunk a UserProfilePage-re
+                await Navigation.PushAsync(new UserProfilePage(loggedInUserName));
+            }
         }
+
 
         // Fetch restaurants from Firebase and display them in ListView
         public async void DisplayRestaurants()
