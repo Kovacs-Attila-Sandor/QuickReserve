@@ -106,5 +106,24 @@ namespace QuickReserve.Services
             }
         }
 
+        // Lekérdezi a felhasználó típusát az adatbázisból
+        public async Task<string> GetUserType(string userName)
+        {
+            var allUsers = await FirebaseService
+                .Client
+                .Child("Users")
+                .OnceAsync<User>();
+
+            var user = allUsers
+                .Select(u => u.Object)
+                .FirstOrDefault(u => u.Name == userName);
+
+            if (user != null)
+            {
+                return user.Role; // "User" vagy "Restaurant"
+            }
+
+            return null;
+        }
     }
 }

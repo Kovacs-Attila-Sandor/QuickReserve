@@ -19,31 +19,21 @@ namespace QuickReserve.Views
         }
 
         // Method to navigate to the profile page
-        protected void GoToProfilePage(object sender, EventArgs e)
+        protected async void GoToProfilePage(object sender, EventArgs e)
         {
             string loggedInUserName = App.Current.Properties["LoggedInUserName"].ToString();
             var userService = new UserService();
             var userType = await userService.GetUserType(loggedInUserName);
 
-            Page targetPage;
-
             if (userType == "RESTAURANT")
             {
-                targetPage = new RestaurantProfilePage(loggedInUserName);
+                // Ha Restaurant típusú felhasználó, navigálunk a RestaurantProfilePage-re
+                await Navigation.PushAsync(new RestaurantProfilePage(loggedInUserName));
             }
             else
             {
-                targetPage = new UserProfilePage(loggedInUserName);
-            }
-
-            // Ellenőrizd, hogy van-e már NavigationPage
-            if (App.Current.MainPage is NavigationPage navigationPage)
-            {
-                await navigationPage.PushAsync(targetPage);
-            }
-            else
-            {
-                App.Current.MainPage = new NavigationPage(targetPage);
+                // Ha nem Restaurant típusú felhasználó, navigálunk a UserProfilePage-re
+                await Navigation.PushAsync(new UserProfilePage(loggedInUserName));
             }
         }
 
@@ -73,16 +63,17 @@ namespace QuickReserve.Views
             }
         }
 
-
-        // Command to handle tapping on a restaurant
-        public ICommand RestaurantTappedCommand => new Command<Restaurant>(OnRestaurantTapped);
-
-        private async void OnRestaurantTapped(Restaurant selectedRestaurant)
+        private void OnItemTapped(object sender, ItemTappedEventArgs e)
         {
-            if (selectedRestaurant != null)
+            if (e.Item is Restaurant selectedRestaurant)
             {
-                await Navigation.PushAsync(new RestaurantDetailsPage(selectedRestaurant));
+                // Navigálás a RestaurantDetailsPage-re
+                Navigation.PushAsync(new RestaurantDetailsPage(selectedRestaurant));
             }
+
+             // A ListView automatikus kijelölésének eltávolítása
+             ((ListView)sender).SelectedItem = null;
         }
+        
     }
 }

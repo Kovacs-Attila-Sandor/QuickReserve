@@ -35,7 +35,9 @@ namespace QuickReserve.Views
                     // Ha van profilkép, azt használjuk
                     User.ProfileImageSource = ImageSource.FromStream(() =>
                         new MemoryStream(Convert.FromBase64String(User.ProfileImage)));
-                }         
+                }
+
+                
                 BindingContext = this; // Adatok megjelenítése
             }
             else

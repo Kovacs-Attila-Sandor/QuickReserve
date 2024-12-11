@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using QuickReserve.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace QuickReserve.Services
@@ -163,6 +164,30 @@ namespace QuickReserve.Services
                 Console.WriteLine($"Error adding tables to restaurant: {ex.Message}");
                 return false; // Hiba esetén false
             }
-        }       
+        }
+
+        public async Task<Restaurant> GetRestaurantByName(string name)
+        {
+            try
+            {
+                // Lekérjük az összes éttermet a "Restaurant" gyűjteményből
+                var allRestaurants = await FirebaseService
+                    .Client
+                    .Child("Restaurant")  // "Restaurant" gyűjtemény
+                    .OnceAsync<Restaurant>();  // Az összes étterem lekérése
+
+                // Megkeressük az első olyan éttermet, amelynek Name tulajdonsága megegyezik a keresett névvel
+                var restaurant = allRestaurants
+                    .Select(u => u.Object)  // Csak az étterem objektumokat vesszük figyelembe
+                    .FirstOrDefault(u => u.Name == name);  // Feltétel a Name-re
+
+                return restaurant;  // Ha találtunk egyezést, visszaadjuk az éttermet
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching restaurant by name: {ex.Message}");
+                return null;  // Hiba esetén null-t adunk vissza
+            }
+        }
     }
 }

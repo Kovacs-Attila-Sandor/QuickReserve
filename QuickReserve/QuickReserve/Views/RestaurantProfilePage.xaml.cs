@@ -12,13 +12,18 @@ namespace QuickReserve.Views
         public RestaurantProfilePage(string userName)
         {
             InitializeComponent();
-            LoadRestaurantData(userName);
+            Title = "Restaurant Profile"; // Az automatikus fejléc címe
+            LoadRestaurantData(userName); // Aszinkron adatbetöltés
         }
 
         private async void LoadRestaurantData(string userName)
         {
             try
             {
+                // Aktiváld a betöltési képernyőt
+                loadingIndicator.IsVisible = true;
+                contentLayout.IsVisible = false;
+
                 // Étterem adatok aszinkron lekérése
                 var restaurantService = new RestaurantService();
                 var restaurant = await restaurantService.GetRestaurantByName(userName);
@@ -65,13 +70,7 @@ namespace QuickReserve.Views
             {
                 await DisplayAlert("Error", $"An error occurred while loading the restaurant: {ex.Message}", "OK");
             }
-        }
-
-
-
-        private async void OnBackClicked(object sender, EventArgs e)
-        {
-            await Navigation.PopAsync();
+            {
         }
     }
 }

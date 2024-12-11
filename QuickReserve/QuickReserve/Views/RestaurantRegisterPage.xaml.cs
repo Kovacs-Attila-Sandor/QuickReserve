@@ -63,10 +63,9 @@ namespace QuickReserve.Views
             string password = txtPassword.Text?.Trim();
             string confirmPassword = txtConfirmPassword.Text?.Trim();
 
-            // Ellenőrizzük, hogy minden mező ki van-e töltve és hogy van-e legalább egy kép
             if (!string.IsNullOrEmpty(txtUsername.Text) &&
-                !string.IsNullOrEmpty(txtPassword.Text) &&
-                !string.IsNullOrEmpty(txtConfirmPassword.Text) &&
+                !string.IsNullOrEmpty(password) &&
+                !string.IsNullOrEmpty(confirmPassword) &&
                 !string.IsNullOrEmpty(txtEmail.Text) &&
                 !string.IsNullOrEmpty(txtPhonenum.Text) &&
                 !string.IsNullOrEmpty(txtCity.Text) &&
@@ -75,27 +74,23 @@ namespace QuickReserve.Views
                 !string.IsNullOrEmpty(txtNumber.Text) &&
                 !string.IsNullOrEmpty(txtShortDescriprion.Text) &&
                 !string.IsNullOrEmpty(txtLongDescriprion.Text) &&
-                imageBase64List.Count > 0)  // Képek jelenléte is szükséges
+                imageBase64List.Count > 0)
             {
-                // Ellenőrizzük, hogy a felhasználónév már létezik-e
                 if (await userService.GetUserByName(txtUsername.Text.Trim()) == null)
                 {
-                    // Ellenőrizzük, hogy a két jelszó egyezik-e
-                    if (string.Equals(password, confirmPassword))
+                    if (password == confirmPassword)
                     {
-                        // Létrehozzuk a User objektumot
-                        User user = new User()
+                        User user = new User
                         {
                             Name = txtUsername.Text.Trim(),
-                            Password = txtPassword.Text.Trim(),
+                            Password = password,
                             Email = txtEmail.Text.Trim(),
                             PhoneNumber = txtPhonenum.Text.Trim(),
                             Role = "RESTAURANT"
                         };
                         await userService.AddUser(user);
 
-                        // Létrehozzuk a Restaurant objektumot
-                        Restaurant restaurant = new Restaurant()
+                        Restaurant restaurant = new Restaurant
                         {
                             Name = txtUsername.Text.Trim(),
                             PhoneNumber = txtPhonenum.Text.Trim(),
@@ -109,46 +104,36 @@ namespace QuickReserve.Views
                                 Street = txtStreet.Text.Trim(),
                                 Number = txtNumber.Text.Trim()
                             },
-                            ImageBase64List = new List<string>(imageBase64List) // Több kép hozzáadása
+                            ImageBase64List = new List<string>(imageBase64List)
                         };
 
-                        // Étterem mentése és ID lekérése
                         string restaurantId = await restaurantService.AddRestaurantAndGetId(restaurant);
 
-                        // Ha sikerült menteni, navigáljunk az AddMenuPage-re
                         if (!string.IsNullOrEmpty(restaurantId))
                         {
-                            await DisplayAlert("SAVING SUCCESS", "Restaurant added successfully", "OK");
-                            App.Current.MainPage = new NavigationPage(new AddMenuPage(restaurantId));
+                            await DisplayAlert("Success", "Restaurant added successfully", "OK");
+                            await Navigation.PushAsync(new AddMenuPage(restaurantId));
                         }
                         else
-                            await DisplayAlert("SAVING ERROR", "There was an error adding the restaurant", "OK");
+                        {
+                            await DisplayAlert("Error", "Error saving restaurant.", "OK");
+                        }
                     }
                     else
                     {
-                        await DisplayAlert("SAVING ERROR", "Your password is not matching", "OK");
+                        await DisplayAlert("Error", "Passwords do not match.", "OK");
                     }
                 }
                 else
                 {
-                    await DisplayAlert("SAVING ERROR", "This Username is already used", "OK");
-            }
-            else await DisplayAlert("SAVING ERROR", "Something is empty", "OK");
-        }
-
-        protected async void PickImageButton_Clicked(object sender, EventArgs e)
-        {
-            try
-            {
-                await Permissions.RequestAsync<Permissions.StorageRead>();
-                await Permissions.RequestAsync<Permissions.StorageWrite>();
-                // Check for storage permission to access photos
-                var status1 = await Permissions.CheckStatusAsync<Permissions.Photos>();
-                if (status1 != PermissionStatus.Granted)
-                {
-                    var result1 = await Permissions.RequestAsync<Permissions.Photos>();
-                    status1 = result1;
+                    await DisplayAlert("Error", "Username already exists.", "OK");
                 }
+            }
+            else
+            {
+                await DisplayAlert("Error", "All fields are required.", "OK");
+            }
+        }
 
         protected async void GoToLoginPage(object sender, EventArgs e)
         {

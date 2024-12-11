@@ -1,9 +1,7 @@
 ﻿using QuickReserve.Services;
 using QuickReserve.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -16,7 +14,6 @@ namespace QuickReserve.Views
         public LoginPage()
         {
             InitializeComponent();
-            
             this.BindingContext = new LoginViewModel();
         }
 
@@ -37,40 +34,50 @@ namespace QuickReserve.Views
 
         public async void Login(object sender, EventArgs e)
         {
-            // Az új UserService objektum létrehozása
             UserService userService = new UserService();
 
             // Ellenőrizzük, hogy a felhasználónév és a jelszó nem üres
-            if (!string.IsNullOrEmpty(txtUsername.Text.Trim()) && !string.IsNullOrEmpty(txtPassword.Text.Trim()))
+            if (string.IsNullOrWhiteSpace(txtUsername.Text) || string.IsNullOrWhiteSpace(txtPassword.Text))
             {
-                try
-                {
-                    // Ellenőrizzük, hogy a felhasználónevet és a jelszót helyesen adták-e meg
-                    bool isValidUser = await userService.ValidateUserCredentials(txtUsername.Text.Trim(), txtPassword.Text.Trim());
+                await DisplayAlert("LOGIN ERROR", "Please enter both username and password", "OK");
+                return;
+            }
 
-                    if (isValidUser)
-                    {                       
-                        App.Current.MainPage = new NavigationPage(new AboutPage());
-                    }
-                    else
-                    {
-                        // Ha a felhasználó nem létezik vagy helytelenek a hitelesítő adatok
-                        await DisplayAlert("LOGIN ERROR", "This Username does not exist or incorrect password", "OK");
-                    }
-                }
-                catch (Exception ex)
+            try
+            {
+                // Felhasználói hitelesítő adatok ellenőrzése
+                bool isValidUser = await userService.ValidateUserCredentials(txtUsername.Text.Trim(), txtPassword.Text.Trim());
+
+                if (isValidUser)
                 {
-                    // Hiba esetén egyértelmű hibaüzenet megjelenítése
-                    await DisplayAlert("LOGIN ERROR", "An error occurred while logging in: " + ex.Message, "OK");
+                    // A sikeres bejelentkezés után elmenthetjük a felhasználó nevét
+                    App.Current.Properties["LoggedInUserName"] = txtUsername.Text;
+
+                    App.Current.MainPage = new NavigationPage(new AboutPage());                  
+                }
+                else
+                {
+                    // Hibás hitelesítő adatok
+                    await DisplayAlert("LOGIN ERROR", "This Username does not exist or incorrect password", "OK");
                 }
             }
-            else
+            catch (TimeoutException)
             {
-                // Ha a felhasználó nem adott meg minden szükséges adatot
-                await DisplayAlert("LOGIN ERROR", "Please enter both username and password", "OK");
+                await DisplayAlert("LOGIN ERROR", "The login process timed out. Please try again later.", "OK");
+            }
+            catch (HttpRequestException)
+            {
+                await DisplayAlert("LOGIN ERROR", "A network error occurred. Please try again later.", "OK");
+            }
+            catch (Exception ex)
+            {
+                // Általános hiba
+                await DisplayAlert("LOGIN ERROR", "An unexpected error occurred: " + ex.Message, "OK");
+
+                // Ha van naplózási mechanizmus, itt használhatjuk
+                Console.WriteLine($"Login error: {ex}");
             }
         }
-
 
     }
 }

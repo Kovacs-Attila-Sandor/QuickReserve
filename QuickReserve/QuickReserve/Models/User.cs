@@ -1,4 +1,5 @@
 ﻿using System;
+using Xamarin.Forms;
 
 public class User
 {
@@ -9,4 +10,6 @@ public class User
     public string Password { get; set; }
     public string Role { get; set; }
     public string CreatedAt { get; set; } = DateTime.UtcNow.ToString("o");
+    public string ProfileImage { get; set; }
+    public ImageSource ProfileImageSource { get; set; }
 }
