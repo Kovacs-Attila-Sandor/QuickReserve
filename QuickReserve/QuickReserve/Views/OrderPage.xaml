@@ -1,0 +1,43 @@
+﻿<ContentPage
+    x:Class="QuickReserve.Views.OrderPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Your Order">
+
+    <StackLayout Padding="10">
+
+        <!--  Rendelés listája  -->
+        <ListView
+            HasUnevenRows="True"
+            ItemsSource="{Binding OrderItems}"
+            SeparatorColor="#DDD">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout
+                            Padding="10"
+                            Orientation="Horizontal"
+                            Spacing="20"
+                            VerticalOptions="Center">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="18"
+                                Text="{Binding Name}"
+                                TextColor="#2C3E50" />
+                            <Label
+                                FontSize="14"
+                                Text="{Binding Description}"
+                                TextColor="#7F8C8D" />
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="16"
+                                Text="{Binding Price, StringFormat='{0} €'}"
+                                TextColor="#2C3E50" />
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+    </StackLayout>
+</ContentPage>

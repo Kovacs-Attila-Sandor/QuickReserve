@@ -9,7 +9,7 @@ namespace QuickReserve.Converter
         {
             if (value is int count)
             {          
-                return count * 200;
+                return count * 150;
             }
             return 0;
         }

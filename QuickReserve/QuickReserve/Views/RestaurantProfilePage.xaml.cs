@@ -12,7 +12,7 @@ namespace QuickReserve.Views
         public RestaurantProfilePage(string userName)
         {
             InitializeComponent();
-            Title = "Restaurant Profile"; // Az automatikus fejléc címe
+            Title = userName; // Az automatikus fejléc címe
             LoadRestaurantData(userName); // Aszinkron adatbetöltés
         }
 
@@ -47,14 +47,10 @@ namespace QuickReserve.Views
                     {
                         foreach (var food in restaurant.Foods)
                         {
-                            if (food.Pictures != null && food.Pictures.Count > 0)
+                            if (!string.IsNullOrEmpty(food.Picture)) // Ellenőrizzük, hogy van-e kép
                             {
-                                var foodImages = new List<ImageSource>();
-                                foreach (var base64Picture in food.Pictures)
-                                {
-                                    foodImages.Add(ImageConverter.ConvertBase64ToImageSource(base64Picture));
-                                }
-                                food.ImageSources = foodImages;
+                                // Csak egyetlen kép hozzáadása a food.ImageSource listához
+                                food.ImageSource = ImageConverter.ConvertBase64ToImageSource(food.Picture);
                             }
                         }
                     }
@@ -70,7 +66,12 @@ namespace QuickReserve.Views
             {
                 await DisplayAlert("Error", $"An error occurred while loading the restaurant: {ex.Message}", "OK");
             }
+            finally
             {
+                // Tedd láthatóvá a valódi tartalmat és rejtsd el a betöltési képernyőt
+                loadingIndicator.IsVisible = false;
+                contentLayout.IsVisible = true;
+            }
         }
     }
 }

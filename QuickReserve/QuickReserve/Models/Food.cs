@@ -12,7 +12,7 @@ namespace QuickReserve.Models
         public double Price { get; set; }
         public string Description { get; set; }
         public string Category { get; set; }
-        public List<string> Pictures { get; set; }
-        public List<ImageSource> ImageSources { get; set; } = new List<ImageSource>();
+        public string Picture { get; set; }
+        public ImageSource ImageSource { get; set; }
     }
 }

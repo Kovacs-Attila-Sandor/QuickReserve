@@ -41,62 +41,56 @@
 
                 <!-- Restaurant List -->
                 <ListView x:Name="lstmoments"
-          HasUnevenRows="True" 
-          SeparatorVisibility="None"
-          BackgroundColor="Transparent"
-          SelectionMode="None"
-          ItemTapped="OnItemTapped">
+                          HasUnevenRows="True" 
+                          SeparatorVisibility="None"
+                          BackgroundColor="Transparent"
+                          SelectionMode="None"
+                          ItemTapped="OnItemTapped">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
                                 <Frame Padding="15" 
-                       HasShadow="True" 
-                       CornerRadius="20" 
-                       BackgroundColor="DimGray" 
-                       Margin="10">
-                                   HasShadow="True" 
-                                   CornerRadius="20" 
-                                   BackgroundColor="Black" 
-                                   Opacity="0.75"
-                                   Margin="10"
-                                   VerticalOptions="FillAndExpand">
-
->>>>>>>>> Temporary merge branch 2
+                                       HasShadow="True" 
+                                       CornerRadius="20" 
+                                       BackgroundColor="DimGray" 
+                                       Margin="10">
                                     <StackLayout Orientation="Vertical" Spacing="15">
+
                                         <!-- Restaurant Image -->
                                         <Frame WidthRequest="200"  
-                               HeightRequest="200"
-                               CornerRadius="20"
-                               HasShadow="True"
-                               BackgroundColor="White"
-                               Padding="0">
+                                               HeightRequest="200"
+                                               CornerRadius="20"
+                                               HasShadow="True"
+                                               BackgroundColor="White"
+                                               Padding="0">
                                             <Image WidthRequest="200"  
-                                   HeightRequest="200"
-                                   VerticalOptions="FillAndExpand"  
-                                   HorizontalOptions="FillAndExpand"
-                                   Source="{Binding ImageSourceUri}" 
-                                   Aspect="AspectFill" />
+                                                   HeightRequest="200"
+                                                   VerticalOptions="FillAndExpand"  
+                                                   HorizontalOptions="FillAndExpand"
+                                                   Source="{Binding ImageSourceUri}" 
+                                                   Aspect="AspectFill" />
                                         </Frame>
 
                                         <!-- Restaurant Details -->
                                         <Label Text="{Binding Name}" 
-                               FontSize="22" 
-                               TextColor="GhostWhite" 
-                               FontAttributes="Bold" 
-                               LineBreakMode="TailTruncation"
-                               Margin="0,0,0,5"/>
+                                               FontSize="22" 
+                                               TextColor="GhostWhite" 
+                                               FontAttributes="Bold" 
+                                               LineBreakMode="TailTruncation"
+                                               Margin="0,0,0,5"/>
                                         <Label Text="{Binding ShortDescription}"
-                               FontSize="14" 
-                               TextColor="#f39c12" />
+                                               FontSize="14" 
+                                               TextColor="#f39c12" />
                                         <Label Text="{Binding Rating, StringFormat='Rating: {0}'}"
-                               FontSize="14" 
-                               TextColor="#f39c12" />
+                                               FontSize="14" 
+                                               TextColor="#f39c12" />
                                     </StackLayout>
                                 </Frame>
                             </ViewCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
+
             </StackLayout>
         </RelativeLayout>
     </ContentPage.Content>

@@ -1,11 +1,12 @@
-﻿<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:conv="clr-namespace:QuickReserve.Converter"
-             x:Class="QuickReserve.Views.RestaurantProfilePage"
-             Title="Restaurant Profile">
+﻿<ContentPage
+    x:Class="QuickReserve.Views.RestaurantProfilePage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:conv="clr-namespace:QuickReserve.Converter"
+    Title="Restaurant Profile">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <conv:ItemsHeightConverter x:Key="ItemsHeightConverter"/>
+            <conv:ItemsHeightConverter x:Key="ItemsHeightConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -13,90 +14,147 @@
         <ScrollView Padding="20" BackgroundColor="LightGray">
             <StackLayout Spacing="15">
 
-                <!-- Loading indicator -->
-                <ActivityIndicator x:Name="loadingIndicator" 
-                                   IsRunning="True" 
-                                   HorizontalOptions="Center" 
-                                   VerticalOptions="Center" 
-                                   IsVisible="True"/>
+                <!--  Loading indicator  -->
+                <ActivityIndicator
+                    x:Name="loadingIndicator"
+                    HorizontalOptions="Center"
+                    IsRunning="True"
+                    IsVisible="True"
+                    VerticalOptions="Center" />
 
-                <!-- Az étterem képe és információi itt -->
+                <!--  Az étterem képe és információi  -->
                 <StackLayout x:Name="contentLayout" IsVisible="False">
-                    <!-- Étterem kép -->
-                    <Frame BorderColor="Gray" CornerRadius="10" Padding="0" Margin="0,0,0,10">
-                        <Image Source="{Binding ImageSourceUri}" 
-                               Aspect="AspectFill" 
-                               HeightRequest="200" 
+
+                    <!--  Étterem kép  -->
+                    <Frame
+                        Margin="0,0,0,10"
+                        Padding="0"
+                        BorderColor="Gray"
+                        CornerRadius="10">
+                        <Image
+                            Aspect="AspectFill"
+                            HeightRequest="200"
+                            Source="{Binding ImageSourceUri}" />
                     </Frame>
 
-                    <!-- Étterem név -->
-                    <Frame BorderColor="Gray" CornerRadius="10" Padding="10" Margin="0,10">
-                        <Label Text="{Binding Name}" 
-                               FontSize="28" 
-                               FontAttributes="Bold" 
-                               HorizontalOptions="Center" 
-                               TextColor="Black" />
+                    <!--  Étterem név  -->
+                    <Frame
+                        Margin="0,10"
+                        Padding="10"
+                        BorderColor="Gray"
+                        CornerRadius="10">
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="28"
+                            HorizontalOptions="Center"
+                            Text="{Binding Name}"
+                            TextColor="Black" />
                     </Frame>
 
-                <!-- Értékelés -->
-                <Frame BorderColor="Gray" CornerRadius="10" Padding="10" Margin="0,10">
-                    <Label Text="{Binding Rating, StringFormat='Rating: {0:F1}/5'}" 
-                           FontSize="18" 
-                           FontAttributes="Italic" 
-                           TextColor="Gray" 
-                           HorizontalOptions="Center" />
-                </Frame>
-
-                    <!-- Rövid leírás -->
-                    <Frame BorderColor="Gray" CornerRadius="10" Padding="10" Margin="0,10">
-                        <Label Text="{Binding ShortDescription}" 
-                               FontSize="16" 
-                               TextColor="Gray" />
+                    <!--  Értékelés  -->
+                    <Frame
+                        Margin="0,10"
+                        Padding="10"
+                        BorderColor="Gray"
+                        CornerRadius="10">
+                        <Label
+                            FontAttributes="Italic"
+                            FontSize="18"
+                            HorizontalOptions="Center"
+                            Text="{Binding Rating, StringFormat='Rating: {0:F1}/5'}"
+                            TextColor="Gray" />
                     </Frame>
 
-                    <!-- Kapcsolat információ -->
-                    <Frame BorderColor="Gray" CornerRadius="10" Padding="10" Margin="0,10">
+                    <!--  Rövid leírás  -->
+                    <Frame
+                        Margin="0,10"
+                        Padding="10"
+                        BorderColor="Gray"
+                        CornerRadius="10">
+                        <Label
+                            FontSize="16"
+                            Text="{Binding ShortDescription}"
+                            TextColor="Gray" />
+                    </Frame>
+
+                    <!--  Kapcsolat információ  -->
+                    <Frame
+                        Margin="0,10"
+                        Padding="10"
+                        BorderColor="Gray"
+                        CornerRadius="10">
                         <StackLayout Spacing="10">
-                            <Label Text="Contact Information" 
-                                   FontSize="20" 
-                                   FontAttributes="Bold" 
-                                   TextColor="Black" />
-                            <Label Text="Phone:" FontSize="16" TextColor="Gray" />
-                            <Label Text="{Binding PhoneNumber}" FontSize="16" TextColor="Black" />
-                            <Label Text="Email:" FontSize="16" TextColor="Gray" />
-                            <Label Text="{Binding Email}" FontSize="16" TextColor="Black" />
-                            <Label Text="Address:" FontSize="16" TextColor="Gray" />
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="20"
+                                Text="Contact Information"
+                                TextColor="Black" />
+                            <Label
+                                FontSize="16"
+                                Text="Phone:"
+                                TextColor="Gray" />
+                            <Label
+                                FontSize="16"
+                                Text="{Binding PhoneNumber}"
+                                TextColor="Black" />
+                            <Label
+                                FontSize="16"
+                                Text="Email:"
+                                TextColor="Gray" />
+                            <Label
+                                FontSize="16"
+                                Text="{Binding Email}"
+                                TextColor="Black" />
+                            <Label
+                                FontSize="16"
+                                Text="Address:"
+                                TextColor="Gray" />
                         </StackLayout>
                     </Frame>
 
-                    <Frame BorderColor="Gray" CornerRadius="10" Padding="10" Margin="0,10">
+                    <!--  Ételek  -->
+                    <Frame
+                        Margin="0,10"
+                        Padding="10"
+                        BorderColor="Gray"
+                        CornerRadius="10">
                         <StackLayout>
-                            <Label Text="Available Foods" 
-                                   FontSize="22" 
-                                   FontAttributes="Bold" 
-                                   TextColor="Black" />
-
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="22"
+                                Text="Available Foods"
+                                TextColor="Black" />
+                            <CollectionView Margin="0,10" ItemsSource="{Binding AvailableFoods}">
                                 <CollectionView.ItemsLayout>
+                                    <LinearItemsLayout Orientation="Vertical" />
                                 </CollectionView.ItemsLayout>
                                 <CollectionView.ItemTemplate>
                                     <DataTemplate>
-                                        <Frame BorderColor="Black" CornerRadius="10" Padding="10" Margin="0,15">
+                                        <Frame
+                                            Margin="0,15"
+                                            Padding="10"
+                                            BorderColor="Black"
+                                            CornerRadius="10">
                                             <StackLayout Orientation="Horizontal" Spacing="10">
-                                            <!-- Étel kép -->
-                                                <Image Source="{Binding ImageSources[0]}" 
-                                                       Aspect="AspectFill" 
-                                                       WidthRequest="80" 
-                                                <StackLayout VerticalOptions="Center" Spacing="10">
-                                                    <Label Text="{Binding Name}" 
-                                                           FontSize="20" 
-                                                           FontAttributes="Bold" 
-                                                           TextColor="Black" />
-                                                    <Label Text="{Binding Description}" 
-                                                           FontSize="14" 
-                                                           TextColor="Gray" />
-                                                    <Label Text="{Binding Price, StringFormat='Price: {0} €'}" 
-                                                           FontSize="16" 
-                                                           TextColor="Green" />
+                                                <!--  Étel kép  -->
+                                                <Image
+                                                    Aspect="AspectFill"
+                                                    Source="{Binding ImageSources[0]}"
+                                                    WidthRequest="80" />
+                                                <StackLayout Spacing="10" VerticalOptions="Center">
+                                                    <Label
+                                                        FontAttributes="Bold"
+                                                        FontSize="20"
+                                                        Text="{Binding Name}"
+                                                        TextColor="Black" />
+                                                    <Label
+                                                        FontSize="14"
+                                                        Text="{Binding Description}"
+                                                        TextColor="Gray" />
+                                                    <Label
+                                                        FontSize="16"
+                                                        Text="{Binding Price, StringFormat='Price: {0} €'}"
+                                                        TextColor="Green" />
                                                 </StackLayout>
                                             </StackLayout>
                                         </Frame>
@@ -106,32 +164,48 @@
                         </StackLayout>
                     </Frame>
 
-                <!-- Asztalok -->
-                <Frame BorderColor="Gray" CornerRadius="10" Padding="10" Margin="0,10">
-                    <StackLayout>
-                        <Label Text="Available Tables" 
-                               FontSize="22" 
-                               FontAttributes="Bold" 
-                               TextColor="Black" />
-                        <CollectionView ItemsSource="{Binding Tables}" Margin="0,10">
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate>
-                                    <Frame BorderColor="Gray" CornerRadius="10" Padding="10" Margin="0,5">
-                                        <StackLayout Orientation="Horizontal" Spacing="10">
-                                            <Label Text="{Binding TableNumber}" 
-                                                   FontSize="18" 
-                                                   FontAttributes="Bold" 
-                                                   TextColor="Black" />
-                                            <Label Text="{Binding SeatsCount, StringFormat='Seats: {0}'}" 
-                                                   FontSize="16" 
-                                                   TextColor="Gray" />
-                                        </StackLayout>
-                                    </Frame>
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
+                    <!--  Asztalok  -->
+                    <Frame
+                        Margin="0,10"
+                        Padding="10"
+                        BorderColor="Gray"
+                        CornerRadius="10">
+                        <StackLayout>
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="22"
+                                Text="Available Tables"
+                                TextColor="Black" />
+                            <CollectionView Margin="0,10" ItemsSource="{Binding Tables}">
+                                <CollectionView.ItemsLayout>
+                                    <LinearItemsLayout Orientation="Vertical" />
+                                </CollectionView.ItemsLayout>
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Frame
+                                            Margin="0,5"
+                                            Padding="10"
+                                            BorderColor="Gray"
+                                            CornerRadius="10">
+                                            <StackLayout Orientation="Horizontal" Spacing="10">
+                                                <Label
+                                                    FontAttributes="Bold"
+                                                    FontSize="18"
+                                                    Text="{Binding TableNumber}"
+                                                    TextColor="Black" />
+                                                <Label
+                                                    FontSize="16"
+                                                    Text="{Binding SeatsCount, StringFormat='Seats: {0}'}"
+                                                    TextColor="Gray" />
+                                            </StackLayout>
+                                        </Frame>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </StackLayout>
+                    </Frame>
+
                 </StackLayout>
-                </Frame>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

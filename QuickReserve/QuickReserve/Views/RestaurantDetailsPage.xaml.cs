@@ -8,9 +8,12 @@ namespace QuickReserve.Views
 {
     public partial class RestaurantDetailsPage : ContentPage
     {
+        Restaurant restaurant;
         public RestaurantDetailsPage(Restaurant selectedRestaurant)
         {
             InitializeComponent();
+            restaurant = new Restaurant();
+            restaurant = selectedRestaurant;
 
             // Convert images for the selected restaurant
             selectedRestaurant.ImageSourceList = new List<ImageSource>();
@@ -50,7 +53,12 @@ namespace QuickReserve.Views
 
         protected void GoToRestaurantLayoutpage(object sender, EventArgs e)
         {
-            App.Current.MainPage = new NavigationPage(new RestaurantLayoutPage());
+            App.Current.MainPage = new NavigationPage(new RestaurantLayoutPage(restaurant));
+        }
+
+        private async void GoToMenuPage(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new RestaurantMenuPage(restaurant));
         }
     }
 }
