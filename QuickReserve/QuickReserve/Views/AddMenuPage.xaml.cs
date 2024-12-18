@@ -34,7 +34,8 @@ namespace QuickReserve.Views
                     Name = txtMenuItemName.Text.Trim(),
                     Price = price,
                     Description = txtMenuItemDescription.Text.Trim(),
-                    Category = txtMenuItemType.Text.Trim()
+                    Category = txtMenuItemType.Text.Trim(),
+                    FoodId = Guid.NewGuid().ToString()
                 };
 
                 bool success = await _restaurantService.AddFoodToRestaurant(_restaurantId, newFood);

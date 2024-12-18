@@ -189,5 +189,107 @@ namespace QuickReserve.Services
                 return null;  // Hiba esetén null-t adunk vissza
             }
         }
+
+        public async Task<bool> DeleteFoodFromRestaurant(string restaurantId, string foodId)
+        {
+            try
+            {
+                var restaurant = await GetRestaurantById(restaurantId);
+                if (restaurant != null)
+                {
+                    var foodToDelete = restaurant.Foods.FirstOrDefault(f => f.FoodId == foodId);
+                    if (foodToDelete != null)
+                    {
+                        restaurant.Foods.Remove(foodToDelete); // Remove the food from the list
+
+                        // Update the restaurant data in Firebase
+                        await FirebaseService
+                            .Client
+                            .Child("Restaurant")
+                            .Child(restaurantId)
+                            .PutAsync(JsonConvert.SerializeObject(restaurant));
+
+                        return true; // Successfully deleted the food
+                    }
+                }
+                return false; // Food not found
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error deleting food: {ex.Message}");
+                return false;
+            }
+        }
+
+        public async Task<Food> GetFoodById(string foodId)
+        {
+            try
+            {
+                // Lekérjük az étterem adatait az adott RestaurantId alapján
+                var restaurantData = await FirebaseService
+                    .Client
+                    .Child("Restaurant")  // "Restaurant" gyűjtemény
+                    .OnceAsync<Restaurant>();  // Lekérjük az összes étterem adatot
+
+                // Keresés a megfelelő étteremhez tartozó étel alapján
+                foreach (var item in restaurantData)
+                {
+                    var restaurant = item.Object;
+                    var food = restaurant.Foods.FirstOrDefault(f => f.FoodId == foodId);  // Az ételt keresem az étterem ételei között
+
+                    if (food != null)
+                    {
+                        return food;  // Ha megtaláltuk az ételt, visszaadjuk
+                    }
+                }
+
+                return null;  // Ha nem találunk ételt a megadott FoodId alapján
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching food by ID: {ex.Message}");
+                return null;  // Hiba esetén null-t adunk vissza
+            }
+        }
+
+        public async Task<bool> UpdateFoodDetails(string restaurantId, string foodId, Food updatedFood)
+        {
+            try
+            {
+                // Lekérjük az étterem adatokat az adott RestaurantId alapján
+                var restaurant = await GetRestaurantById(restaurantId);
+                if (restaurant != null)
+                {
+                    // Megkeressük a módosítandó ételt az étterem Foods listájában
+                    var foodToUpdate = restaurant.Foods.FirstOrDefault(f => f.FoodId == foodId);
+                    if (foodToUpdate != null)
+                    {
+                        // Frissítjük az étel adatait
+                        foodToUpdate.Name = updatedFood.Name;
+                        foodToUpdate.Price = updatedFood.Price;
+                        foodToUpdate.Description = updatedFood.Description;
+                        foodToUpdate.Picture = updatedFood.Picture; // Ha van kép is, azt is frissítjük
+
+                        // Frissítjük az étterem adatait a Firebase adatbázisban
+                        await FirebaseService
+                            .Client
+                            .Child("Restaurant")
+                            .Child(restaurantId)
+                            .PutAsync(JsonConvert.SerializeObject(restaurant));
+
+                        return true; // Sikeres frissítés
+                    }
+                    return false; // Ha nem találjuk az ételt
+                }
+                return false; // Ha az étterem nem található
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error updating food details: {ex.Message}");
+                return false; // Hiba esetén false
+            }
+        }
+
+
     }
 }

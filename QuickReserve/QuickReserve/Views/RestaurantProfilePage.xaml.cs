@@ -1,61 +1,56 @@
 ﻿using System;
+using System.Linq;
 using Xamarin.Forms;
 using QuickReserve.Models;
 using QuickReserve.Services;
 using QuickReserve.Converter;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace QuickReserve.Views
 {
     public partial class RestaurantProfilePage : ContentPage
     {
+        private RestaurantService _restaurantService;
+        private Restaurant _restaurant;
+
         public RestaurantProfilePage(string userName)
         {
             InitializeComponent();
-            Title = userName; // Az automatikus fejléc címe
-            LoadRestaurantData(userName); // Aszinkron adatbetöltés
+            Title = userName; // Page title
+            _restaurantService = new RestaurantService(); // Init the service
+            LoadRestaurantData(userName);
         }
 
         private async void LoadRestaurantData(string userName)
         {
             try
             {
-                // Aktiváld a betöltési képernyőt
+                // Show loading indicator
                 loadingIndicator.IsVisible = true;
                 contentLayout.IsVisible = false;
 
-                // Étterem adatok aszinkron lekérése
-                var restaurantService = new RestaurantService();
-                var restaurant = await restaurantService.GetRestaurantByName(userName);
+                // Fetch restaurant data asynchronously
+                _restaurant = await _restaurantService.GetRestaurantByName(userName);
 
-                if (restaurant != null)
+                if (_restaurant != null)
                 {
-                    // Base64 képek konvertálása ImageSource-ra az étteremhez
-                    if (restaurant.ImageBase64List != null && restaurant.ImageBase64List.Count > 0)
+                    // Convert restaurant images
+                    if (_restaurant.ImageBase64List != null && _restaurant.ImageBase64List.Any())
                     {
-                        restaurant.ImageSourceUri = ImageConverter.ConvertBase64ToImageSource(restaurant.ImageBase64List[0]);
+                        _restaurant.ImageSourceUri = ImageConverter.ConvertBase64ToImageSource(_restaurant.ImageBase64List[0]);
+                    }
 
-                        // Az összes kép konvertálása (ha szükséges a ListView-hoz)
-                        foreach (var base64Image in restaurant.ImageBase64List)
+                    // Convert food images
+                    foreach (var food in _restaurant.Foods)
+                    {
+                        if (!string.IsNullOrEmpty(food.Picture))
                         {
-                            restaurant.ImageSourceList.Add(ImageConverter.ConvertBase64ToImageSource(base64Image));
+                            food.ImageSource = ImageConverter.ConvertBase64ToImageSource(food.Picture);
                         }
                     }
 
-                    // Képek konvertálása az ételekhez
-                    if (restaurant.Foods != null)
-                    {
-                        foreach (var food in restaurant.Foods)
-                        {
-                            if (!string.IsNullOrEmpty(food.Picture)) // Ellenőrizzük, hogy van-e kép
-                            {
-                                // Csak egyetlen kép hozzáadása a food.ImageSource listához
-                                food.ImageSource = ImageConverter.ConvertBase64ToImageSource(food.Picture);
-                            }
-                        }
-                    }
-
-                    BindingContext = restaurant;
+                    // Bind data to the page
+                    BindingContext = _restaurant;  // Use the private _restaurant object
                 }
                 else
                 {
@@ -68,10 +63,66 @@ namespace QuickReserve.Views
             }
             finally
             {
-                // Tedd láthatóvá a valódi tartalmat és rejtsd el a betöltési képernyőt
+                // Hide loading indicator and show content
                 loadingIndicator.IsVisible = false;
                 contentLayout.IsVisible = true;
             }
         }
+
+        // Delete food logic (for handling delete button click event)
+        private async void OnDeleteFoodClicked(object sender, EventArgs e)
+        {
+            // Get the FoodId from the CommandParameter
+            var button = (Button)sender;
+            var foodId = button.CommandParameter.ToString();
+
+            // Display confirmation alert
+            bool isConfirmed = await DisplayAlert("Confirm Deletion", "Are you sure you want to delete this food item?", "Yes", "No");
+
+            if (isConfirmed)
+            {
+                // If confirmed, proceed with the deletion
+                await DeleteFood(foodId);
+            }
+            else
+            {
+                // If not confirmed, do nothing
+                await DisplayAlert("Cancelled", "Food deletion was cancelled.", "OK");
+            }
+        }
+
+        private async Task DeleteFood(string foodId)
+        {
+            try
+            {
+                bool result = await _restaurantService.DeleteFoodFromRestaurant(_restaurant.RestaurantId, foodId);
+                if (result)
+                {
+                    await DisplayAlert("Success", "Food deleted successfully!", "OK");
+                    // Refresh restaurant data after deletion
+                    LoadRestaurantData(_restaurant.Name);  // Refresh using the updated restaurant data
+                }
+                else
+                {
+                    await DisplayAlert("Error", "Failed to delete food.", "OK");
+                }
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", $"An error occurred: {ex.Message}", "OK");
+            }
+        }
+
+
+        // Edit food logic
+        private async void OnEditMenuClicked(object sender, EventArgs e)
+        {
+            var button = (Button)sender;
+            var foodId = button.CommandParameter.ToString();
+
+            // Navigáljunk az EditFoodPage-re a FoodId paraméterrel
+            await Navigation.PushAsync(new EditFoodPage(_restaurant.RestaurantId,foodId));
+        }
+
     }
 }
