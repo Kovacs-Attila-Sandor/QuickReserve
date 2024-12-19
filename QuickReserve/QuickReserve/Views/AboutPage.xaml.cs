@@ -14,7 +14,7 @@ namespace QuickReserve.Views
         public AboutPage()
         {
             InitializeComponent();
-            BindingContext = this; // Kötelező ahhoz, hogy a parancs működjön.
+            BindingContext = this; 
             DisplayRestaurants();
         }
 

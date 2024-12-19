@@ -1,107 +1,191 @@
-﻿<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:conv="clr-namespace:QuickReserve.Converter"
-             x:Class="QuickReserve.Views.RestaurantProfilePage"
-             Title="Restaurant Profile">
+﻿<ContentPage
+    x:Class="QuickReserve.Views.RestaurantProfilePage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:conv="clr-namespace:QuickReserve.Converter"
+    xmlns:local="clr-namespace:QuickReserve.Views"
+    Title="Restaurant Profile">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <conv:ItemsHeightConverter x:Key="ItemsHeightConverter"/>
+            <conv:ItemsHeightConverter x:Key="ItemsHeightConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
 
     <ContentPage.Content>
         <ScrollView Padding="20" BackgroundColor="LightGray">
             <StackLayout Spacing="15">
+                <!--  Loading Indicator  -->
+                <ActivityIndicator
+                    x:Name="loadingIndicator"
+                    HorizontalOptions="Center"
+                    IsRunning="True"
+                    IsVisible="True"
+                    VerticalOptions="Center" />
 
-                <!-- Loading indicator -->
-                <ActivityIndicator x:Name="loadingIndicator" 
-                                   IsRunning="True" 
-                                   HorizontalOptions="Center" 
-                                   VerticalOptions="Center" 
-                                   IsVisible="True"/>
-
-                <!-- Az étterem képe és információi itt -->
+                <!--  Restaurant Content  -->
                 <StackLayout x:Name="contentLayout" IsVisible="False">
-                    <!-- Étterem kép -->
-                    <Frame BorderColor="Gray" CornerRadius="10" Padding="0" Margin="0,0,0,10">
-                        <Image Source="{Binding ImageSourceUri}" 
-                               Aspect="AspectFill" 
-                               HeightRequest="200" 
-                               HorizontalOptions="FillAndExpand" />
+                    <!--  Restaurant Image  -->
+                    <Frame
+                        Margin="0,0,0,10"
+                        Padding="0"
+                        BorderColor="Gray"
+                        CornerRadius="10">
+                        <Image
+                            Aspect="AspectFill"
+                            HeightRequest="200"
+                            Source="{Binding ImageSourceUri}" />
                     </Frame>
 
-                    <!-- Étterem név -->
-                    <Frame BorderColor="Gray" CornerRadius="10" Padding="10" Margin="0,10">
-                        <Label Text="{Binding Name}" 
-                               FontSize="28" 
-                               FontAttributes="Bold" 
-                               HorizontalOptions="Center" 
-                               TextColor="Black" />
-                    </Frame>
+                    <!--  Restaurant Name  -->
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="28"
+                        HorizontalOptions="Center"
+                        Text="{Binding Name}"
+                        TextColor="Black" />
 
-                    <!-- Rövid leírás -->
-                    <Frame BorderColor="Gray" CornerRadius="10" Padding="10" Margin="0,10">
-                        <Label Text="{Binding ShortDescription}" 
-                               FontSize="16" 
-                               TextColor="Gray" />
-                    </Frame>
+                    <!--  Rating  -->
+                    <Label
+                        FontAttributes="Italic"
+                        FontSize="18"
+                        HorizontalOptions="Center"
+                        Text="{Binding Rating, StringFormat='Rating: {0:F1}/5'}"
+                        TextColor="Gray" />
 
-                    <!-- Kapcsolat információ -->
-                    <Frame BorderColor="Gray" CornerRadius="10" Padding="10" Margin="0,10">
-                        <StackLayout Spacing="10">
-                            <Label Text="Contact Information" 
-                                   FontSize="20" 
-                                   FontAttributes="Bold" 
-                                   TextColor="Black" />
-                            <Label Text="Phone:" FontSize="16" TextColor="Gray" />
-                            <Label Text="{Binding PhoneNumber}" FontSize="16" TextColor="Black" />
-                            <Label Text="Email:" FontSize="16" TextColor="Gray" />
-                            <Label Text="{Binding Email}" FontSize="16" TextColor="Black" />
-                            <Label Text="Address:" FontSize="16" TextColor="Gray" />
-                            <Label Text="{Binding Address.Street, StringFormat='Street: {0}'}" FontSize="16" TextColor="Black" Margin="20,0,0,0" />
-                            <Label Text="{Binding Address.City, StringFormat='City: {0}'}" FontSize="16" TextColor="Black" Margin="20,0,0,0" />
-                        </StackLayout>
-                    </Frame>
+                    <!--  Address  -->
+                    <Label
+                        FontSize="16"
+                        Text="{Binding Address.FullAddress}"
+                        TextColor="Gray" />
 
-                    <!-- Ételek lista -->
-                    <Frame BorderColor="Gray" CornerRadius="10" Padding="10" Margin="0,10">
+                    <!--  Phone  -->
+                    <Label
+                        FontSize="16"
+                        Text="{Binding PhoneNumber, StringFormat='Phone: {0}'}"
+                        TextColor="Gray" />
+
+                    <!--  Email  -->
+                    <Label
+                        FontSize="16"
+                        Text="{Binding Email, StringFormat='Email: {0}'}"
+                        TextColor="Gray" />
+
+                    <!--  Short Description  -->
+                    <Label
+                        FontSize="16"
+                        Text="{Binding ShortDescription}"
+                        TextColor="Gray" />
+
+                    <!--  Hours  -->
+                    <Frame
+                        Margin="0,10"
+                        Padding="10"
+                        BorderColor="Gray"
+                        CornerRadius="10"
+                        HorizontalOptions="Fill"
+                        VerticalOptions="Start">
                         <StackLayout>
-                            <Label Text="Available Foods" 
-                                   FontSize="22" 
-                                   FontAttributes="Bold" 
-                                   TextColor="Black" />
-
-                            <CollectionView ItemsSource="{Binding Foods}" Margin="10">
-                                <CollectionView.ItemsLayout>
-                                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="20" />
-                                </CollectionView.ItemsLayout>
-                                <CollectionView.ItemTemplate>
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="22"
+                                Text="Opening Hours"
+                                TextColor="Black" />
+                            <StackLayout
+                                Padding="0"
+                                BindableLayout.ItemsSource="{Binding Hours}"
+                                Spacing="5">
+                                <BindableLayout.ItemTemplate>
                                     <DataTemplate>
-                                        <Frame BorderColor="Black" CornerRadius="10" Padding="10" Margin="0,15">
-                                            <StackLayout Orientation="Horizontal" Spacing="10">
-                                                <Image Source="{Binding ImageSources[0]}" 
-                                                       Aspect="AspectFill" 
-                                                       WidthRequest="80" 
-                                                       HeightRequest="80" />
-                                                <StackLayout VerticalOptions="Center" Spacing="10">
-                                                    <Label Text="{Binding Name}" 
-                                                           FontSize="20" 
-                                                           FontAttributes="Bold" 
-                                                           TextColor="Black" />
-                                                    <Label Text="{Binding Description}" 
-                                                           FontSize="14" 
-                                                           TextColor="Gray" />
-                                                    <Label Text="{Binding Price, StringFormat='Price: {0} €'}" 
-                                                           FontSize="16" 
-                                                           TextColor="Green" />
-                                                </StackLayout>
-                                            </StackLayout>
-                                        </Frame>
+                                        <StackLayout Orientation="Horizontal" Spacing="10">
+                                            <Label
+                                                FontAttributes="Bold"
+                                                FontSize="16"
+                                                Text="{Binding Day}"
+                                                TextColor="Black"
+                                                WidthRequest="100" />
+                                            <Label
+                                                FontSize="16"
+                                                Text="{Binding OpenTime, StringFormat='{0:hh\\:mm}'}"
+                                                TextColor="Green" />
+                                            <Label
+                                                FontSize="16"
+                                                Text=" - "
+                                                TextColor="Black" />
+                                            <Label
+                                                FontSize="16"
+                                                Text="{Binding CloseTime, StringFormat='{0:hh\\:mm}'}"
+                                                TextColor="Red" />
+                                        </StackLayout>
                                     </DataTemplate>
-                                </CollectionView.ItemTemplate>
-                            </CollectionView>
+                                </BindableLayout.ItemTemplate>
+                            </StackLayout>
                         </StackLayout>
                     </Frame>
+
+                    <!--  Foods Section  -->
+                    <Frame
+                        Margin="0,10"
+                        Padding="10"
+                        BorderColor="Gray"
+                        CornerRadius="10"
+                        HorizontalOptions="Fill"
+                        VerticalOptions="Start">
+                        <StackLayout>
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="22"
+                                Text="Menu"
+                                TextColor="Black" />
+                            <BindableLayout.ItemsSource>
+                                <Binding Path="Foods" />
+                            </BindableLayout.ItemsSource>
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <Frame
+                                        Margin="0,5"
+                                        Padding="10"
+                                        BorderColor="Black"
+                                        CornerRadius="10"
+                                        HorizontalOptions="Fill"
+                                        VerticalOptions="Start">
+                                        <StackLayout Orientation="Horizontal" Spacing="10">
+                                            <Image
+                                                Aspect="AspectFill"
+                                                HeightRequest="80"
+                                                Source="{Binding ImageSource}"
+                                                WidthRequest="80" />
+                                            <StackLayout Spacing="5" VerticalOptions="Center">
+                                                <Label
+                                                    FontAttributes="Bold"
+                                                    FontSize="20"
+                                                    Text="{Binding Name}"
+                                                    TextColor="Black" />
+                                                <Label
+                                                    FontSize="14"
+                                                    Text="{Binding Description}"
+                                                    TextColor="Gray" />
+                                                <Label
+                                                    FontSize="16"
+                                                    Text="{Binding Price, StringFormat='Price: {0} €'}"
+                                                    TextColor="Green" />
+                                            </StackLayout>
+                                            <StackLayout VerticalOptions="Center">
+                                                <Button
+                                                    Clicked="OnDeleteFoodClicked"
+                                                    CommandParameter="{Binding FoodId}"
+                                                    Text="Delete" />
+                                                <Button
+                                                    Clicked="OnEditMenuClicked"
+                                                    CommandParameter="{Binding FoodId}"
+                                                    Text="Edit Menu" />
+                                            </StackLayout>
+                                        </StackLayout>
+                                    </Frame>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </StackLayout>
+                    </Frame>
+
                 </StackLayout>
             </StackLayout>
         </ScrollView>

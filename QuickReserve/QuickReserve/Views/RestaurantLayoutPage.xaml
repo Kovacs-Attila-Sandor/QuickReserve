@@ -39,7 +39,7 @@ HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand">
                         <Picker x:Name="myPicker" Title="Select a time">
                             <Picker.ItemsSource>
                                 <x:Array Type="{x:Type x:String}">
-                                    <x:String>O0:00-00:30</x:String>
+                                    <x:String>00:00-00:30</x:String>
                                     <x:String>00:30-01:00</x:String>
                                     <x:String>01:00-01:30</x:String>
                                     <x:String>O1:30-02:00</x:String>
@@ -94,9 +94,9 @@ HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand">
                 </Frame>
 
                 <Frame CornerRadius="20"
-BackgroundColor="Black"         
- Opacity="0.75"         
-HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand">
+                    BackgroundColor="Black"         
+                     Opacity="0.75"         
+                    HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand">
 
                     <Grid x:Name="DynamicGrid"
                   RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"

@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="QuickReserve.Views.EditFoodPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Edit Food">
+
+    <StackLayout Padding="20" Spacing="15">
+        <Label
+            FontSize="24"
+            HorizontalOptions="Center"
+            Text="Edit Food" />
+
+        <Entry x:Name="foodNameEntry" Placeholder="Food Name" />
+        <Entry
+            x:Name="foodPriceEntry"
+            Keyboard="Numeric"
+            Placeholder="Price" />
+        <Entry x:Name="foodDescriptionEntry" Placeholder="Description" />
+
+        <StackLayout HorizontalOptions="Center" Orientation="Horizontal">
+            <Button Clicked="OnSaveClicked" Text="Save" />
+            <Button Clicked="OnCancelClicked" Text="Cancel" />
+        </StackLayout>
+    </StackLayout>
+</ContentPage>
