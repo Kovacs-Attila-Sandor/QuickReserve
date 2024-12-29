@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using QuickReserve.Converter;
+using System.Windows.Input;
 
 namespace QuickReserve.Views
 {
@@ -11,38 +12,92 @@ namespace QuickReserve.Views
     {
         public Restaurant CurrentRestaurant { get; set; }
         public List<Food> MenuItems { get; set; }
-        public List<Food> OrderItems { get; set; } = new List<Food>(); // Rendeléshez hozzáadott ételek
+        public List<Food> OrderItems { get; set; } = new List<Food>();
+
+        public string ReservationDateTime { get; set; }
+        public string TableId { get; set; }
+        public int GuestCount { get; set; }
+
+        // BindableProperty for IsButtonVisible
+        public static readonly BindableProperty IsButtonVisibleProperty =
+         BindableProperty.Create(
+             nameof(IsButtonVisible),
+             typeof(bool),
+             typeof(RestaurantMenuPage),
+             default(bool));
+
+        public bool IsButtonVisible
+        {
+            get => (bool)GetValue(IsButtonVisibleProperty);
+            set => SetValue(IsButtonVisibleProperty, value);
+        }
 
         public RestaurantMenuPage(Restaurant restaurant)
         {
             InitializeComponent();
+
             CurrentRestaurant = restaurant;
             MenuItems = restaurant.Foods;
-            BindingContext = this;
 
-            // Étterem képének beállítása, ha van
+            BindingContext = this;  // Itt van az összekötés a BindingContext-tel
+
             if (!string.IsNullOrEmpty(restaurant.ImageSourceUri?.ToString()))
             {
                 RestaurantImage.Source = restaurant.ImageSourceUri;
             }
 
-            // Étkezések képeinek beállítása
             if (restaurant.Foods != null)
             {
                 foreach (var food in restaurant.Foods)
                 {
                     if (!string.IsNullOrEmpty(food.Picture))
                     {
-                        food.ImageSource = ImageConverter.ConvertBase64ToImageSource(food.Picture); // Base64 átalakítása ImageSource-ra
+                        food.ImageSource = ImageConverter.ConvertBase64ToImageSource(food.Picture);
                     }
                 }
             }
 
-            // Az étkezések betöltése
             MenuListView.ItemsSource = MenuItems;
         }
 
-        // Kategória szerinti szűrés
+
+        private async void OnNoPreOrderClicked(object sender, EventArgs e)
+        {
+            //await DisplayAlert("asd", $"{ReservationDateTime}, {TableId}, {GuestCount}", "OK");
+            await Navigation.PushAsync(new ReservationSummaryPage(ReservationDateTime, TableId, GuestCount));
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            // Biztosítjuk, hogy a gombok láthatósága megfelelő
+            if (!string.IsNullOrEmpty(TableId))
+            {
+                foreach (var food in MenuItems)
+                {
+                    food.IsButtonVisible = true;  // Set the button visible for each food item
+                }
+                IsButtonVisible = true;
+            }
+            else
+            {
+                foreach (var food in MenuItems)
+                {
+                    food.IsButtonVisible = false;  // Hide buttons if no table is selected
+                }
+                IsButtonVisible = false;
+            }
+
+            // Frissítjük az ItemsSource-t, hogy az UI észlelje a változást
+            MenuListView.ItemsSource = null;  // Először ürítjük az ItemsSource-t
+            MenuListView.ItemsSource = MenuItems;  // Újra hozzárendeljük a listát
+
+            BindingContext = this;
+        }
+
+
+
         private void OnCategorySelected(object sender, EventArgs e)
         {
             var button = sender as Button;
@@ -51,7 +106,6 @@ namespace QuickReserve.Views
             if (string.IsNullOrEmpty(category))
                 return;
 
-            // Szűrés a kategória alapján
             if (category == "Main Courses")
             {
                 MenuItems = CurrentRestaurant.Foods.Where(f => f.Category == "Main Course").ToList();
@@ -66,26 +120,23 @@ namespace QuickReserve.Views
             }
             else
             {
-                MenuItems = CurrentRestaurant.Foods;  // Ha nincs szűrési kategória, akkor mindent megjelenítünk
+                MenuItems = CurrentRestaurant.Foods;
             }
 
-            // Frissítjük a ListView-t
             MenuListView.ItemsSource = MenuItems;
         }
 
-        // Étkezés hozzáadása a rendeléshez
         private void OnAddToOrderClicked(object sender, EventArgs e)
         {
             var button = sender as Button;
             var food = button?.BindingContext as Food;
             if (food != null)
             {
-                OrderItems.Add(food); // Étkezés hozzáadása
+                OrderItems.Add(food);
                 DisplayAlert("Added to Order", $"{food.Name} has been added to your order.", "OK");
             }
         }
 
-        // A rendelés megtekintése
         private async void OnViewOrderClicked(object sender, EventArgs e)
         {
             if (OrderItems.Count == 0)
@@ -94,12 +145,10 @@ namespace QuickReserve.Views
             }
             else
             {
-                // Megjeleníthetjük a rendelést (pl. egy új oldalon)
-                await Navigation.PushAsync(new OrderPage(OrderItems));
+                await Navigation.PushAsync(new OrderPage(OrderItems, ReservationDateTime, TableId, GuestCount));
             }
         }
 
-        // A rendelés leadása
         private async void OnPlaceOrderClicked(object sender, EventArgs e)
         {
             if (OrderItems.Count == 0)
@@ -108,10 +157,9 @@ namespace QuickReserve.Views
                 return;
             }
 
-            // Itt a rendelést leadhatjuk, például egy API hívás vagy egy adatbázis írása
-            await DisplayAlert("Order Placed", "Your order has been placed successfully!", "OK");
+            string message = $"Order placed for Table {TableId} at {ReservationDateTime} with {OrderItems.Count} items.";
+            await DisplayAlert("Order Placed", message, "OK");
 
-            // Üresíthetjük a rendelési listát a rendelés után
             OrderItems.Clear();
         }
 
@@ -122,13 +170,14 @@ namespace QuickReserve.Views
                 var food = e.Item as Food;
                 if (food != null)
                 {
-                    // A teljes étkezés leírásának megjelenítése egy felugró ablakban
                     await DisplayAlert(food.Name, $"{food.Description}\nPrice: {food.Price} €", "OK");
                 }
 
-                // Az elem kiválasztásának törlése
                 ((ListView)sender).SelectedItem = null;
             }
         }
+
+     
+
     }
 }

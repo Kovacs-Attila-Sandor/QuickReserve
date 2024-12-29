@@ -2,6 +2,7 @@
 using QuickReserve.Services;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -10,9 +11,13 @@ namespace QuickReserve.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RestaurantLayoutPage : ContentPage
     {
+        private Button _selectedTableButton; // Tárolja az aktuálisan kiválasztott gombot
+        private Restaurant _restaurant;
+
         public RestaurantLayoutPage(Restaurant restaurant)
         {
             InitializeComponent();
+            _restaurant = restaurant;
 
             var dynamicGrid = DynamicGrid;
 
@@ -52,8 +57,8 @@ namespace QuickReserve.Views
                         HorizontalOptions = LayoutOptions.FillAndExpand,
                         VerticalOptions = LayoutOptions.FillAndExpand,
                         IsVisible = true,
-                        WidthRequest = 50, // Adjust the width of the buttons
-                        HeightRequest = 50 // Adjust the height of the buttons
+                        WidthRequest = 50,
+                        HeightRequest = 50
                     };
 
                     // Check if the current position matches a table
@@ -81,7 +86,12 @@ namespace QuickReserve.Views
 
             if (button.Text == null)
             {
-                button.BorderColor = Color.Black;
+                // Ellenőrizzük, hogy már van-e kiválasztott asztal
+                if (_selectedTableButton != null && _selectedTableButton != button)
+                {
+                    await DisplayAlert("Error", "You can only select one table at a time.", "OK");
+                    return;
+                }
 
                 // Prompt the user for input
                 string result = await DisplayPromptAsync("Number of seats:", "Enter the number of people:",
@@ -91,18 +101,71 @@ namespace QuickReserve.Views
                 {
                     button.Text = result; // Set the button text
                     button.BorderColor = Color.Black;
+                    _selectedTableButton = button; // Mentjük az aktuálisan kiválasztott gombot
                 }
             }
             else
             {
+                // Ha a gombra kattintunk és már van szám, akkor töröljük azt
                 button.BorderColor = Color.Transparent;
-                button.Text = null; // Reset button text
+                button.Text = null;
+                _selectedTableButton = null; // Töröljük a kiválasztott gombot
             }
         }
 
         protected void GoToAboutPage(object sender, EventArgs e)
         {
             App.Current.MainPage = new NavigationPage(new AboutPage());
+        }
+
+        protected async void ConfirmButton(object sender, EventArgs e)
+        {
+            var selectedDate = reservationDatePicker.Date;
+            var selectedTime = myPicker.SelectedItem as string;
+
+            if (_selectedTableButton == null || selectedTime == null)
+            {
+                await DisplayAlert("Error", "Please select a time and a table before confirming.", "OK");
+                return;
+            }
+
+            if (!int.TryParse(_selectedTableButton.Text, out int guestCount))
+            {
+                await DisplayAlert("Error", "Invalid table selection.", "OK");
+                return;
+            }
+
+            // Határozzuk meg a gomb sorát és oszlopát
+            var row = Grid.GetRow(_selectedTableButton);
+            var col = Grid.GetColumn(_selectedTableButton);
+
+            // Keresd meg az asztalt a pozíció alapján
+            var table = _restaurant.Tables.FirstOrDefault(t =>
+                t.Location.Row == row && t.Location.Column == col);
+
+            if (table == null)
+            {
+                await DisplayAlert("Error", $"No table found at position ({row}, {col}).", "OK");
+                return;
+            }
+
+            if (table.Capacity < guestCount || table.AvailabilityStatus != "Available")
+            {
+                await DisplayAlert("Error", $"The selected table cannot accommodate {guestCount} persons or is unavailable.", "OK");
+                return;
+            }
+
+            var reservationDateTime = $"{selectedDate.ToShortDateString()} {selectedTime}";
+            string tableId = table.TableId;
+
+            var menuPage = new RestaurantMenuPage(_restaurant)
+            {
+                ReservationDateTime = reservationDateTime,
+                TableId = tableId,
+                GuestCount = guestCount
+            };
+
+            await Navigation.PushAsync(menuPage);
         }
     }
 }

@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="QuickReserve.Views.ReservationSummaryPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Reservation Summary"
+    BackgroundColor="#121212">
+    <!-- Sötét háttér -->
+
+    <StackLayout Padding="20" Spacing="20">
+        <!-- Header Section -->
+        <Label
+            FontAttributes="Bold"
+            FontSize="24"
+            Text="Reservation Details"
+            HorizontalOptions="Center"
+            TextColor="#FFFFFF" />
+        <!-- Fehér szöveg a jobb láthatóság érdekében -->
+
+        <!-- Reservation Information -->
+        <StackLayout Orientation="Vertical" Spacing="10">
+            <Label FontSize="16" Text="{Binding ReservationDateTime}" TextColor="#E0E0E0"/>
+            <Label FontSize="16" Text="{Binding TableId}" TextColor="#E0E0E0"/>
+            <Label FontSize="16" Text="{Binding GuestCount}" TextColor="#E0E0E0"/>
+        </StackLayout>
+
+        <!-- Pre-ordered Items Section -->
+        <Label
+            Margin="0,20,0,10"
+            FontAttributes="Bold"
+            FontSize="18"
+            Text="Pre-ordered Items"
+            TextColor="#FFFFFF"/>
+
+        <!-- List of pre-ordered items -->
+        <ListView 
+            x:Name="OrderItemsListView" 
+            ItemsSource="{Binding OrderItems}" 
+            BackgroundColor="#333333"  
+            SeparatorColor="#444444">
+            <!-- Finom elválasztó szín -->
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextCell 
+                        Text="{Binding Name}" 
+                        Detail="{Binding Price, StringFormat='{0:C}'}" 
+                        TextColor="#FFFFFF"  
+                        DetailColor="#A5A5A5"/>
+                        <!-- Kisebb világos szürke a részletekhez -->
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <!-- Finalize Button -->
+        <Button
+            BackgroundColor="#6200EE" 
+            Clicked="OnFinalizeReservation"
+            Text="Finalize Reservation"
+            TextColor="White"
+            CornerRadius="20"
+            Padding="12"
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="End" />
+    </StackLayout>
+
+</ContentPage>

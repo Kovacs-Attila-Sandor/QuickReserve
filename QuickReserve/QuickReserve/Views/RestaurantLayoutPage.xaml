@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:sys="clr-namespace:System;assembly=mscorlib"
-             x:Class="QuickReserve.Views.RestaurantLayoutPage"
-             NavigationPage.HasNavigationBar="False">
+<ContentPage
+    x:Class="QuickReserve.Views.RestaurantLayoutPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    NavigationPage.HasNavigationBar="False">
 
 
 
@@ -11,30 +12,67 @@
         <RelativeLayout>
 
             <Image
- Aspect="AspectFill"
- Source="background1.png"
- RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
- RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
- IsEnabled="False"/>
+                Aspect="AspectFill"
+                IsEnabled="False"
+                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,
+                                                                       Property=Height,
+                                                                       Factor=1}"
+                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,
+                                                                      Property=Width,
+                                                                      Factor=1}"
+                Source="background1.png" />
 
 
-            <!-- Main content -->
-            <StackLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
-              RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
-              Margin="30,30,30,30">
+            <!--  Main content  -->
+            <StackLayout
+                Margin="30,30,30,30"
+                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,
+                                                                       Property=Height,
+                                                                       Factor=1}"
+                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,
+                                                                      Property=Width,
+                                                                      Factor=1}">
                 <StackLayout Orientation="Horizontal">
-                    <Button Text="Back" TextColor="GhostWhite" CornerRadius="50" BorderWidth="2" FontSize="14" FontAttributes="Bold" BackgroundColor="Transparent" BorderColor="GhostWhite" Clicked="GoToAboutPage" VerticalOptions="StartAndExpand" HorizontalOptions="StartAndExpand" />
-                    <Button Text="Confirm" TextColor="GhostWhite" CornerRadius="50" BorderWidth="2" FontSize="14" FontAttributes="Bold" BackgroundColor="Transparent" BorderColor="GhostWhite" Clicked="GoToAboutPage" VerticalOptions="StartAndExpand" HorizontalOptions="EndAndExpand" />
+                    <Button
+                        BackgroundColor="Transparent"
+                        BorderColor="GhostWhite"
+                        BorderWidth="2"
+                        Clicked="GoToAboutPage"
+                        CornerRadius="50"
+                        FontAttributes="Bold"
+                        FontSize="14"
+                        HorizontalOptions="StartAndExpand"
+                        Text="Back"
+                        TextColor="GhostWhite"
+                        VerticalOptions="StartAndExpand" />
+                    <Button
+                        BackgroundColor="Transparent"
+                        BorderColor="GhostWhite"
+                        BorderWidth="2"
+                        Clicked="ConfirmButton"
+                        CornerRadius="50"
+                        FontAttributes="Bold"
+                        FontSize="14"
+                        HorizontalOptions="EndAndExpand"
+                        Text="Confirm"
+                        TextColor="GhostWhite"
+                        VerticalOptions="StartAndExpand" />
                 </StackLayout>
-                <Frame CornerRadius="20"
-BackgroundColor="Black"         
- Opacity="0.75"         
-HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand">
-                    <StackLayout Orientation="Vertical" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
-                        <DatePicker x:Name="reservationDatePicker"
-            MinimumDate="{x:Static sys:DateTime.Now}"
-            MaximumDate="{x:Static sys:DateTime.MaxValue}"
-            Date="{x:Static sys:DateTime.Now}" />
+                <Frame
+                    BackgroundColor="Black"
+                    CornerRadius="20"
+                    HorizontalOptions="CenterAndExpand"
+                    Opacity="0.75"
+                    VerticalOptions="EndAndExpand">
+                    <StackLayout
+                        HorizontalOptions="CenterAndExpand"
+                        Orientation="Vertical"
+                        VerticalOptions="CenterAndExpand">
+                        <DatePicker
+                            x:Name="reservationDatePicker"
+                            Date="{x:Static sys:DateTime.Now}"
+                            MaximumDate="{x:Static sys:DateTime.MaxValue}"
+                            MinimumDate="{x:Static sys:DateTime.Now}" />
 
                         <Picker x:Name="myPicker" Title="Select a time">
                             <Picker.ItemsSource>
@@ -93,21 +131,28 @@ HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand">
                     </StackLayout>
                 </Frame>
 
-                <Frame CornerRadius="20"
-                    BackgroundColor="Black"         
-                     Opacity="0.75"         
-                    HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand">
+                <Frame
+                    BackgroundColor="Black"
+                    CornerRadius="20"
+                    HorizontalOptions="CenterAndExpand"
+                    Opacity="0.75"
+                    VerticalOptions="EndAndExpand">
 
-                    <Grid x:Name="DynamicGrid"
-                  RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
-                  RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
-                  HorizontalOptions="CenterAndExpand"
-                  VerticalOptions="CenterAndExpand">
-                        <!-- Buttons will be added dynamically in code-behind -->
+                    <Grid
+                        x:Name="DynamicGrid"
+                        HorizontalOptions="CenterAndExpand"
+                        RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,
+                                                                               Property=Height,
+                                                                               Factor=1}"
+                        RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,
+                                                                              Property=Width,
+                                                                              Factor=1}"
+                        VerticalOptions="CenterAndExpand">
+                        <!--  Buttons will be added dynamically in code-behind  -->
                     </Grid>
                 </Frame>
 
-                
+
             </StackLayout>
         </RelativeLayout>
     </ContentPage.Content>

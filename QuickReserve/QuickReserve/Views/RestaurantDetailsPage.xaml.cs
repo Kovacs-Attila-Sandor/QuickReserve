@@ -51,14 +51,14 @@ namespace QuickReserve.Views
             App.Current.MainPage = new NavigationPage(new AboutPage());
         }
 
-        protected void GoToRestaurantLayoutpage(object sender, EventArgs e)
+        protected async void GoToRestaurantLayoutpage(object sender, EventArgs e)
         {
-            App.Current.MainPage = new NavigationPage(new RestaurantLayoutPage(restaurant));
-        }
+            await Navigation.PushAsync(new RestaurantLayoutPage(restaurant));
+        } 
 
-        private async void GoToMenuPage(object sender, EventArgs e)
+        protected async void GoToMenuPage(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new RestaurantMenuPage(restaurant));
-        }
+        }   
     }
 }

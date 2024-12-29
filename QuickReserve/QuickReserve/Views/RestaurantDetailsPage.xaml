@@ -105,8 +105,6 @@
                                 TextColor="GhostWhite"
                                 VerticalOptions="Center" />
 
-
-
                             <Image
                                 HeightRequest="20"
                                 Source="star_icon.png"
@@ -121,7 +119,6 @@
 
 
                             <!--  Restaurant Description  -->
-
                             <Label
                                 FontSize="14"
                                 LineBreakMode="WordWrap"
@@ -142,18 +139,18 @@
                                 TextColor="GhostWhite"
                                 VerticalOptions="EndAndExpand" />
 
-                            <!--  View Menu Button  -->
                             <Button
                                 Margin="10"
                                 Padding="15"
-                                BackgroundColor="#2980b9"
+                                BackgroundColor="Transparent"
                                 Clicked="GoToMenuPage"
                                 CornerRadius="25"
                                 FontSize="18"
                                 HorizontalOptions="FillAndExpand"
                                 Text="View Menu"
-                                TextColor="White"
+                                TextColor="GhostWhite"
                                 VerticalOptions="EndAndExpand" />
+
                         </StackLayout>
                     </Frame>
                 </ScrollView>
