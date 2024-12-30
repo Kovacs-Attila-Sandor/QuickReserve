@@ -45,10 +45,5 @@ namespace QuickReserve.Views
                 await DisplayAlert("Error", "User not found", "OK");
             }   
         }
-
-        private async void OnBackToAboutClicked(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new AboutPage());
-        }
     }
 }

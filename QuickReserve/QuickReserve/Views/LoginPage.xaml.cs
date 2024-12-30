@@ -77,6 +77,8 @@ namespace QuickReserve.Views
                 // Ha van naplózási mechanizmus, itt használhatjuk
                 Console.WriteLine($"Login error: {ex}");
             }
+            User user = await userService.GetUserByName(txtUsername.Text);
+            Application.Current.Properties["userId"] = user.UserId;
         }
 
     }

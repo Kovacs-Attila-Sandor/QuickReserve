@@ -289,6 +289,26 @@ namespace QuickReserve.Services
                 return false; // Hiba esetén false
             }
         }
+        public async Task<Table> GetTableById(string restaurantId, string tableId)
+        {
+            try
+            {
+                // Lekérjük az étterem adatokat a Firebase adatbázisból a megadott RestaurantId alapján
+                var restaurant = await GetRestaurantById(restaurantId);
+                if (restaurant != null)
+                {
+                    // Keresés az étterem asztalai között a megadott TableId alapján
+                    var table = restaurant.Tables?.FirstOrDefault(t => t.TableId == tableId);
+                    return table; // Ha megtaláltuk, visszaadjuk az asztalt
+                }
+                return null; // Ha az étterem nem található
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching table by ID: {ex.Message}");
+                return null; // Hiba esetén null-t adunk vissza
+            }
+        }
 
 
     }

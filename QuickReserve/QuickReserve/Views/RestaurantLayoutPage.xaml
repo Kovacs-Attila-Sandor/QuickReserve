@@ -80,22 +80,22 @@
                                     <x:String>00:00-00:30</x:String>
                                     <x:String>00:30-01:00</x:String>
                                     <x:String>01:00-01:30</x:String>
-                                    <x:String>O1:30-02:00</x:String>
+                                    <x:String>01:30-02:00</x:String>
                                     <x:String>02:00-02:30</x:String>
                                     <x:String>02:30-03:00</x:String>
-                                    <x:String>O3:00-03:30</x:String>
+                                    <x:String>03:00-03:30</x:String>
                                     <x:String>03:30-04:00</x:String>
                                     <x:String>04:00-04:30</x:String>
-                                    <x:String>O4:30-05:00</x:String>
+                                    <x:String>04:30-05:00</x:String>
                                     <x:String>05:00-05:30</x:String>
                                     <x:String>05:30-06:00</x:String>
-                                    <x:String>O6:00-06:30</x:String>
+                                    <x:String>06:00-06:30</x:String>
                                     <x:String>06:30-07:00</x:String>
                                     <x:String>07:00-07:30</x:String>
-                                    <x:String>O7:30-08:00</x:String>
+                                    <x:String>07:30-08:00</x:String>
                                     <x:String>08:00-08:30</x:String>
                                     <x:String>08:30-09:00</x:String>
-                                    <x:String>O9:00-09:30</x:String>
+                                    <x:String>09:00-09:30</x:String>
                                     <x:String>09:30-10:00</x:String>
                                     <x:String>10:00-10:30</x:String>
                                     <x:String>10:30-11:00</x:String>

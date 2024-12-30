@@ -55,12 +55,9 @@ namespace QuickReserve.Views
                 return;
             }
 
-            var reservationSummaryPage = new ReservationSummaryPage(ReservationDateTime, TableId, GuestCount)
-            {
-                OrderItems = OrderItems
-            };
-            // Navigálás a ReservationSummaryPage oldalra
-            await Navigation.PushAsync(reservationSummaryPage);   
+            // Navigálás a ReservationSummaryPage oldalra az adatokkal
+            var reservationSummaryPage = new ReservationSummaryPage(OrderItems, ReservationDateTime, TableId, GuestCount);
+            await Navigation.PushAsync(reservationSummaryPage);
         }
     }
 }

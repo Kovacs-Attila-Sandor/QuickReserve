@@ -39,7 +39,7 @@ namespace QuickReserve.Views
             CurrentRestaurant = restaurant;
             MenuItems = restaurant.Foods;
 
-            BindingContext = this;  // Itt van az összekötés a BindingContext-tel
+            BindingContext = this; 
 
             if (!string.IsNullOrEmpty(restaurant.ImageSourceUri?.ToString()))
             {
@@ -64,7 +64,7 @@ namespace QuickReserve.Views
         private async void OnNoPreOrderClicked(object sender, EventArgs e)
         {
             //await DisplayAlert("asd", $"{ReservationDateTime}, {TableId}, {GuestCount}", "OK");
-            await Navigation.PushAsync(new ReservationSummaryPage(ReservationDateTime, TableId, GuestCount));
+            await Navigation.PushAsync(new ReservationSummaryPage(new List<Food>(), ReservationDateTime, TableId, GuestCount));
         }
 
         protected override void OnAppearing()
@@ -176,8 +176,6 @@ namespace QuickReserve.Views
                 ((ListView)sender).SelectedItem = null;
             }
         }
-
-     
 
     }
 }

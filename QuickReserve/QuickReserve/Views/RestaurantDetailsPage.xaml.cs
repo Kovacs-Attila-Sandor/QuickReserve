@@ -15,6 +15,8 @@ namespace QuickReserve.Views
             restaurant = new Restaurant();
             restaurant = selectedRestaurant;
 
+            Application.Current.Properties["restaurantId"] = restaurant.RestaurantId;
+
             // Convert images for the selected restaurant
             selectedRestaurant.ImageSourceList = new List<ImageSource>();
             if (selectedRestaurant.ImageBase64List != null)
@@ -46,9 +48,9 @@ namespace QuickReserve.Views
                 _currentIndex = newIndex;
             }
         }
-        protected void GoToAboutpage(object sender, EventArgs e)
+        protected async void GoToAboutpage(object sender, EventArgs e)
         {
-            App.Current.MainPage = new NavigationPage(new AboutPage());
+            await Navigation.PopAsync();
         }
 
         protected async void GoToRestaurantLayoutpage(object sender, EventArgs e)
