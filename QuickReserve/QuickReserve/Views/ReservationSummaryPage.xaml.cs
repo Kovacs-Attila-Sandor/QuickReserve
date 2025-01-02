@@ -20,6 +20,8 @@ namespace QuickReserve.Views
         public bool IsItemsVisible => OrderItemsForSummaryPage.Count > 0;
         public double TotalAmount => CalculateTotalAmount();
 
+        private RestaurantService _restaurantService;
+
         // Konstruktor
         public ReservationSummaryPage(List<Food> orderItems, string reservationDateTime, string tableId, int guestCount)
         {
@@ -36,6 +38,8 @@ namespace QuickReserve.Views
             GuestCount = guestCount;
             UserId = Application.Current.Properties["userId"].ToString();
             RestaurantId = Application.Current.Properties["restaurantId"].ToString();
+
+            _restaurantService = new RestaurantService();
         }
 
         // Aszinkron műveletek a megjelenéskor
@@ -66,8 +70,7 @@ namespace QuickReserve.Views
         // Tábla információk lekérése
         public async Task<string> GetTableNumber()
         {
-            var restaurantService = new RestaurantService();
-            Table selectedTable = await restaurantService.GetTableById(RestaurantId, TableId);
+            Table selectedTable = await _restaurantService.GetTableById(RestaurantId, TableId);
             return selectedTable.TableNumber.ToString();
         }
 
@@ -81,24 +84,28 @@ namespace QuickReserve.Views
                 TableId = this.TableId,
                 ReservationDateTime = this.ReservationDateTime,
                 GuestCount = this.GuestCount,
-                CreatedAt = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") // Létrehozás ideje
+                CreatedAt = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"),
+                Foods = this.OrderItemsForSummaryPage,
+                Status = "In progress",
+                TableNumber = this.TableNumber
             };
 
             try
             {
                 // Foglalás mentése az adatbázisba
                 ReservationService reservationService = new ReservationService();
-                await reservationService.AddReservation(reservation); // Aszinkron művelet
+                await reservationService.AddReservation(reservation);
 
-                // Ha sikeres a foglalás mentése, akkor kiürítjük a rendelési tételeket
-                OrderItemsForSummaryPage.Clear();
-                OrderItemsListView.ItemsSource = null; // Frissítjük a ListView-t
+                await _restaurantService.MarkTableAsReserved(RestaurantId, TableId);
 
                 // Üzenet a felhasználónak a sikeres véglegesítésről
                 await DisplayAlert("Success", "Your reservation has been finalized!", "OK");
 
-                // Opcióként navigálhatunk egy másik oldalra (pl. főoldal)
                 await Navigation.PushAsync(new AboutPage());
+
+                // Ha sikeres a foglalás mentése, akkor kiürítjük a rendelési tételeket
+                OrderItemsForSummaryPage.Clear();
+                OrderItemsListView.ItemsSource = null; // Frissítjük a ListView-t
             }
             catch (Exception ex)
             {

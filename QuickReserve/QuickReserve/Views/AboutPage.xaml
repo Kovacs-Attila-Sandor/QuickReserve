@@ -1,89 +1,133 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="QuickReserve.Views.AboutPage"
-             NavigationPage.HasNavigationBar="False"
-             BackgroundColor="White">
+﻿<ContentPage
+    x:Class="QuickReserve.Views.AboutPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    BackgroundColor="#121212"
+    BackgroundImageSource="background1.png"
+    NavigationPage.HasNavigationBar="False">
 
     <ContentPage.Content>
-        <RelativeLayout>
+        <StackLayout Padding="20">
 
-            <!-- Background Image -->
-            <Image
-                Aspect="AspectFill"
-                Source="background1.png"
-                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
-                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
-                IsEnabled="False" />
+            <!--  ActivityIndicator középre helyezése  -->
+            <ActivityIndicator
+                x:Name="loadingIndicator"
+                Margin="0,30,0,0"
+                HeightRequest="50"
+                HorizontalOptions="Center"
+                IsRunning="True"
+                IsVisible="True"
+                VerticalOptions="Center"
+                WidthRequest="50"
+                Color="#3498db" />
 
-            <!-- Main Content -->
-            <StackLayout Orientation="Vertical" Padding="20" Spacing="20"
-                         RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
-                         RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}">
+            <!--  Loading szöveg  -->
+            <Label
+                x:Name="LoadingLabel"
+                FontAttributes="Bold"
+                FontSize="18"
+                HorizontalOptions="Center"
+                Text="The Restaurants are loading..."
+                TextColor="#e7e2e3"
+                VerticalOptions="Center" />
 
-                <!-- Profile Button -->
-                <Frame Padding="0" 
-                       HasShadow="True" 
-                       CornerRadius="50" 
-                       BorderColor="Transparent" 
-                       BackgroundColor="#2980b9" 
-                       HeightRequest="60" 
-                       WidthRequest="200" 
-                       VerticalOptions="Start"
-                       HorizontalOptions="End">
-                    <Button Text="Profile" 
-                            TextColor="White" 
-                            FontSize="18" 
-                            FontAttributes="Bold" 
-                            BackgroundColor="Transparent" 
-                            Clicked="GoToProfilePage" />
-                </Frame>
+            <!--  Fő tartalom  -->
+            <StackLayout
+                Orientation="Vertical"
+                Spacing="20"
+                VerticalOptions="FillAndExpand">
 
-                <!-- Restaurant List -->
-                <ListView x:Name="lstmoments"
-                          HasUnevenRows="True" 
-                          SeparatorVisibility="None"
-                          BackgroundColor="Transparent"
-                          SelectionMode="None"
-                          ItemTapped="OnItemTapped">
+                <!--  Fejléc gombok  -->
+                <Grid
+                    x:Name="Buttons"
+                    ColumnSpacing="20"
+                    HorizontalOptions="Center"
+                    IsVisible="False">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <Frame
+                        Grid.Column="0"
+                        Padding="0"
+                        BackgroundColor="#3498db"
+                        CornerRadius="30"
+                        HasShadow="True"
+                        HeightRequest="50"
+                        WidthRequest="150">
+                        <Button
+                            BackgroundColor="Transparent"
+                            Clicked="GoToProfilePage"
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            Text="Profile"
+                            TextColor="White" />
+                    </Frame>
+
+                    <Frame
+                        Grid.Column="1"
+                        Padding="0"
+                        BackgroundColor="#3498db"
+                        CornerRadius="30"
+                        HasShadow="True"
+                        HeightRequest="50"
+                        WidthRequest="200">
+                        <Button
+                            BackgroundColor="Transparent"
+                            Clicked="GoToReservations"
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            Text="Reservations"
+                            TextColor="White" />
+                    </Frame>
+                </Grid>
+
+                <!--  Étterem lista  -->
+                <ListView
+                    x:Name="lstmoments"
+                    BackgroundColor="Transparent"
+                    HasUnevenRows="True"
+                    IsVisible="False"
+                    ItemTapped="OnItemTapped"
+                    SeparatorVisibility="None">
+
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <Frame Padding="15" 
-                                       HasShadow="True" 
-                                       CornerRadius="20" 
-                                       BackgroundColor="DimGray" 
-                                       Margin="10">
-                                    <StackLayout Orientation="Vertical" Spacing="15">
+                                <Frame
+                                    Margin="10"
+                                    Padding="15"
+                                    BackgroundColor="#2c3e50"
+                                    CornerRadius="20"
+                                    HasShadow="True">
+                                    <StackLayout Orientation="Vertical" Spacing="10">
 
-                                        <!-- Restaurant Image -->
-                                        <Frame WidthRequest="200"  
-                                               HeightRequest="200"
-                                               CornerRadius="20"
-                                               HasShadow="True"
-                                               BackgroundColor="White"
-                                               Padding="0">
-                                            <Image WidthRequest="200"  
-                                                   HeightRequest="200"
-                                                   VerticalOptions="FillAndExpand"  
-                                                   HorizontalOptions="FillAndExpand"
-                                                   Source="{Binding ImageSourceUri}" 
-                                                   Aspect="AspectFill" />
-                                        </Frame>
+                                        <!--  Étterem kép  -->
+                                        <Image
+                                            Aspect="AspectFill"
+                                            HeightRequest="150"
+                                            Source="{Binding ImageSourceUri}"
+                                            VerticalOptions="FillAndExpand" />
 
-                                        <!-- Restaurant Details -->
-                                        <Label Text="{Binding Name}" 
-                                               FontSize="22" 
-                                               TextColor="GhostWhite" 
-                                               FontAttributes="Bold" 
-                                               LineBreakMode="TailTruncation"
-                                               Margin="0,0,0,5"/>
-                                        <Label Text="{Binding ShortDescription}"
-                                               FontSize="14" 
-                                               TextColor="#f39c12" />
-                                        <Label Text="{Binding Rating, StringFormat='Rating: {0}'}"
-                                               FontSize="14" 
-                                               TextColor="#f39c12" />
+                                        <!--  Étterem részletek  -->
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="18"
+                                            Text="{Binding Name}"
+                                            TextColor="White" />
+                                        <!--  Fehér szöveg a sötét háttéren  -->
+                                        <Label
+                                            FontSize="14"
+                                            Text="{Binding ShortDescription}"
+                                            TextColor="#bdc3c7" />
+                                        <!--  Világos szöveg  -->
+                                        <Label
+                                            FontSize="14"
+                                            Text="{Binding Rating, StringFormat='Rating: {0:N1}'}"
+                                            TextColor="#f39c12" />
+                                        <!--  Arany szín a pontozásra  -->
                                     </StackLayout>
                                 </Frame>
                             </ViewCell>
@@ -92,6 +136,6 @@
                 </ListView>
 
             </StackLayout>
-        </RelativeLayout>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

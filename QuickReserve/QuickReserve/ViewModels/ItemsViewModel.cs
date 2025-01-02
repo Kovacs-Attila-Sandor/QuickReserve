@@ -22,6 +22,6 @@ namespace QuickReserve.ViewModels
             await Shell.Current.GoToAsync(nameof(NewItemPage));
         }
 
-    
+  
     }
 }

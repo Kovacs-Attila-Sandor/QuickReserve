@@ -1,0 +1,143 @@
+﻿<ContentPage
+    x:Class="QuickReserve.Views.RestaurantReservationsPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    BackgroundColor="#2d3436">
+
+    <ContentPage.Content>
+
+        <ScrollView Padding="15">
+            <StackLayout Spacing="20">
+
+                <!--  Header  -->
+                <Label
+                    Margin="0,10,0,20"
+                    FontAttributes="Bold"
+                    FontSize="28"
+                    HorizontalOptions="Center"
+                    Text="Reservations"
+                    TextColor="#ecf0f1" />
+                <Button
+                    Padding="10"
+                    BackgroundColor="#1abc9c"
+                    BorderWidth="0"
+                    Clicked="OnViewDoneReservationsClicked"
+                    CornerRadius="25"
+                    FontSize="14"
+                    HorizontalOptions="FillAndExpand"
+                    Text="View Reservations history"
+                    TextColor="White" />
+
+                <!--  Reservation List  -->
+                <ListView
+                    x:Name="ReservationsListView"
+                    Margin="0,0,0,10"
+                    BackgroundColor="Transparent"
+                    HasUnevenRows="True"
+                    ItemsSource="{Binding Reservations}"
+                    SelectionMode="None"
+                    SeparatorVisibility="None">
+
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Frame
+                                    Margin="0,10"
+                                    Padding="15"
+                                    BackgroundColor="#34495e"
+                                    BorderColor="#7f8c8d"
+                                    CornerRadius="12"
+                                    HasShadow="True"
+                                    HorizontalOptions="FillAndExpand"
+                                    Visual="Material">
+
+                                    <StackLayout Spacing="10" VerticalOptions="Start">
+
+                                        <!--  Reservation Details  -->
+                                        <StackLayout Orientation="Horizontal" Spacing="12">
+                                            <Label
+                                                FontAttributes="Bold"
+                                                FontSize="16"
+                                                Text="{Binding ReservationDateTime, StringFormat='Date: {0}'}"
+                                                TextColor="#ecf0f1" />
+                                            <Label
+                                                FontSize="14"
+                                                Text="{Binding GuestCount, StringFormat='| Guests: {0}'}"
+                                                TextColor="#1abc9c" />
+                                        </StackLayout>
+
+                                        <!--  Table Information  -->
+                                        <Label
+                                            FontSize="14"
+                                            Text="{Binding TableNumber, StringFormat='Table Number: {0}'}"
+                                            TextColor="#bdc3c7" />
+
+                                        <!--  Show Food Items Only If Available  -->
+                                        <Frame
+                                            Margin="0,10"
+                                            Padding="15"
+                                            BackgroundColor="#36454F"
+                                            BorderColor="#1abc9c"
+                                            CornerRadius="10"
+                                            HorizontalOptions="Fill"
+                                            IsVisible="{Binding HasFoods}"
+                                            VerticalOptions="Start">
+
+                                            <StackLayout>
+                                                <BindableLayout.ItemsSource>
+                                                    <Binding Path="Foods" />
+                                                </BindableLayout.ItemsSource>
+                                                <BindableLayout.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Frame
+                                                            Margin="0,5"
+                                                            Padding="15"
+                                                            BackgroundColor="#34495e"
+                                                            BorderColor="LightGray"
+                                                            CornerRadius="10"
+                                                            HorizontalOptions="Fill"
+                                                            VerticalOptions="Start">
+                                                            <StackLayout Orientation="Horizontal" Spacing="15">
+
+                                                                <StackLayout Spacing="5" VerticalOptions="Center">
+                                                                    <Label
+                                                                        FontAttributes="Bold"
+                                                                        FontSize="20"
+                                                                        Text="{Binding Name}"
+                                                                        TextColor="White" />
+                                                                    <Label
+                                                                        FontSize="16"
+                                                                        Text="{Binding Price, StringFormat='Price: {0} €'}"
+                                                                        TextColor="#1abc9c" />
+                                                                </StackLayout>
+
+                                                            </StackLayout>
+                                                        </Frame>
+                                                    </DataTemplate>
+                                                </BindableLayout.ItemTemplate>
+                                            </StackLayout>
+                                        </Frame>
+
+                                        <!--  Mark As Done Button  -->
+                                        <Button
+                                            Padding="10"
+                                            BackgroundColor="#1abc9c"
+                                            BorderWidth="0"
+                                            Clicked="OnMarkAsDoneClicked"
+                                            CornerRadius="25"
+                                            FontSize="14"
+                                            HorizontalOptions="Center"
+                                            IsVisible="{Binding IsDoneVisible}"
+                                            Text="Mark As Done"
+                                            TextColor="White" />
+
+                                    </StackLayout>
+                                </Frame>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

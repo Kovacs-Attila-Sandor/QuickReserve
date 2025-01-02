@@ -34,11 +34,10 @@ namespace QuickReserve.Views
             }
 
             // Extract tables from the restaurant
-            List<(int row, int col)> tables = new List<(int, int)>();
-            for (int i = 0; i < restaurant.Tables.Count; i++)
+            List<(int row, int col, string status)> tables = new List<(int, int, string)>();
+            foreach (var table in restaurant.Tables)
             {
-                var table = (restaurant.Tables[i].Location.Row, restaurant.Tables[i].Location.Column);
-                tables.Add(table);
+                tables.Add((table.Location.Row, table.Location.Column, table.AvailabilityStatus));
             }
 
             // Add 10x6 buttons dynamically
@@ -62,11 +61,16 @@ namespace QuickReserve.Views
                     };
 
                     // Check if the current position matches a table
-                    if (tables.Exists(t => t.row == row && t.col == col))
+                    var table = tables.FirstOrDefault(t => t.row == row && t.col == col);
+                    if (table != default)
                     {
-                        button.IsEnabled = true;
-                        button.BorderColor = Color.Green;
-                        button.Clicked += OnButtonClicked;
+                        // Beállítjuk a gomb tulajdonságait a státusz alapján
+                        button.IsEnabled = table.status == "Available";
+                        button.BorderColor = table.status == "Available" ? Color.Green : Color.Red;
+                        if (table.status == "Available")
+                        {
+                            button.Clicked += OnButtonClicked;
+                        }
                     }
                     else
                     {
@@ -79,6 +83,7 @@ namespace QuickReserve.Views
                 }
             }
         }
+
 
         private async void OnButtonClicked(object sender, EventArgs e)
         {
@@ -113,9 +118,9 @@ namespace QuickReserve.Views
             }
         }
 
-        protected void GoToAboutPage(object sender, EventArgs e)
+        protected async void GoToAboutPage(object sender, EventArgs e)
         {
-            App.Current.MainPage = new NavigationPage(new AboutPage());
+            await Navigation.PopAsync();
         }
 
         protected async void ConfirmButton(object sender, EventArgs e)

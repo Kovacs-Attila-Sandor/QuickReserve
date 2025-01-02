@@ -11,30 +11,6 @@ namespace QuickReserve.Services
 {
     public class RestaurantService
     {
-        // Étterem hozzáadása a Firebase adatbázishoz
-        public async Task<bool> addRestaurant(Restaurant restaurant)
-        {
-            try
-            {
-                // Az új étterem ID-jának automatikus generálása
-                restaurant.RestaurantId = Guid.NewGuid().ToString();
-
-                // Étterem adatainak mentése a "Restaurant" gyűjteménybe a RestaurantId alapján
-                await FirebaseService
-                    .Client
-                    .Child("Restaurant")  // "Restaurant" gyűjtemény
-                    .Child(restaurant.RestaurantId.ToString())  // Az int típusú RestaurantId stringgé konvertálva
-                    .PutAsync(JsonConvert.SerializeObject(restaurant));  // Az adatokat JSON formátumban mentjük
-
-                return true;  // Ha sikeres volt a mentés
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error adding restaurant: {ex.Message}");
-                return false;  // Hiba esetén false
-            }
-        }
-
         // Étterem lekérése a Firebase-ből a RestaurantId alapján
         public async Task<Restaurant> GetRestaurantById(string restaurantId)
         {
@@ -134,6 +110,7 @@ namespace QuickReserve.Services
                 return false; // Hiba esetén false
             }
         }
+
         public async Task<bool> AddTablesToRestaurant(string restaurantId, List<Table> tables)
         {
             try
@@ -289,6 +266,7 @@ namespace QuickReserve.Services
                 return false; // Hiba esetén false
             }
         }
+
         public async Task<Table> GetTableById(string restaurantId, string tableId)
         {
             try
@@ -310,6 +288,44 @@ namespace QuickReserve.Services
             }
         }
 
+        public async Task<bool> MarkTableAsReserved(string restaurantId, string tableId)
+        {
+            try
+            {
+                // Lekérjük az adott éttermet
+                var restaurant = await GetRestaurantById(restaurantId);
+                if (restaurant != null)
+                {
+                    // Megkeressük az asztalt a Tables listában
+                    var table = restaurant.Tables?.FirstOrDefault(t => t.TableId == tableId);
+                    if (table != null)
+                    {
+                        // Állapot frissítése "Reserved"-re
+                        table.AvailabilityStatus = "Reserved";
+
+                        // Frissítjük az étterem adatait a Firebase adatbázisban
+                        await FirebaseService
+                            .Client
+                            .Child("Restaurant")
+                            .Child(restaurantId)
+                            .PutAsync(JsonConvert.SerializeObject(restaurant));
+
+                        return true; // Sikeres frissítés
+                    }
+
+                    Console.WriteLine($"Table with ID {tableId} not found.");
+                    return false; // Ha az asztal nem található
+                }
+
+                Console.WriteLine($"Restaurant with ID {restaurantId} not found.");
+                return false; // Ha az étterem nem található
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error marking table as reserved: {ex.Message}");
+                return false; // Hiba esetén false
+            }
+        }
 
     }
 }

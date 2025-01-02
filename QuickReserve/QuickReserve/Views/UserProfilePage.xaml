@@ -1,86 +1,117 @@
-﻿<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="QuickReserve.Views.UserProfilePage"
-             BackgroundColor="#f5f5f5"
-             Title="Profile">
+﻿<ContentPage
+    x:Class="QuickReserve.Views.UserProfilePage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Profile"
+    BackgroundColor="#2c3e50">
+
+    <!--  White text for navbar  -->
 
     <ContentPage.Content>
-        <StackLayout Padding="20" Spacing="20" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+        <StackLayout
+            Padding="20"
+            HorizontalOptions="FillAndExpand"
+            Spacing="20"
+            VerticalOptions="FillAndExpand">
 
-            
-
-            <!-- Profile Picture -->
-            <Frame HasShadow="True" CornerRadius="60" Padding="0" HorizontalOptions="Center" VerticalOptions="Start" HeightRequest="160">
-                <Image Source="{Binding User.ProfileImageSource}"
-                       Aspect="AspectFill"
-                       WidthRequest="160"
-                       HeightRequest="160" />
+            <!--  Profile Picture  -->
+            <Frame
+                Padding="0"
+                CornerRadius="60"
+                HasShadow="True"
+                HeightRequest="160"
+                HorizontalOptions="Center"
+                VerticalOptions="Start">
+                <Image
+                    Aspect="AspectFill"
+                    HeightRequest="160"
+                    Source="{Binding user.ProfileImageSource}"
+                    WidthRequest="160" />
             </Frame>
 
-            <!-- User Information Card -->
-            <Frame BackgroundColor="White" CornerRadius="20" Padding="20" HasShadow="True" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
+            <!--  User Information Card  -->
+            <Frame
+                Padding="20"
+                BackgroundColor="#34495e"
+                CornerRadius="20"
+                HasShadow="True"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="Center">
                 <StackLayout Spacing="15">
-                    <!-- Name -->
-                    <Label Text="{Binding User.Name}" 
-                           FontSize="28" 
-                           FontAttributes="Bold" 
-                           TextColor="#2c3e50" 
-                           HorizontalOptions="Center" />
+                    <!--  Name  -->
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="28"
+                        HorizontalOptions="Center"
+                        Text="{Binding user.Name}"
+                        TextColor="White" />
 
-                    <!-- Email -->
+                    <!--  Email  -->
                     <StackLayout Orientation="Horizontal" Spacing="10">
-                        <Label Text="Email:" 
-                               FontSize="20" 
-                               TextColor="#7f8c8d" 
-                               FontAttributes="Bold" />
-                        <Label Text="{Binding User.Email}" 
-                               FontSize="20" 
-                               TextColor="#34495e" />
-                    </StackLayout>
-
-                    <!-- Phone Number -->
-                    <StackLayout Orientation="Horizontal" Spacing="10">
-                        <Label Text="Phone:" 
-                               FontSize="20" 
-                               TextColor="#7f8c8d" 
-                               FontAttributes="Bold" />
-                        <Label Text="{Binding User.PhoneNumber}" 
-                               FontSize="20" 
-                               TextColor="#34495e" />
-                    </StackLayout>
-
-                    <!-- Role -->
-                    <StackLayout Orientation="Horizontal" Spacing="10">
-                        <Label Text="Role:" 
-                               FontSize="20" 
-                               TextColor="#7f8c8d" 
-                               FontAttributes="Bold" />
-                        <Label Text="{Binding User.Role}" 
-                               FontSize="20" 
-                               TextColor="#34495e" />
-                    </StackLayout>
-
-                    <!-- Created At -->
-                    <StackLayout Orientation="Horizontal" Spacing="10">
-                        <Label Text="Member Since:" 
-                               FontSize="20" 
-                               TextColor="#7f8c8d" 
-                               FontAttributes="Bold" />
-                        <Label Text="{Binding User.CreatedAt}" 
-                               FontSize="20" 
-                               TextColor="#34495e" />
-                    </StackLayout>
-                    
-                    <!-- Edit Profile Button -->
-                    <Button Text="Edit Profile"
+                        <Label
+                            FontAttributes="Bold"
                             FontSize="20"
-                            TextColor="White"
-                            BackgroundColor="#2980b9"
-                            CornerRadius="30"
-                            HorizontalOptions="Center" 
-                            WidthRequest="250"
-                            Padding="10" />
-                    
+                            Text="Email:"
+                            TextColor="#bdc3c7" />
+                        <Label
+                            FontSize="20"
+                            Text="{Binding user.Email}"
+                            TextColor="White" />
+                        <!--  White text for details  -->
+                    </StackLayout>
+
+                    <!--  Phone Number  -->
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="20"
+                            Text="Phone:"
+                            TextColor="#bdc3c7" />
+                        <Label
+                            FontSize="20"
+                            Text="{Binding user.PhoneNumber}"
+                            TextColor="White" />
+                    </StackLayout>
+
+                    <!--  Role  -->
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="20"
+                            Text="Role:"
+                            TextColor="#bdc3c7" />
+                        <Label
+                            FontSize="20"
+                            Text="{Binding user.Role}"
+                            TextColor="White" />
+                    </StackLayout>
+
+                    <!--  Created At  -->
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="20"
+                            Text="Member Since:"
+                            TextColor="#bdc3c7" />
+                        <Label
+                            FontSize="20"
+                            Text="{Binding user.CreatedAt}"
+                            TextColor="White" />
+                    </StackLayout>
+
+                    <!--  Edit Profile Button  -->
+                    <Button
+                        Padding="10"
+                        BackgroundColor="#2980b9"
+                        Clicked="OnEditProfileClicked"
+                        CornerRadius="30"
+                        FontSize="20"
+                        HorizontalOptions="Center"
+                        Text="Edit Profile"
+                        TextColor="White"
+                        WidthRequest="250" />
+                    <!--  Edit profile button event handler  -->
+
                 </StackLayout>
             </Frame>
         </StackLayout>

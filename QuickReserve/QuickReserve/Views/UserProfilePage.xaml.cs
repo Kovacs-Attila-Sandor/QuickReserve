@@ -1,7 +1,7 @@
 ﻿using System;
 using Xamarin.Forms;
-using QuickReserve.Services; 
-using QuickReserve.Models;   
+using QuickReserve.Services;
+using QuickReserve.Models;
 using QuickReserve.Converter;
 using System.IO;
 using System.Reflection;
@@ -10,7 +10,7 @@ namespace QuickReserve.Views
 {
     public partial class UserProfilePage : ContentPage
     {
-        public User User { get; set; }
+        public User user { get; set; }
 
         public UserProfilePage(string userName)
         {
@@ -21,29 +21,35 @@ namespace QuickReserve.Views
         private async void LoadUserData(string userName)
         {
             var userService = new UserService();
-            User = await userService.GetUserByName(userName);
+            user = await userService.GetUserByName(userName);
 
-            if (User != null)
+            if (user != null)
             {
-                // Ha a felhasználó nem rendelkezik profilképpel, használjuk a placeholder képet
-                if (string.IsNullOrEmpty(User.ProfileImage))
+                // If the user doesn't have a profile image, use the placeholder image
+                if (string.IsNullOrEmpty(user.ProfileImage))
                 {
-                    User.ProfileImageSource = ImageSource.FromFile("placeholder.jpg");
+                    user.ProfileImageSource = ImageSource.FromFile("placeholder.jpg");
                 }
                 else
                 {
-                    // Ha van profilkép, azt használjuk
-                    User.ProfileImageSource = ImageSource.FromStream(() =>
-                        new MemoryStream(Convert.FromBase64String(User.ProfileImage)));
+                    // If the user has a profile image, use it
+                    user.ProfileImageSource = ImageSource.FromStream(() =>
+                        new MemoryStream(Convert.FromBase64String(user.ProfileImage)));
                 }
 
-                
-                BindingContext = this; // Adatok megjelenítése
+                BindingContext = this; // Set data binding
             }
             else
             {
                 await DisplayAlert("Error", "User not found", "OK");
-            }   
+            }
+        }
+
+        // Edit profile button click handler
+        private async void OnEditProfileClicked(object sender, EventArgs e)
+        {
+            // Navigate to the edit profile page
+            await Navigation.PushAsync(new EditUserProfilePage(user));
         }
     }
 }

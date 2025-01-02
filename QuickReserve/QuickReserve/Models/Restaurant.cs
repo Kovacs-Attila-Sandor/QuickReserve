@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
 
@@ -18,6 +19,7 @@ namespace QuickReserve.Models
 
         // Több kép Base64 kódolva
         public List<string> ImageBase64List { get; set; } = new List<string>();
+        [JsonIgnore]
         public string FirstImageBase64
         {
             get

@@ -6,16 +6,34 @@ using System.Collections.Generic;
 using System.IO;
 using QuickReserve.Converter;
 using System.Windows.Input;
+using System.Threading.Tasks;
 
 namespace QuickReserve.Views
 {
     public partial class AboutPage : ContentPage
     {
+        private UserService _userService;
+        private RestaurantService _restaurantService;
+        private Restaurant _restaurant;
         public AboutPage()
         {
             InitializeComponent();
-            BindingContext = this; 
+            BindingContext = this;
             DisplayRestaurants();
+            _userService = new UserService();
+            _restaurantService = new RestaurantService();
+
+            InitializeRestaurant();
+        }
+
+        private async void InitializeRestaurant()
+        {
+            string restaurnatName = App.Current.Properties["LoggedInUserName"].ToString();
+            _restaurant = await _restaurantService.GetRestaurantByName(restaurnatName);
+            lstmoments.IsVisible = true;
+            Buttons.IsVisible = true;
+            loadingIndicator.IsVisible = false;
+            LoadingLabel.IsVisible = false;
         }
 
         // Method to navigate to the profile page
@@ -74,6 +92,19 @@ namespace QuickReserve.Views
              // A ListView automatikus kijelölésének eltávolítása
              ((ListView)sender).SelectedItem = null;
         }
-        
+
+        private async void GoToReservations(object sender, EventArgs e)
+        {
+            var userId = App.Current.Properties["userId"].ToString();
+            User user = await _userService.GetUserById(userId);
+            if (user.Role == "RESTAURANT")
+            {
+                await Navigation.PushAsync(new RestaurantReservationsPage(_restaurant.RestaurantId));
+            }
+            else
+            {
+                await Navigation.PushAsync(new UserReservationsPage(userId));
+            }
+        }
     }
 }

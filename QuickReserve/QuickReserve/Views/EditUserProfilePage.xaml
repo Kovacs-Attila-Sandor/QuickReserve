@@ -1,0 +1,83 @@
+﻿<ContentPage
+    x:Class="QuickReserve.Views.EditUserProfilePage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Edit Profile"
+    BackgroundColor="#2c3e50">
+
+    <ContentPage.Content>
+        <StackLayout
+            Padding="20"
+            HorizontalOptions="FillAndExpand"
+            Spacing="20"
+            VerticalOptions="FillAndExpand">
+
+            <!--  Profile Picture  -->
+            <Frame
+                Padding="0"
+                CornerRadius="60"
+                HasShadow="True"
+                HeightRequest="160"
+                HorizontalOptions="Center"
+                VerticalOptions="Start">
+                <Image
+                    Aspect="AspectFill"
+                    HeightRequest="160"
+                    Source="{Binding ProfileImageSource}"
+                    WidthRequest="160" />
+            </Frame>
+
+            <!--  user Information Edit Form  -->
+            <Frame
+                Padding="20"
+                BackgroundColor="#34495e"
+                CornerRadius="20"
+                HasShadow="True"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="Center">
+                <StackLayout Spacing="15">
+
+                    <!--  Name  -->
+                    <Entry
+                        x:Name="NameEntry"
+                        FontSize="20"
+                        Placeholder="Enter your name"
+                        PlaceholderColor="#bdc3c7"
+                        Text="{Binding Name}"
+                        TextColor="White" />
+
+                    <!--  Email  -->
+                    <Entry
+                        x:Name="EmailEntry"
+                        FontSize="20"
+                        Placeholder="Enter your email"
+                        PlaceholderColor="#bdc3c7"
+                        Text="{Binding Email}"
+                        TextColor="White" />
+
+                    <!--  Phone Number  -->
+                    <Entry
+                        x:Name="PhoneNumberEntry"
+                        FontSize="20"
+                        Placeholder="Enter your phone number"
+                        PlaceholderColor="#bdc3c7"
+                        Text="{Binding PhoneNumber}"
+                        TextColor="White" />
+
+                    <!--  Save Button  -->
+                    <Button
+                        Padding="10"
+                        BackgroundColor="#2980b9"
+                        Clicked="OnSaveChangesClicked"
+                        CornerRadius="30"
+                        FontSize="20"
+                        HorizontalOptions="Center"
+                        Text="Save Changes"
+                        TextColor="White"
+                        WidthRequest="250" />
+
+                </StackLayout>
+            </Frame>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
