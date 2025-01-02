@@ -177,7 +177,7 @@
                                                 <Button
                                                     Clicked="OnEditMenuClicked"
                                                     CommandParameter="{Binding FoodId}"
-                                                    Text="Edit Menu" />
+                                                    Text="Edit" />
                                             </StackLayout>
                                         </StackLayout>
                                     </Frame>

@@ -80,7 +80,6 @@ namespace QuickReserve.Services
                 return null;  // Hiba esetén null-t adunk vissza
             }
         }
-
         public async Task<bool> ValidateUserCredentials(string userName, string password)
         {
             try

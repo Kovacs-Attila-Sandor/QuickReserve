@@ -2,42 +2,65 @@
     x:Class="QuickReserve.Views.OrderPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Title="Your Order">
+    Title="Your Order"
+    BackgroundColor="#f9f9f9">
 
-    <StackLayout Padding="10">
+    <!--  StackLayout beállítva a ContentPage Content tulajdonságaként  -->
+    <StackLayout Padding="15" Spacing="20">
 
-        <!--  Rendelés listája  -->
-        <ListView
-            HasUnevenRows="True"
-            ItemsSource="{Binding OrderItems}"
-            SeparatorColor="#DDD">
+        <!--  ListView a rendelési tételekhez  -->
+        <ListView HasUnevenRows="True" ItemsSource="{Binding OrderItems}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
                         <StackLayout
-                            Padding="10"
+                            Padding="15"
+                            BackgroundColor="White"
                             Orientation="Horizontal"
-                            Spacing="20"
-                            VerticalOptions="Center">
+                            Spacing="20">
+                            <!--  Étkezés neve  -->
                             <Label
                                 FontAttributes="Bold"
                                 FontSize="18"
                                 Text="{Binding Name}"
-                                TextColor="#2C3E50" />
+                                TextColor="#2C3E50"
+                                VerticalOptions="Center" />
+                            <!--  Ár  -->
                             <Label
-                                FontSize="14"
-                                Text="{Binding Description}"
-                                TextColor="#7F8C8D" />
-                            <Label
-                                FontAttributes="Bold"
                                 FontSize="16"
+                                HorizontalOptions="EndAndExpand"
                                 Text="{Binding Price, StringFormat='{0} €'}"
-                                TextColor="#2C3E50" />
+                                TextColor="#7F8C8D"
+                                VerticalOptions="Center" />
+                            <!--  Törlés gomb  -->
+                            <Button
+                                Padding="10,5"
+                                BackgroundColor="#e74c3c"
+                                Clicked="OnRemoveItemClicked"
+                                CornerRadius="5"
+                                HorizontalOptions="End"
+                                Text="Remove"
+                                TextColor="White"
+                                VerticalOptions="Center" />
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
 
+        <!--  A rendelés leadása gomb  -->
+        <Button
+            Padding="12"
+            BackgroundColor="#28a745"
+            Clicked="OnPlaceOrderClicked"
+            CornerRadius="10"
+            FontSize="18"
+            HeightRequest="50"
+            HorizontalOptions="FillAndExpand"
+            Text="Confirm Reservation"
+            TextColor="White"
+            VerticalOptions="End" />
+
     </StackLayout>
+
 </ContentPage>

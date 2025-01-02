@@ -1,21 +1,13 @@
 ﻿<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="QuickReserve.Views.UserProfilePage"
-             BackgroundColor="#f5f5f5">
+             BackgroundColor="#f5f5f5"
+             Title="Profile">
 
     <ContentPage.Content>
         <StackLayout Padding="20" Spacing="20" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
 
-            <!-- Back to AboutPage Button -->
-            <Button Text="Back to About"
-                FontSize="16"
-                TextColor="White"
-                BackgroundColor="#e74c3c"
-                CornerRadius="20"
-                WidthRequest="150"
-                Padding="10"
-                HorizontalOptions="Start"
-                Clicked="OnBackToAboutClicked" />
+            
 
             <!-- Profile Picture -->
             <Frame HasShadow="True" CornerRadius="60" Padding="0" HorizontalOptions="Center" VerticalOptions="Start" HeightRequest="160">

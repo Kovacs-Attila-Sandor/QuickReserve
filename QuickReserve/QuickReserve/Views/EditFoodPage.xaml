@@ -5,22 +5,46 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Edit Food">
 
+    <!--  Fő tartalom  -->
     <StackLayout Padding="20" Spacing="15">
         <Label
             FontSize="24"
             HorizontalOptions="Center"
             Text="Edit Food" />
 
-        <Entry x:Name="foodNameEntry" Placeholder="Food Name" />
-        <Entry
-            x:Name="foodPriceEntry"
-            Keyboard="Numeric"
-            Placeholder="Price" />
-        <Entry x:Name="foodDescriptionEntry" Placeholder="Description" />
+        <!--  Töltőképernyő  -->
+        <ActivityIndicator
+            x:Name="loadingIndicator"
+            HorizontalOptions="Center"
+            IsRunning="True"
+            IsVisible="True"
+            VerticalOptions="CenterAndExpand"
+            Color="Blue" />
 
-        <StackLayout HorizontalOptions="Center" Orientation="Horizontal">
-            <Button Clicked="OnSaveClicked" Text="Save" />
-            <Button Clicked="OnCancelClicked" Text="Cancel" />
+        <!--  Fő űrlap (alapból rejtve betöltés közben)  -->
+        <StackLayout x:Name="mainContent" IsVisible="False">
+            <Entry x:Name="foodNameEntry" Placeholder="Food Name" />
+            <Entry
+                x:Name="foodPriceEntry"
+                Keyboard="Numeric"
+                Placeholder="Price" />
+            <Entry x:Name="foodDescriptionEntry" Placeholder="Description" />
+
+            <Image
+                x:Name="foodImage"
+                Aspect="AspectFill"
+                HeightRequest="200"
+                HorizontalOptions="Center" />
+
+            <Button
+                Clicked="OnChooseImageClicked"
+                HorizontalOptions="Center"
+                Text="Choose Image" />
+
+            <StackLayout HorizontalOptions="Center" Orientation="Horizontal">
+                <Button Clicked="OnSaveClicked" Text="Save" />
+                <Button Clicked="OnCancelClicked" Text="Cancel" />
+            </StackLayout>
         </StackLayout>
     </StackLayout>
 </ContentPage>
