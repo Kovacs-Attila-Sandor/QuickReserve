@@ -84,6 +84,10 @@
                                             VerticalOptions="Start">
 
                                             <StackLayout>
+                                                <Label
+                                                    FontSize="20"
+                                                    Text="Ordered foods:"
+                                                    TextColor="#bdc3c7" />
                                                 <BindableLayout.ItemsSource>
                                                     <Binding Path="Foods" />
                                                 </BindableLayout.ItemsSource>

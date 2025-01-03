@@ -1,0 +1,307 @@
+﻿<ContentPage
+    x:Class="QuickReserve.Views.RestaurantProfilePage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:conv="clr-namespace:QuickReserve.Converter"
+    xmlns:local="clr-namespace:QuickReserve.Views"
+    Title="Restaurant Profile"
+    BackgroundColor="#1C1C1C">
+
+    <ContentPage.Content>
+        <ScrollView Padding="20" BackgroundColor="#1C1C1C">
+            <!--  Dark background for scrollview  -->
+            <StackLayout Spacing="15">
+                <!--  Loading Indicator  -->
+                <ActivityIndicator
+                    x:Name="loadingIndicator"
+                    HorizontalOptions="Center"
+                    IsRunning="True"
+                    IsVisible="True"
+                    VerticalOptions="Center"
+                    Color="White" />
+                <!--  White indicator for dark theme  -->
+
+                <!--  Restaurant Content  -->
+                <StackLayout x:Name="contentLayout" IsVisible="False">
+                    <!--  Restaurant Image  -->
+
+                    <Frame
+                        Margin="0,0,0,10"
+                        Padding="0"
+                        BorderColor="White"
+                        CornerRadius="10"
+                        HasShadow="True">
+                        <Image
+                            Aspect="AspectFill"
+                            HeightRequest="200"
+                            Source="{Binding ImageSourceUri}" />
+                    </Frame>
+
+                    <!--  Restaurant Name and Logout Button in a Grid  -->
+                    <Grid Padding="10" ColumnDefinitions="*,Auto">
+                        <!--  Restaurant Name on the Left  -->
+                        <Label
+                            Grid.Column="0"
+                            FontAttributes="Bold"
+                            FontSize="28"
+                            HorizontalOptions="Start"
+                            Text="{Binding Name}"
+                            TextColor="White"
+                            VerticalOptions="Center" />
+
+                        <!--  Logout Button on the Right  -->
+                        <Button
+                            Grid.Column="1"
+                            BackgroundColor="Red"
+                            Clicked="OnLogoutClicked"
+                            CornerRadius="10"
+                            HorizontalOptions="End"
+                            Text="Logout"
+                            TextColor="White" />
+                    </Grid>
+
+                    <Frame
+                        Padding="15"
+                        BackgroundColor="DimGray"
+                        BorderColor="Gray"
+                        CornerRadius="10">
+
+                        <StackLayout>
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="18"
+                                Text="Address:"
+                                TextColor="White" />
+                            <!--  Address Section  -->
+                            <StackLayout Margin="10,0">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="18"
+                                    Text="Country:"
+                                    TextColor="White" />
+                                <Label
+                                    FontSize="16"
+                                    Text="{Binding Address.Country}"
+                                    TextColor="LightGray" />
+
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="18"
+                                    Text="City:"
+                                    TextColor="White" />
+                                <Label
+                                    FontSize="16"
+                                    Text="{Binding Address.City}"
+                                    TextColor="LightGray" />
+
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="18"
+                                    Text="Street:"
+                                    TextColor="White" />
+                                <Label
+                                    FontSize="16"
+                                    Text="{Binding Address.Street}"
+                                    TextColor="LightGray" />
+
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="18"
+                                    Text="Number:"
+                                    TextColor="White" />
+                                <Label
+                                    FontSize="16"
+                                    Text="{Binding Address.Number}"
+                                    TextColor="LightGray" />
+                            </StackLayout>
+
+
+                            <!--  Phone Section  -->
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="18"
+                                Text="Phone:"
+                                TextColor="White" />
+                            <Label
+                                FontSize="16"
+                                Text="{Binding PhoneNumber, StringFormat='Phone: {0}'}"
+                                TextColor="LightGray" />
+
+                            <!--  Email Section  -->
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="18"
+                                Text="Email:"
+                                TextColor="White" />
+                            <Label
+                                FontSize="16"
+                                Text="{Binding Email, StringFormat='Email: {0}'}"
+                                TextColor="LightGray" />
+
+                            <!--  Short Description Section  -->
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="18"
+                                Text="Short Description:"
+                                TextColor="White" />
+                            <Label
+                                FontSize="16"
+                                Text="{Binding ShortDescription, StringFormat='Short Description: {0}'}"
+                                TextColor="LightGray" />
+
+                            <!--  Long Description Section  -->
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="18"
+                                Text="Long Description:"
+                                TextColor="White" />
+                            <Label
+                                FontSize="16"
+                                Text="{Binding LongDescription, StringFormat='Long Description: {0}'}"
+                                TextColor="LightGray" />
+
+                            <!--  Update Restaurant Information Button  -->
+                            <Button
+                                Margin="0,10"
+                                BackgroundColor="MediumSeaGreen"
+                                Clicked="OnUpdateRestaurantInfoClicked"
+                                CornerRadius="10"
+                                HorizontalOptions="Center"
+                                Text="Update Restaurant Info"
+                                TextColor="White" />
+
+                        </StackLayout>
+                    </Frame>
+
+                    <!--  Hours  -->
+                    <Frame
+                        Margin="0,10"
+                        Padding="10"
+                        BackgroundColor="DimGray"
+                        BorderColor="DimGray"
+                        CornerRadius="10"
+                        HorizontalOptions="Fill"
+                        VerticalOptions="Start">
+                        <StackLayout>
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="22"
+                                Text="Opening Hours"
+                                TextColor="White" />
+                            <StackLayout
+                                Padding="0"
+                                BindableLayout.ItemsSource="{Binding Hours}"
+                                Spacing="5">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackLayout Orientation="Horizontal" Spacing="10">
+                                            <Label
+                                                FontAttributes="Bold"
+                                                FontSize="16"
+                                                Text="{Binding Day}"
+                                                TextColor="White"
+                                                WidthRequest="100" />
+                                            <Label
+                                                FontSize="16"
+                                                Text="{Binding OpenTime, StringFormat='{0:hh\\:mm}'}"
+                                                TextColor="White" />
+                                            <Label
+                                                FontSize="16"
+                                                Text=" - "
+                                                TextColor="White" />
+                                            <Label
+                                                FontSize="16"
+                                                Text="{Binding CloseTime, StringFormat='{0:hh\\:mm}'}"
+                                                TextColor="White" />
+                                        </StackLayout>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </StackLayout>
+                            <Button
+                                Margin="0,20,0,3"
+                                BackgroundColor="Green"
+                                Clicked="OnEditHoursClicked"
+                                CornerRadius="10"
+                                Text="Edit Hours"
+                                TextColor="White"
+                                VerticalOptions="End" />
+                        </StackLayout>
+                    </Frame>
+
+                    <!--  Foods Section  -->
+                    <Frame
+                        Margin="0,10"
+                        Padding="10"
+                        BackgroundColor="DimGray"
+                        BorderColor="Black"
+                        CornerRadius="10"
+                        HorizontalOptions="Fill"
+                        VerticalOptions="Start">
+                        <StackLayout>
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="22"
+                                Text="Menu"
+                                TextColor="White" />
+                            <BindableLayout.ItemsSource>
+                                <Binding Path="Foods" />
+                            </BindableLayout.ItemsSource>
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <Frame
+                                        Margin="0,5"
+                                        Padding="10"
+                                        BackgroundColor="LightGray"
+                                        CornerRadius="10"
+                                        HorizontalOptions="Fill"
+                                        VerticalOptions="Start">
+                                        <StackLayout Orientation="Horizontal" Spacing="10">
+                                            <Image
+                                                Aspect="AspectFill"
+                                                HeightRequest="80"
+                                                Source="{Binding ImageSource}"
+                                                WidthRequest="80" />
+                                            <StackLayout Spacing="5" VerticalOptions="Center">
+                                                <Label
+                                                    FontAttributes="Bold"
+                                                    FontSize="20"
+                                                    Text="{Binding Name}"
+                                                    TextColor="White" />
+                                                <Label
+                                                    FontSize="14"
+                                                    Text="{Binding Description}"
+                                                    TextColor="Gray" />
+                                                <Label
+                                                    FontSize="16"
+                                                    Text="{Binding Price, StringFormat='Price: {0} €'}"
+                                                    TextColor="Green" />
+                                            </StackLayout>
+                                            <StackLayout VerticalOptions="Center">
+                                                <Button
+                                                    BackgroundColor="Red"
+                                                    Clicked="OnDeleteFoodClicked"
+                                                    CommandParameter="{Binding FoodId}"
+                                                    CornerRadius="10"
+                                                    Text="Delete"
+                                                    TextColor="White" />
+                                                <Button
+                                                    BackgroundColor="Blue"
+                                                    Clicked="OnEditMenuClicked"
+                                                    CommandParameter="{Binding FoodId}"
+                                                    CornerRadius="10"
+                                                    Text="Edit"
+                                                    TextColor="White" />
+                                            </StackLayout>
+                                        </StackLayout>
+                                    </Frame>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </StackLayout>
+                    </Frame>
+
+
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

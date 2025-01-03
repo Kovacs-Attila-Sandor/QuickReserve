@@ -13,6 +13,7 @@ namespace QuickReserve.Views
     public partial class RestaurantReservationsPage : ContentPage
     {
         private ReservationService _reservationService;
+        private RestaurantService _restaurantService;
         private string _restaurantId;
 
         public bool _isDoneVisible = false;  // Flag to determine if the Done reservations are visible     
@@ -20,13 +21,13 @@ namespace QuickReserve.Views
         List<Reservation> InProgressReservations = new List<Reservation>();
         List<Reservation> DoneReservations = new List<Reservation>();
 
-
         public RestaurantReservationsPage(string restaurantId)
         {
             InitializeComponent();
 
             _reservationService = new ReservationService();
             _restaurantId = restaurantId;
+            _restaurantService = new RestaurantService();
 
             // Load the data when the page is displayed
             LoadReservations();
@@ -58,7 +59,37 @@ namespace QuickReserve.Views
             var button = (Button)sender;
             var reservation = (Reservation)button.BindingContext;
 
+            if (reservation == null)
+            {
+                Console.WriteLine("Reservation is null");
+                return;
+            }
+
+            if (string.IsNullOrEmpty(reservation.Status))
+            {
+                Console.WriteLine("Reservation status is null or empty");
+                return;
+            }
+
             reservation.Status = "DONE";
+
+            try
+            {
+                if (string.IsNullOrEmpty(reservation.RestaurantId) || string.IsNullOrEmpty(reservation.TableId))
+                {
+                    Console.WriteLine("Restaurant or Table ID is null or empty.");
+                    return;
+                }
+                bool succes = await _restaurantService.MarkTableAsAvailable(reservation.RestaurantId, reservation.TableId);
+                if (!succes)
+                {
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in MarkTableAsAvailable: {ex.Message}");
+            }
 
             // Update in the database
             try
@@ -68,6 +99,8 @@ namespace QuickReserve.Views
                 {
                     // If successful, update the reservations list
                     await DisplayAlert("Successful Update", "The reservation status has been successfully updated.", "OK");
+
+
                     LoadReservations(); // Reload the list
                 }
                 else

@@ -77,6 +77,7 @@ namespace QuickReserve.Views
         // A véglegesítés kezelése
         private async void OnFinalizeReservation(object sender, EventArgs e)
         {
+            UserService userService = new UserService();
             var reservation = new Reservation()
             {
                 UserId = this.UserId,
@@ -87,7 +88,8 @@ namespace QuickReserve.Views
                 CreatedAt = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"),
                 Foods = this.OrderItemsForSummaryPage,
                 Status = "In progress",
-                TableNumber = this.TableNumber
+                TableNumber = this.TableNumber,
+                UserName = await userService.GetUserNameByUserId(UserId)
             };
 
             try

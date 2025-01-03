@@ -15,46 +15,52 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\UserRegisterPage.xaml.cs">
+    <Compile Update="Views\UserViews\UserRegisterPage.xaml.cs">
       <DependentUpon>UserRegisterPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Views\AddMenuPage.xaml">
+    <EmbeddedResource Update="Views\ApplicationViews\AddMenuPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\CreateLayoutPage.xaml">
+    <EmbeddedResource Update="Views\ApplicationViews\CreateLayoutPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\EditUserProfilePage.xaml">
+    <EmbeddedResource Update="Views\ApplicationViews\EditUserProfilePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\RestaurantDetailsPage.xaml">
+    <EmbeddedResource Update="Views\RestaurantViews\RestaurantDetailsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\RestaurantProfilePage.xaml">
+    <EmbeddedResource Update="Views\RestaurantViews\RestaurantEditHoursPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\RestaurantLayoutPage.xaml">
+    <EmbeddedResource Update="Views\RestaurantViews\RestaurantEditInformationsPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\RestaurantViews\RestaurantProfilePage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\RestaurantViews\RestaurantLayoutPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
 
-    <EmbeddedResource Update="Views\RestaurantRegisterPage.xaml">
+    <EmbeddedResource Update="Views\RestaurantViews\RestaurantRegisterPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
 
-    <EmbeddedResource Update="Views\RestaurantReservationsPage.xaml">
+    <EmbeddedResource Update="Views\RestaurantViews\RestaurantReservationsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
 
-    <EmbeddedResource Update="Views\UserProfilePage.xaml">
+    <EmbeddedResource Update="Views\UserViews\UserProfilePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\UserRegisterPage.xaml">
+    <EmbeddedResource Update="Views\UserViews\UserRegisterPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\UserReservationsPage.xaml">
+    <EmbeddedResource Update="Views\UserViews\UserReservationsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

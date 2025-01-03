@@ -125,6 +125,36 @@ namespace QuickReserve.Services
             return null;
         }
 
+        public async Task<string> GetUserNameByUserId(string userId)
+        {
+            try
+            {
+                // Lekérjük az összes felhasználót a Firebase "Users" gyűjteményből
+                var allUsers = await FirebaseService
+                    .Client
+                    .Child("Users")
+                    .OnceAsync<User>();
+
+                // Megkeressük azt a felhasználót, akinek az ID-ja megegyezik az adott userId-vel
+                var user = allUsers
+                    .Select(u => u.Object)
+                    .FirstOrDefault(u => u.UserId == userId);
+
+                if (user != null)
+                {
+                    return user.Name; // Visszaadjuk a felhasználó nevét
+                }
+
+                return null; // Ha nem található a felhasználó
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Hiba a GetUserNameByUserId során: {ex.Message}");
+                return null; // Hiba esetén visszatérünk null-lal
+            }
+        }
+
+
         public async Task<bool> UpdateUserProfile(string userId, User updatedUser)
         {
             try

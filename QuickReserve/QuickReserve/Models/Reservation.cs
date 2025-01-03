@@ -17,10 +17,13 @@ namespace QuickReserve.Models
         public List<Food> Foods { get; set; }
         public string Status { get; set; }
         public string TableNumber { get; set; }
+        public string UserName { get; set; }
 
         [JsonIgnore]
         public bool HasFoods => Foods != null && Foods.Count > 0;
         [JsonIgnore]
         public bool IsDoneVisible => Status == "In progress";
+        
+
     }
 }

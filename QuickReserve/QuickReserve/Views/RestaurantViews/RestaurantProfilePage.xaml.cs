@@ -5,6 +5,7 @@ using QuickReserve.Models;
 using QuickReserve.Services;
 using QuickReserve.Converter;
 using System.Threading.Tasks;
+using QuickReserve.Views.RestaurantViews;
 
 namespace QuickReserve.Views
 {
@@ -69,6 +70,17 @@ namespace QuickReserve.Views
             }
         }
 
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+
+            // Re-fetch the restaurant data to ensure it's up-to-date
+            if (_restaurant != null)
+            {
+                LoadRestaurantData(_restaurant.Name);  // Reload restaurant data
+            }
+        }
+
         // Delete food logic (for handling delete button click event)
         private async void OnDeleteFoodClicked(object sender, EventArgs e)
         {
@@ -121,8 +133,25 @@ namespace QuickReserve.Views
             var foodId = button.CommandParameter.ToString();
 
             // Navigáljunk az EditFoodPage-re a FoodId paraméterrel
-            await Navigation.PushAsync(new EditFoodPage(_restaurant.RestaurantId,foodId));
+            await Navigation.PushAsync(new EditFoodPage(_restaurant.RestaurantId, foodId));
         }
 
+
+        private async void OnEditHoursClicked(object sender, EventArgs e)
+        {
+            // Navigáljunk az EditFoodPage-re a FoodId paraméterrel
+            await Navigation.PushAsync(new RestaurantEditHoursPage(_restaurant));
+        }
+
+        private void OnLogoutClicked(object sender, EventArgs e)
+        {
+            App.Current.MainPage = new LoginPage();
+        }
+
+
+        private async void OnUpdateRestaurantInfoClicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new RestaurantEditInformationsPage(_restaurant));
+        }
     }
 }

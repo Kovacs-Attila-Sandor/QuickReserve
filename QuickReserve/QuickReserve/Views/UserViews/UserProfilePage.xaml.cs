@@ -51,5 +51,10 @@ namespace QuickReserve.Views
             // Navigate to the edit profile page
             await Navigation.PushAsync(new EditUserProfilePage(user));
         }
+
+        private void OnLogoutClicked(object sender, EventArgs e)
+        {
+            App.Current.MainPage = new LoginPage();
+        }
     }
 }

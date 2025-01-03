@@ -73,19 +73,6 @@
                             TextColor="White" />
                     </StackLayout>
 
-                    <!--  Role  -->
-                    <StackLayout Orientation="Horizontal" Spacing="10">
-                        <Label
-                            FontAttributes="Bold"
-                            FontSize="20"
-                            Text="Role:"
-                            TextColor="#bdc3c7" />
-                        <Label
-                            FontSize="20"
-                            Text="{Binding user.Role}"
-                            TextColor="White" />
-                    </StackLayout>
-
                     <!--  Created At  -->
                     <StackLayout Orientation="Horizontal" Spacing="10">
                         <Label
@@ -110,8 +97,16 @@
                         Text="Edit Profile"
                         TextColor="White"
                         WidthRequest="250" />
-                    <!--  Edit profile button event handler  -->
-
+                    <Button
+                        Padding="10"
+                        BackgroundColor="red"
+                        Clicked="OnLogoutClicked"
+                        CornerRadius="30"
+                        FontSize="20"
+                        HorizontalOptions="Center"
+                        Text="Logout"
+                        TextColor="White"
+                        WidthRequest="250" />
                 </StackLayout>
             </Frame>
         </StackLayout>

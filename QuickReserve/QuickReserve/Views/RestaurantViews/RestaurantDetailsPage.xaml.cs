@@ -55,7 +55,7 @@ namespace QuickReserve.Views
 
         protected async void GoToRestaurantLayoutpage(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new RestaurantLayoutPage(restaurant));
+            await Navigation.PushAsync(new RestaurantLayoutPage(restaurant.RestaurantId));
         }
 
         protected async void GoToMenuPage(object sender, EventArgs e)

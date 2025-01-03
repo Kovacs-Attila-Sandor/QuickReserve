@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="QuickReserve.Views.RestaurantEditHoursPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Edit Restaurant Hours">
+    <ContentPage.Content>
+        <StackLayout Padding="10">
+            <Label
+                FontSize="Large"
+                HorizontalOptions="Center"
+                Text="Edit Restaurant Hours" />
+
+            <CollectionView ItemsSource="{Binding Hours}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Padding="5" Orientation="Horizontal">
+                            <Label
+                                Text="{Binding Day}"
+                                VerticalTextAlignment="Center"
+                                WidthRequest="80" />
+                            <TimePicker Time="{Binding OpenTime}" WidthRequest="100" />
+                            <TimePicker Time="{Binding CloseTime}" WidthRequest="100" />
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Button
+                Margin="10"
+                Clicked="OnSaveButtonClicked"
+                CornerRadius="10"
+                Text="Save" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

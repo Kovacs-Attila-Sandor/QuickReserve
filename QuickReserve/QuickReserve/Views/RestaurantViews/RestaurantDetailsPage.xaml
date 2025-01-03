@@ -9,6 +9,7 @@
     <ContentPage.Content>
         <RelativeLayout>
 
+            <!-- Background image with slight blur effect for aesthetics -->
             <Image
                 Aspect="AspectFill"
                 IsEnabled="False"
@@ -20,8 +21,7 @@
                                                                       Factor=1}"
                 Source="background1.png" />
 
-
-            <!--  Main content  -->
+            <!-- Main content -->
             <StackLayout
                 Margin="30,30,30,30"
                 RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,
@@ -31,7 +31,7 @@
                                                                       Property=Width,
                                                                       Factor=1}">
 
-                <!--  Profile Button wrapped in Frame for shadow effect  -->
+                <!-- Profile button with modern design -->
                 <Button
                     BackgroundColor="Transparent"
                     BorderColor="GhostWhite"
@@ -45,10 +45,10 @@
                     TextColor="GhostWhite"
                     VerticalOptions="StartAndExpand" />
 
-
+                <!-- ScrollView to handle content overflow -->
                 <ScrollView>
 
-
+                    <!-- Stylish frame for restaurant details -->
                     <Frame
                         Margin="10"
                         Padding="15"
@@ -56,7 +56,7 @@
                         CornerRadius="20"
                         HasShadow="True"
                         HorizontalOptions="FillAndExpand"
-                        Opacity="0.75"
+                        Opacity="0.85"
                         VerticalOptions="FillAndExpand">
                         <StackLayout
                             Padding="20"
@@ -65,8 +65,7 @@
                             Spacing="20"
                             VerticalOptions="CenterAndExpand">
 
-
-                            <!--  Image Carousel  -->
+                            <!-- Image Carousel -->
                             <CarouselView
                                 x:Name="ImageCarousel"
                                 Margin="0,0,0,10"
@@ -83,74 +82,112 @@
                                 </CarouselView.ItemTemplate>
                             </CarouselView>
 
-
-                            <!--  Restaurant Name  -->
+                            <!-- Restaurant Name -->
                             <Label
                                 Margin="0,10"
                                 FontAttributes="Bold"
-                                FontSize="28"
+                                FontSize="32"
                                 HorizontalOptions="Center"
                                 Text="{Binding Name}"
                                 TextColor="GhostWhite" />
 
+                            <!-- Location Section -->
+                            <StackLayout>
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="18"
+                                    Text="Location"
+                                    TextColor="White" />
 
-                            <Image
-                                HeightRequest="20"
-                                Source="location_icon.png"
-                                VerticalOptions="Center"
-                                WidthRequest="20" />
-                            <Label
-                                FontSize="16"
-                                Text="{Binding Address.Country}"
-                                TextColor="GhostWhite"
-                                VerticalOptions="Center" />
+                                <StackLayout Padding="5">
+                                    <Image
+                                        HeightRequest="20"
+                                        Source="location_icon.png"
+                                        VerticalOptions="Center"
+                                        WidthRequest="20" />
 
-                            <Image
-                                HeightRequest="20"
-                                Source="star_icon.png"
-                                VerticalOptions="Center"
-                                WidthRequest="20" />
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="18"
+                                        Text="Country:"
+                                        TextColor="White" />
+                                    <Label
+                                        FontSize="16"
+                                        Text="{Binding Address.Country}"
+                                        TextColor="LightGray" />
+
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="18"
+                                        Text="City:"
+                                        TextColor="White" />
+                                    <Label
+                                        FontSize="16"
+                                        Text="{Binding Address.City}"
+                                        TextColor="LightGray" />
+
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="18"
+                                        Text="Street:"
+                                        TextColor="White" />
+                                    <Label
+                                        FontSize="16"
+                                        Text="{Binding Address.Street}"
+                                        TextColor="LightGray" />
+
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="18"
+                                        Text="Number:"
+                                        TextColor="White" />
+                                    <Label
+                                        FontSize="16"
+                                        Text="{Binding Address.Number}"
+                                        TextColor="LightGray" />
+                                </StackLayout>
+                            </StackLayout>
+
+                            <!-- Restaurant Description -->
                             <Label
                                 FontAttributes="Bold"
                                 FontSize="18"
-                                Text="{Binding Rating}"
-                                TextColor="GhostWhite"
-                                VerticalOptions="Center" />
-
-
-                            <!--  Restaurant Description  -->
+                                Text="Description"
+                                TextColor="White" />
                             <Label
                                 FontSize="14"
                                 LineBreakMode="WordWrap"
                                 Text="{Binding LongDescription}"
                                 TextColor="GhostWhite" />
 
-
-                            <!--  Book a Table Button  -->
+                            <!-- Buttons -->
                             <Button
                                 Margin="10"
                                 Padding="15"
-                                BackgroundColor="Transparent"
+                                BackgroundColor="#4CAF50"
+                                BorderColor="White"
+                                BorderWidth="2"
                                 Clicked="GoToRestaurantLayoutpage"
                                 CornerRadius="25"
                                 FontSize="18"
                                 HorizontalOptions="FillAndExpand"
                                 Text="Book a Table"
-                                TextColor="GhostWhite"
+                                TextColor="White"
                                 VerticalOptions="EndAndExpand" />
 
                             <Button
                                 Margin="10"
                                 Padding="15"
-                                BackgroundColor="Transparent"
+                                BackgroundColor="#2196F3"
+                                BorderColor="White"
+                                BorderWidth="2"
                                 Clicked="GoToMenuPage"
                                 CornerRadius="25"
                                 FontSize="18"
                                 HorizontalOptions="FillAndExpand"
                                 Text="View Menu"
-                                TextColor="GhostWhite"
+                                TextColor="White"
                                 VerticalOptions="EndAndExpand" />
-
                         </StackLayout>
                     </Frame>
                 </ScrollView>

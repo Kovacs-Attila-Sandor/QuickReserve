@@ -327,5 +327,97 @@ namespace QuickReserve.Services
             }
         }
 
+        public async Task<bool> MarkTableAsAvailable(string restaurantId, string tableId)
+        {
+            try
+            {
+                Console.WriteLine($"ResId: {restaurantId}, TableID: {tableId}");
+                // Lekérjük az adott éttermet
+                var restaurant = await GetRestaurantById(restaurantId);
+                if (restaurant != null)
+                {
+                    // Megkeressük az asztalt a Tables listában
+                    var table = restaurant.Tables?.FirstOrDefault(t => t.TableId == tableId);
+                    if (table != null)
+                    {
+                        // Állapot frissítése "Available"-re
+                        table.AvailabilityStatus = "Available";
+
+                        // Frissítjük az étterem adatait a Firebase adatbázisban
+                        await FirebaseService
+                            .Client
+                            .Child("Restaurant")
+                            .Child(restaurantId)
+                            .PutAsync(JsonConvert.SerializeObject(restaurant));
+
+                        return true; // Sikeres frissítés
+                    }
+
+                    Console.WriteLine($"Table with ID {tableId} not found.");
+                    return false; // Ha az asztal nem található
+                }
+
+                Console.WriteLine($"Restaurant with ID {restaurantId} not found.");
+                return false; // Ha az étterem nem található
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error marking table as active: {ex.Message}");
+                return false; // Hiba esetén false
+            }
+        }
+
+        public async Task<bool> SaveHours(string restaurantId, List<RestaurantHours> hours)
+        {
+            try
+            {
+                // Fetch the restaurant by its ID
+                var restaurant = await GetRestaurantById(restaurantId);
+                if (restaurant != null)
+                {
+                    // Update the restaurant's operating hours
+                    restaurant.Hours = hours;
+
+                    // Save the updated restaurant data to Firebase
+                    await FirebaseService
+                        .Client
+                        .Child("Restaurant")
+                        .Child(restaurantId)
+                        .PutAsync(JsonConvert.SerializeObject(restaurant));
+
+                    return true; // Successfully updated the hours
+                }
+
+                Console.WriteLine($"Restaurant with ID {restaurantId} not found.");
+                return false; // Restaurant not found
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error saving hours: {ex.Message}");
+                return false; // Return false in case of an error
+            }
+        }
+
+        public async Task<bool> UpdateRestaurantAsync(Restaurant updatedRestaurant)
+        {
+            try
+            {
+                // Az étterem adatainak frissítése a Firebase adatbázisban
+                await FirebaseService
+                    .Client
+                    .Child("Restaurant")
+                    .Child(updatedRestaurant.RestaurantId)
+                    .PutAsync(JsonConvert.SerializeObject(updatedRestaurant));
+
+                return true; // Sikeres frissítés
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error updating restaurant: {ex.Message}");
+                return false; // Hiba esetén false
+            }
+        }
+
+
     }
 }

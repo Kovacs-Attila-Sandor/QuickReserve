@@ -51,9 +51,9 @@ namespace QuickReserve.Views
                 if (isValidUser)
                 {
                     // A sikeres bejelentkezés után elmenthetjük a felhasználó nevét
-                    App.Current.Properties["LoggedInUserName"] = txtUsername.Text;
+                    App.Current.Properties["LoggedInUserName"] = txtUsername.Text.Trim();
 
-                    User user = await userService.GetUserByName(txtUsername.Text);
+                    User user = await userService.GetUserByName(txtUsername.Text.Trim());
                     Application.Current.Properties["userId"] = user.UserId;
 
                     App.Current.MainPage = new NavigationPage(new AboutPage());                  

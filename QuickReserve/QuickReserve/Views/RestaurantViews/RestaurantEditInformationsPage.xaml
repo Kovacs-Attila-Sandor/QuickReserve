@@ -1,0 +1,83 @@
+﻿<ContentPage
+    x:Class="QuickReserve.Views.RestaurantViews.RestaurantEditInformationsPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Edit personal informations">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="10" Spacing="15">
+                <!-- Name -->
+                <Label Text="Name" />
+                <Entry x:Name="NameEntry" Placeholder="Enter restaurant name" />
+
+                <!-- Address -->
+                <Label Text="Country" />
+                <Entry x:Name="AddressCountry" Placeholder="Enter restaurant country" />
+
+                <Label Text="City" />
+                <Entry x:Name="AddressCity" Placeholder="Enter restaurant city" />
+
+                <Label Text="Street" />
+                <Entry x:Name="AddressStreet" Placeholder="Enter restaurant street" />
+
+                <Label Text="Number" />
+                <Entry x:Name="AddressNumber" Placeholder="Enter restaurant number" />
+
+                <!-- Phone Number -->
+                <Label Text="Phone Number" />
+                <Entry
+                    x:Name="PhoneNumberEntry"
+                    Keyboard="Telephone"
+                    Placeholder="Enter phone number" />
+
+                <!-- Email -->
+                <Label Text="Email" />
+                <Entry
+                    x:Name="EmailEntry"
+                    Keyboard="Email"
+                    Placeholder="Enter email" />
+
+                <!-- Short Description -->
+                <Label Text="Short Description" />
+                <Editor x:Name="ShortDescriptionEditor" Placeholder="Enter short description" />
+
+                <!-- Long Description -->
+                <Label Text="Long Description" />
+                <Editor
+                    x:Name="LongDescriptionEditor"
+                    HeightRequest="100"
+                    Placeholder="Enter long description" />
+
+                <!-- Images Section -->
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="Medium"
+                    Text="Images" />
+
+                <!-- Scrollable area for images -->
+                <ScrollView Orientation="Vertical" HeightRequest="300">
+                    <StackLayout
+                        x:Name="ImageList"
+                        Spacing="10">
+                        <!-- Images with delete buttons will be dynamically added here -->
+                    </StackLayout>
+                </ScrollView>
+
+                <Button
+                    BackgroundColor="#4CAF50"
+                    Clicked="OnAddImageClicked"
+                    CornerRadius="10"
+                    Text="Add Image"
+                    TextColor="White" />
+
+                <!-- Save Button -->
+                <Button
+                    BackgroundColor="Green"
+                    Clicked="OnSaveChangesClicked"
+                    CornerRadius="20"
+                    Text="Save Changes"
+                    TextColor="White" />
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

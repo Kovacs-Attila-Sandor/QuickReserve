@@ -12,7 +12,6 @@ namespace QuickReserve.Models
         public RestaurantLocation Address { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
-        public double Rating { get; set; }
         public string ShortDescription { get; set; }
         public string LongDescription { get; set; }
         public List<RestaurantHours> Hours { get; set; }
@@ -29,9 +28,12 @@ namespace QuickReserve.Models
                     : null;
             }
         }
+
+        [JsonIgnore]
         public ImageSource ImageSourceUri { get; set; }
 
         // Dekódolt képek ImageSource típusban
+        [JsonIgnore]
         public List<ImageSource> ImageSourceList { get; set; } = new List<ImageSource>();
 
         public List<Food> Foods { get; set; } = new List<Food>();

@@ -116,18 +116,12 @@
                                             FontAttributes="Bold"
                                             FontSize="18"
                                             Text="{Binding Name}"
-                                            TextColor="White" />
+                                            TextColor="Orange" />
                                         <!--  Fehér szöveg a sötét háttéren  -->
                                         <Label
                                             FontSize="14"
                                             Text="{Binding ShortDescription}"
                                             TextColor="#bdc3c7" />
-                                        <!--  Világos szöveg  -->
-                                        <Label
-                                            FontSize="14"
-                                            Text="{Binding Rating, StringFormat='Rating: {0:N1}'}"
-                                            TextColor="#f39c12" />
-                                        <!--  Arany szín a pontozásra  -->
                                     </StackLayout>
                                 </Frame>
                             </ViewCell>

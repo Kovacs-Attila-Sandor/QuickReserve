@@ -37,16 +37,14 @@ namespace QuickReserve.Views
 
             if (success)
             {
-                App.Current.Properties["LoggedInUserName"] = user.Name;
+                App.Current.Properties["LoggedInUserName"] = user.Name.Trim();
                 await DisplayAlert("Success", "Your profile has been updated.", "OK");
-                App.Current.MainPage = new NavigationPage(new AboutPage()); // Navigate back to the previous page
+                App.Current.MainPage = new NavigationPage(new AboutPage());
             }
             else
             {
-                await DisplayAlert("Error", "Failed to update your profile. Please try again later.", "OK");
-                
+                await DisplayAlert("Error", "Failed to update your profile. Please try again later.", "OK");               
             }
         }
-
     }
 }

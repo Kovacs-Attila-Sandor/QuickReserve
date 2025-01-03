@@ -2,7 +2,8 @@
     x:Class="QuickReserve.Views.RestaurantReservationsPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    BackgroundColor="#2d3436">
+    BackgroundColor="#2d3436"
+    Title="Reservations">
 
     <ContentPage.Content>
 
@@ -72,6 +73,11 @@
                                             Text="{Binding TableNumber, StringFormat='Table Number: {0}'}"
                                             TextColor="#bdc3c7" />
 
+                                        <Label
+                                            FontSize="14"
+                                            Text="{Binding UserName, StringFormat='Name: {0}'}"
+                                            TextColor="#bdc3c7" />
+
                                         <!--  Show Food Items Only If Available  -->
                                         <Frame
                                             Margin="0,10"
@@ -84,6 +90,7 @@
                                             VerticalOptions="Start">
 
                                             <StackLayout>
+                                                <Label FontSize="20" Text="Ordered Foods:" />
                                                 <BindableLayout.ItemsSource>
                                                     <Binding Path="Foods" />
                                                 </BindableLayout.ItemsSource>

@@ -1,4 +1,5 @@
-﻿using QuickReserve.Models;
+﻿using QuickReserve.Converter;
+using QuickReserve.Models;
 using QuickReserve.Services;
 using System;
 using System.Collections.Generic;
@@ -13,11 +14,27 @@ namespace QuickReserve.Views
     {
         private Button _selectedTableButton; // Tárolja az aktuálisan kiválasztott gombot
         private Restaurant _restaurant;
-
-        public RestaurantLayoutPage(Restaurant restaurant)
+        private RestaurantService restaurantService;
+        private string _restaurantId;
+        public RestaurantLayoutPage(string restaurantId)
         {
             InitializeComponent();
-            _restaurant = restaurant;
+            restaurantService = new RestaurantService();
+            _restaurantId = restaurantId;
+            
+        }
+
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+
+            DynamicGrid.Children.Clear();
+            DynamicGrid.RowDefinitions.Clear();
+            DynamicGrid.ColumnDefinitions.Clear();
+            _selectedTableButton = null;
+
+            _restaurant = await restaurantService.GetRestaurantById(_restaurantId);
+            _restaurant.ImageSourceUri = ImageConverter.ConvertBase64ToImageSource(_restaurant.FirstImageBase64);
 
             var dynamicGrid = DynamicGrid;
 
@@ -35,7 +52,7 @@ namespace QuickReserve.Views
 
             // Extract tables from the restaurant
             List<(int row, int col, string status)> tables = new List<(int, int, string)>();
-            foreach (var table in restaurant.Tables)
+            foreach (var table in _restaurant.Tables)
             {
                 tables.Add((table.Location.Row, table.Location.Column, table.AvailabilityStatus));
             }
