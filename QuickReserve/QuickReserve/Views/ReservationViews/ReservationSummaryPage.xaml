@@ -12,9 +12,7 @@
         RowSpacing="15">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
-            <!--  Tartalom rész  -->
             <RowDefinition Height="Auto" />
-            <!--  Gombok és végösszeg rész  -->
         </Grid.RowDefinitions>
 
         <!--  Töltőképernyő (ActivityIndicator)  -->

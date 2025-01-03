@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="QuickReserve.Views.LoginPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    NavigationPage.HasNavigationBar="False"
+    mc:Ignorable="d"
+    BackgroundImageSource="background1.png">
+    <ContentPage.Content>
+        <RelativeLayout>
+            <StackLayout
+                Margin="30,30,30,30"
+                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,
+                                                                       Property=Height,
+                                                                       Factor=1}"
+                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,
+                                                                      Property=Width,
+                                                                      Factor=1}">
+                <Label
+                    FontSize="Large"
+                    HorizontalOptions="Center"
+                    Text="Welcome to the Quick Reserve App"
+                    TextColor="White" />
+
+                <Frame
+                    BackgroundColor="Black"
+                    CornerRadius="20"
+                    HorizontalOptions="CenterAndExpand"
+                    Opacity="0.75"
+                    VerticalOptions="EndAndExpand">
+
+                    <StackLayout
+                        Padding="20"
+                        HorizontalOptions="CenterAndExpand"
+                        VerticalOptions="EndAndExpand">
+                        <Entry
+                            x:Name="txtUsername"
+                            Placeholder="Username"
+                            TextColor="GhostWhite" />
+                        <Entry
+                            x:Name="txtPassword"
+                            IsPassword="True"
+                            Placeholder="Password"
+                            TextColor="GhostWhite" />
+                        <Button
+                            BackgroundColor="Transparent"
+                            Clicked="Login"
+                            CornerRadius="50"
+                            FontAttributes="Bold"
+                            FontSize="15"
+                            HorizontalOptions="CenterAndExpand"
+                            Text="Login"
+                            TextColor="GhostWhite"
+                            WidthRequest="200" />
+                        <Button
+                            BackgroundColor="Transparent"
+                            Clicked="GoToUserRegisterPage"
+                            CornerRadius="50"
+                            FontAttributes="Bold"
+                            FontSize="15"
+                            HorizontalOptions="CenterAndExpand"
+                            Text="Register as guest"
+                            TextColor="GhostWhite"
+                            WidthRequest="200" />
+                        <Button
+                            BackgroundColor="Transparent"
+                            Clicked="GoToRestaurantRegisterPage"
+                            CornerRadius="50"
+                            FontAttributes="Bold"
+                            FontSize="15"
+                            HorizontalOptions="CenterAndExpand"
+                            Text="Register as restaurant"
+                            TextColor="GhostWhite"
+                            WidthRequest="200" />
+                    </StackLayout>
+                </Frame>
+            </StackLayout>
+        </RelativeLayout>
+    </ContentPage.Content>
+</ContentPage>

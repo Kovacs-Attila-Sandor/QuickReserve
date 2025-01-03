@@ -1,0 +1,135 @@
+﻿<ContentPage
+    x:Class="QuickReserve.Views.AboutPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    BackgroundColor="#121212"
+    BackgroundImageSource="background1.png"
+    NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Content>
+        <StackLayout Padding="20">
+
+            <!--  ActivityIndicator középre helyezése  -->
+            <ActivityIndicator
+                x:Name="loadingIndicator"
+                Margin="0,30,0,0"
+                HeightRequest="50"
+                HorizontalOptions="Center"
+                IsRunning="True"
+                IsVisible="True"
+                VerticalOptions="Center"
+                WidthRequest="50"
+                Color="#3498db" />
+
+            <!--  Loading szöveg  -->
+            <Label
+                x:Name="LoadingLabel"
+                FontAttributes="Bold"
+                FontSize="18"
+                HorizontalOptions="Center"
+                Text="The Restaurants are loading..."
+                TextColor="#e7e2e3"
+                VerticalOptions="Center" />
+
+            <!--  Fő tartalom  -->
+            <StackLayout
+                Orientation="Vertical"
+                Spacing="20"
+                VerticalOptions="FillAndExpand">
+
+                <!--  Fejléc gombok  -->
+                <Grid
+                    x:Name="Buttons"
+                    ColumnSpacing="20"
+                    HorizontalOptions="Center"
+                    IsVisible="False">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <Frame
+                        Grid.Column="0"
+                        Padding="0"
+                        BackgroundColor="#3498db"
+                        CornerRadius="30"
+                        HasShadow="True"
+                        HeightRequest="50"
+                        WidthRequest="150">
+                        <Button
+                            BackgroundColor="Transparent"
+                            Clicked="GoToProfilePage"
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            Text="Profile"
+                            TextColor="White" />
+                    </Frame>
+
+                    <Frame
+                        Grid.Column="1"
+                        Padding="0"
+                        BackgroundColor="#3498db"
+                        CornerRadius="30"
+                        HasShadow="True"
+                        HeightRequest="50"
+                        WidthRequest="200">
+                        <Button
+                            BackgroundColor="Transparent"
+                            Clicked="GoToReservations"
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            Text="Reservations"
+                            TextColor="White" />
+                    </Frame>
+                </Grid>
+
+                <!--  Étterem lista  -->
+                <ListView
+                    x:Name="lstmoments"
+                    BackgroundColor="Transparent"
+                    HasUnevenRows="True"
+                    IsVisible="False"
+                    ItemTapped="OnItemTapped"
+                    SeparatorVisibility="None">
+
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Frame
+                                    Margin="10"
+                                    Padding="15"
+                                    BackgroundColor="#2c3e50"
+                                    CornerRadius="20"
+                                    HasShadow="True">
+                                    <StackLayout Orientation="Vertical" Spacing="10">
+
+                                        <!--  Étterem kép  -->
+                                        <Image
+                                            Aspect="AspectFill"
+                                            HeightRequest="150"
+                                            Source="{Binding ImageSourceUri}"
+                                            VerticalOptions="FillAndExpand" />
+
+                                        <!--  Étterem részletek  -->
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="18"
+                                            Text="{Binding Name}"
+                                            TextColor="Orange" />
+                                        <!--  Fehér szöveg a sötét háttéren  -->
+                                        <Label
+                                            FontSize="14"
+                                            Text="{Binding ShortDescription}"
+                                            TextColor="#bdc3c7" />
+                                    </StackLayout>
+                                </Frame>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

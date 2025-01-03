@@ -51,7 +51,10 @@ namespace QuickReserve.Views
                 if (isValidUser)
                 {
                     // A sikeres bejelentkezés után elmenthetjük a felhasználó nevét
-                    App.Current.Properties["LoggedInUserName"] = txtUsername.Text;
+                    App.Current.Properties["LoggedInUserName"] = txtUsername.Text.Trim();
+
+                    User user = await userService.GetUserByName(txtUsername.Text.Trim());
+                    Application.Current.Properties["userId"] = user.UserId;
 
                     App.Current.MainPage = new NavigationPage(new AboutPage());                  
                 }
@@ -77,9 +80,8 @@ namespace QuickReserve.Views
                 // Ha van naplózási mechanizmus, itt használhatjuk
                 Console.WriteLine($"Login error: {ex}");
             }
-            User user = await userService.GetUserByName(txtUsername.Text);
-            Application.Current.Properties["userId"] = user.UserId;
-        }
 
+            
+        }
     }
 }

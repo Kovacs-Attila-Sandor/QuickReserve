@@ -1,4 +1,5 @@
-﻿using QuickReserve.Models;
+﻿using QuickReserve.Converter;
+using QuickReserve.Models;
 using QuickReserve.Services;
 using System;
 using System.Collections.Generic;
@@ -13,11 +14,27 @@ namespace QuickReserve.Views
     {
         private Button _selectedTableButton; // Tárolja az aktuálisan kiválasztott gombot
         private Restaurant _restaurant;
-
-        public RestaurantLayoutPage(Restaurant restaurant)
+        private RestaurantService restaurantService;
+        private string _restaurantId;
+        public RestaurantLayoutPage(string restaurantId)
         {
             InitializeComponent();
-            _restaurant = restaurant;
+            restaurantService = new RestaurantService();
+            _restaurantId = restaurantId;
+            
+        }
+
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+
+            DynamicGrid.Children.Clear();
+            DynamicGrid.RowDefinitions.Clear();
+            DynamicGrid.ColumnDefinitions.Clear();
+            _selectedTableButton = null;
+
+            _restaurant = await restaurantService.GetRestaurantById(_restaurantId);
+            _restaurant.ImageSourceUri = ImageConverter.ConvertBase64ToImageSource(_restaurant.FirstImageBase64);
 
             var dynamicGrid = DynamicGrid;
 
@@ -34,11 +51,10 @@ namespace QuickReserve.Views
             }
 
             // Extract tables from the restaurant
-            List<(int row, int col)> tables = new List<(int, int)>();
-            for (int i = 0; i < restaurant.Tables.Count; i++)
+            List<(int row, int col, string status)> tables = new List<(int, int, string)>();
+            foreach (var table in _restaurant.Tables)
             {
-                var table = (restaurant.Tables[i].Location.Row, restaurant.Tables[i].Location.Column);
-                tables.Add(table);
+                tables.Add((table.Location.Row, table.Location.Column, table.AvailabilityStatus));
             }
 
             // Add 10x6 buttons dynamically
@@ -62,11 +78,16 @@ namespace QuickReserve.Views
                     };
 
                     // Check if the current position matches a table
-                    if (tables.Exists(t => t.row == row && t.col == col))
+                    var table = tables.FirstOrDefault(t => t.row == row && t.col == col);
+                    if (table != default)
                     {
-                        button.IsEnabled = true;
-                        button.BorderColor = Color.Green;
-                        button.Clicked += OnButtonClicked;
+                        // Beállítjuk a gomb tulajdonságait a státusz alapján
+                        button.IsEnabled = table.status == "Available";
+                        button.BorderColor = table.status == "Available" ? Color.Green : Color.Red;
+                        if (table.status == "Available")
+                        {
+                            button.Clicked += OnButtonClicked;
+                        }
                     }
                     else
                     {
@@ -79,6 +100,7 @@ namespace QuickReserve.Views
                 }
             }
         }
+
 
         private async void OnButtonClicked(object sender, EventArgs e)
         {
@@ -113,9 +135,9 @@ namespace QuickReserve.Views
             }
         }
 
-        protected void GoToAboutPage(object sender, EventArgs e)
+        protected async void GoToAboutPage(object sender, EventArgs e)
         {
-            App.Current.MainPage = new NavigationPage(new AboutPage());
+            await Navigation.PopAsync();
         }
 
         protected async void ConfirmButton(object sender, EventArgs e)

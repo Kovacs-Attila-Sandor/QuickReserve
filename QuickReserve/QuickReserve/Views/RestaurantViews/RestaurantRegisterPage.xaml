@@ -1,0 +1,142 @@
+﻿<ContentPage
+    x:Class="QuickReserve.Views.RestaurantRegisterPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    NavigationPage.HasNavigationBar="False">
+    <ContentPage.Content>
+        <RelativeLayout>
+            <Image
+                Aspect="AspectFill"
+                IsEnabled="False"
+                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,
+                                                                       Property=Height,
+                                                                       Factor=1}"
+                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,
+                                                                      Property=Width,
+                                                                      Factor=1}"
+                Source="background1.png" />
+
+            <StackLayout
+                Margin="30,30,30,30"
+                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,
+                                                                       Property=Height,
+                                                                       Factor=1}"
+                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,
+                                                                      Property=Width,
+                                                                      Factor=1}">
+                <Label
+                    FontSize="Large"
+                    HorizontalOptions="Center"
+                    Text="Welcome to the Quick Reserve App"
+                    TextColor="White" />
+                <StackLayout>
+                    <ScrollView VerticalScrollBarVisibility="Always">
+                        <StackLayout>
+                            <Entry
+                                x:Name="txtUsername"
+                                Placeholder="Username"
+                                TextColor="GhostWhite" />
+                            <Entry
+                                x:Name="txtPassword"
+                                IsPassword="True"
+                                Placeholder="Password"
+                                TextColor="GhostWhite" />
+                            <Entry
+                                x:Name="txtConfirmPassword"
+                                IsPassword="True"
+                                Placeholder="ConfirmPassword"
+                                TextColor="GhostWhite" />
+                            <Entry
+                                x:Name="txtEmail"
+                                Placeholder="Email"
+                                TextColor="GhostWhite" />
+                            <Entry
+                                x:Name="txtPhonenum"
+                                Placeholder="Tel."
+                                TextColor="GhostWhite" />
+                            <Entry
+                                x:Name="txtCountry"
+                                Placeholder="Country"
+                                TextColor="GhostWhite" />
+                            <Entry
+                                x:Name="txtCity"
+                                Placeholder="City"
+                                TextColor="GhostWhite" />
+                            <Entry
+                                x:Name="txtStreet"
+                                Placeholder="Street"
+                                TextColor="GhostWhite" />
+                            <Entry
+                                x:Name="txtNumber"
+                                Placeholder="Number"
+                                TextColor="GhostWhite" />
+                            <Entry
+                                x:Name="txtShortDescriprion"
+                                Placeholder="Short Description"
+                                TextColor="GhostWhite" />
+                            <Entry
+                                x:Name="txtLongDescriprion"
+                                Placeholder="Long Description"
+                                TextColor="GhostWhite" />
+                            <Button
+                                Clicked="PickImageButton_Clicked"
+                                CornerRadius="10"
+                                Text="Pick an image" />
+
+                            <!--  CollectionView to preview selected images  -->
+                            <CollectionView
+                                x:Name="ImagePreviewCollection"
+                                Margin="0,20,0,0"
+                                ItemsSource="{Binding}">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Image
+                                            Margin="10"
+                                            HeightRequest="100"
+                                            Source="{Binding}"
+                                            WidthRequest="100" />
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </StackLayout>
+                    </ScrollView>
+                    <StackLayout
+                        Padding="20"
+                        HorizontalOptions="CenterAndExpand"
+                        VerticalOptions="EndAndExpand">
+                        <Button
+                            BackgroundColor="Transparent"
+                            Clicked="GoToLoginPage"
+                            CornerRadius="50"
+                            FontAttributes="Bold"
+                            FontSize="15"
+                            HorizontalOptions="CenterAndExpand"
+                            Text="Back to Login"
+                            TextColor="GhostWhite"
+                            WidthRequest="200" />
+                        <Button
+                            BackgroundColor="Transparent"
+                            Clicked="GoToUserRegisterPage"
+                            CornerRadius="50"
+                            FontAttributes="Bold"
+                            FontSize="15"
+                            HorizontalOptions="CenterAndExpand"
+                            Text="Register as guest"
+                            TextColor="GhostWhite"
+                            WidthRequest="200" />
+                        <Button
+                            BackgroundColor="Transparent"
+                            Clicked="GoToAddMenuPage"
+                            CornerRadius="50"
+                            FontAttributes="Bold"
+                            FontSize="15"
+                            HorizontalOptions="CenterAndExpand"
+                            Text="Register as restaurant"
+                            TextColor="GhostWhite"
+                            WidthRequest="200" />
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+        </RelativeLayout>
+    </ContentPage.Content>
+</ContentPage>

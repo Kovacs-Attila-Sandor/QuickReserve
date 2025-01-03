@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
 
@@ -11,13 +12,13 @@ namespace QuickReserve.Models
         public RestaurantLocation Address { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
-        public double Rating { get; set; }
         public string ShortDescription { get; set; }
         public string LongDescription { get; set; }
         public List<RestaurantHours> Hours { get; set; }
 
         // Több kép Base64 kódolva
         public List<string> ImageBase64List { get; set; } = new List<string>();
+        [JsonIgnore]
         public string FirstImageBase64
         {
             get
@@ -27,9 +28,12 @@ namespace QuickReserve.Models
                     : null;
             }
         }
+
+        [JsonIgnore]
         public ImageSource ImageSourceUri { get; set; }
 
         // Dekódolt képek ImageSource típusban
+        [JsonIgnore]
         public List<ImageSource> ImageSourceList { get; set; } = new List<ImageSource>();
 
         public List<Food> Foods { get; set; } = new List<Food>();

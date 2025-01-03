@@ -124,5 +124,70 @@ namespace QuickReserve.Services
 
             return null;
         }
+
+        public async Task<string> GetUserNameByUserId(string userId)
+        {
+            try
+            {
+                // Lekérjük az összes felhasználót a Firebase "Users" gyűjteményből
+                var allUsers = await FirebaseService
+                    .Client
+                    .Child("Users")
+                    .OnceAsync<User>();
+
+                // Megkeressük azt a felhasználót, akinek az ID-ja megegyezik az adott userId-vel
+                var user = allUsers
+                    .Select(u => u.Object)
+                    .FirstOrDefault(u => u.UserId == userId);
+
+                if (user != null)
+                {
+                    return user.Name; // Visszaadjuk a felhasználó nevét
+                }
+
+                return null; // Ha nem található a felhasználó
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Hiba a GetUserNameByUserId során: {ex.Message}");
+                return null; // Hiba esetén visszatérünk null-lal
+            }
+        }
+
+
+        public async Task<bool> UpdateUserProfile(string userId, User updatedUser)
+        {
+            try
+            {
+                // We check if the user exists by trying to fetch it from the database
+                var existingUser = await GetUserById(userId);
+
+                if (existingUser == null)
+                {
+                    // If the user doesn't exist, return false
+                    Console.WriteLine("User not found.");
+                    return false;
+                }
+
+                // Update the existing user's data with the new updatedUser data
+                updatedUser.UserId = userId; // Ensure the updatedUser's UserId is set to the correct value
+
+                // We update the user data in the Firebase "Users" collection using the UserId
+                await FirebaseService
+                    .Client
+                    .Child("Users")  // "Users" collection
+                    .Child(userId)  // Using the provided userId
+                    .PutAsync(JsonConvert.SerializeObject(updatedUser));  // Saving the updated data as JSON
+
+                return true;  // Return true if update was successful
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error updating user profile: {ex.Message}");
+                return false;  // Return false if there was an error
+            }
+        }
+
+
     }
 }
