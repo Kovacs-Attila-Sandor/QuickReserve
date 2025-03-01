@@ -61,6 +61,6 @@ namespace QuickReserve.Views
         protected async void GoToMenuPage(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new RestaurantMenuPage(restaurant));
-        }   
+        }
     }
 }

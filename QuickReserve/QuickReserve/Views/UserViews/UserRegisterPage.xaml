@@ -1,38 +1,139 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="QuickReserve.Views.UserRegisterPage"
-             NavigationPage.HasNavigationBar="False"
-             >
-            
+<ContentPage
+    x:Class="QuickReserve.Views.UserRegisterPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    BackgroundColor="#0D0D0D"
+    NavigationPage.HasNavigationBar="False">
+
     <ContentPage.Content>
         <RelativeLayout>
-            <Image
-        Aspect="AspectFill"
-        Source="background1.png"
-        RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
-        RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
-        IsEnabled="False"/>
-            <StackLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
-                 RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
-                 Margin="30,30,30,30">
-                <Label Text="Welcome to the Quick Reserve App"
-           FontSize="Large"
-           HorizontalOptions="Center"
-           TextColor="White" />
-                <Frame CornerRadius="20"
-       BackgroundColor="Black"         
-        Opacity="0.75"         
-       HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand">
-                    <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand" Padding="20">
-                        <Entry x:Name="txtUsername" Placeholder="Username" TextColor="GhostWhite" />
-                        <Entry x:Name="txtPassword" IsPassword="True" Placeholder="Password" TextColor="GhostWhite" />
-                        <Entry x:Name="txtConfirmPassword" IsPassword="True" Placeholder="ConfirmPassword" TextColor="GhostWhite" />
-                        <Entry x:Name="txtEmail" Placeholder="Email" TextColor="GhostWhite" />
-                        <Entry x:Name="txtPhonenum" Placeholder="Tel." TextColor="GhostWhite" />
-                        <Button Clicked="GoToLoginPage" CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent" FontSize="15" WidthRequest="200" FontAttributes="Bold"   Text="Back to Login"/>
-                        <Button Clicked="RegisterAsGuest" CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent"  FontSize="15" WidthRequest="200" FontAttributes="Bold" Text="Register as guest"/>
-                        <Button Clicked="GoToRestaurantRegisterPage" CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent" FontSize="15" WidthRequest="200" FontAttributes="Bold" Text="Register as restaurant"/>
+            <StackLayout
+                Margin="5"
+                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,
+                                                                       Property=Height,
+                                                                       Factor=1}"
+                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,
+                                                                      Property=Width,
+                                                                      Factor=1}">
+
+                <Label
+                    Margin="0,20,0,40"
+                    FontAttributes="Bold"
+                    FontSize="28"
+                    HorizontalOptions="Center"
+                    Text="Create an Account"
+                    TextColor="#E0E0E0" />
+
+                <Frame
+                    Margin="25"
+                    Padding="25"
+                    BackgroundColor="#1A1A1A"
+                    CornerRadius="30"
+                    HasShadow="True">
+                    <StackLayout
+                        HorizontalOptions="FillAndExpand"
+                        Spacing="20"
+                        VerticalOptions="Center">
+
+                        <Frame
+                            Padding="5"
+                            BackgroundColor="#292929"
+                            CornerRadius="15"
+                            HasShadow="False">
+                            <Entry
+                                x:Name="txtUsername"
+                                Margin="0,5"
+                                BackgroundColor="Transparent"
+                                Placeholder="Username"
+                                PlaceholderColor="#A0A0A0"
+                                TextColor="#FFFFFF" />
+                        </Frame>
+
+                        <Frame
+                            Padding="5"
+                            BackgroundColor="#292929"
+                            CornerRadius="15"
+                            HasShadow="False">
+                            <Entry
+                                x:Name="txtEmail"
+                                Margin="0,5"
+                                BackgroundColor="Transparent"
+                                Placeholder="Email"
+                                PlaceholderColor="#A0A0A0"
+                                TextColor="#FFFFFF" />
+                        </Frame>
+
+                        <Frame
+                            Padding="5"
+                            BackgroundColor="#292929"
+                            CornerRadius="15"
+                            HasShadow="False">
+                            <Entry
+                                x:Name="txtPassword"
+                                Margin="0,5"
+                                BackgroundColor="Transparent"
+                                IsPassword="True"
+                                Placeholder="Password"
+                                PlaceholderColor="#A0A0A0"
+                                TextColor="#FFFFFF" />
+                        </Frame>
+
+                        <Frame
+                            Padding="5"
+                            BackgroundColor="#292929"
+                            CornerRadius="15"
+                            HasShadow="False">
+                            <Entry
+                                x:Name="txtConfirmPassword"
+                                Margin="0,5"
+                                BackgroundColor="Transparent"
+                                IsPassword="True"
+                                Placeholder="Confirm Password"
+                                PlaceholderColor="#A0A0A0"
+                                TextColor="#FFFFFF" />
+                        </Frame>
+
+                        <Frame
+                            Padding="5"
+                            BackgroundColor="#292929"
+                            CornerRadius="15"
+                            HasShadow="False">
+                            <Entry
+                                x:Name="txtPhonenum"
+                                Margin="0,5"
+                                BackgroundColor="Transparent"
+                                Placeholder="Phone Number"
+                                PlaceholderColor="#A0A0A0"
+                                TextColor="#FFFFFF" />
+                        </Frame>
+
+                        <Button
+                            Margin="0,10"
+                            BackgroundColor="#6200EE"
+                            Clicked="RegisterAsGuest"
+                            CornerRadius="30"
+                            FontAttributes="Bold"
+                            FontSize="18"
+                            HorizontalOptions="Center"
+                            Text="Register"
+                            TextColor="#FFFFFF"
+                            VerticalOptions="CenterAndExpand"
+                            WidthRequest="350" />
+
+                        <Button
+                            Margin="0,5"
+                            BackgroundColor="#444444"
+                            Clicked="GoToLoginPage"
+                            CornerRadius="30"
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            HeightRequest="50"
+                            HorizontalOptions="Center"
+                            Text="Back to Login"
+                            TextColor="#FFFFFF"
+                            WidthRequest="350" />
+
                     </StackLayout>
                 </Frame>
             </StackLayout>

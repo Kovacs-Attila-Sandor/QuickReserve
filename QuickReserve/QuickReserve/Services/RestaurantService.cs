@@ -31,7 +31,30 @@ namespace QuickReserve.Services
                 return null;  // Hiba esetén null-t adunk vissza
             }
         }
-        
+
+        public async Task<Restaurant> GetRestaurantByUserId(string userId)
+        {
+            try
+            {
+                // Lekérjük az étterem adatokat a "Restaurant" gyűjteményből a megadott RestaurantId alapján
+                var allRestaurant = await FirebaseService
+                    .Client
+                    .Child("Restaurant")  // "Restaurant" gyűjtemény                  
+                    .OnceAsync<Restaurant>();  // Az adatokat Restaurant típusra deszerializáljuk
+
+                var restaurant = allRestaurant
+                    .Select(u => u.Object)
+                    .FirstOrDefault(u => u.UserId == userId);
+
+                return restaurant;  // Az étterem adatainak visszaadása
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching restaurant: {ex.Message}");
+                return null;  // Hiba esetén null-t adunk vissza
+            }
+        }
+
         public async Task<string> AddRestaurantAndGetId(Restaurant restaurant)
         {
             try

@@ -1,25 +1,21 @@
 using System;
-using QuickReserve.Models;
 using QuickReserve.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using Xamarin.Essentials;
+using Firebase.Auth;
 
 namespace QuickReserve.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class UserRegisterPage : ContentPage
     {
+        private readonly FirebaseAuthService _authService;
 
         public UserRegisterPage()
         {
             InitializeComponent();
+
+            _authService = new FirebaseAuthService();
         }
 
         protected void GoToLoginPage(object sender, EventArgs e)
@@ -32,38 +28,42 @@ namespace QuickReserve.Views
         {
             App.Current.MainPage = new NavigationPage(new RestaurantRegisterPage());
         }
+
         private async void RegisterAsGuest(object sender, EventArgs e)
         {
-            UserService userService = new UserService();
-
-            string password = txtPassword.Text?.Trim();  // Trim() eltávolítja a szóközöket a végéről és elejéről
-            string confirmPassword = txtConfirmPassword.Text?.Trim();
-
-            if (!string.IsNullOrEmpty(txtUsername.Text) && !string.IsNullOrEmpty(txtPassword.Text) && !string.IsNullOrEmpty(txtConfirmPassword.Text) && !string.IsNullOrEmpty(txtEmail.Text) && !string.IsNullOrEmpty(txtPhonenum.Text))
+            try
             {
-                if (await userService.GetUserByName(txtUsername.Text.Trim()) == null)
+                if (string.IsNullOrWhiteSpace(txtEmail.Text) ||
+                    string.IsNullOrWhiteSpace(txtPassword.Text) ||
+                    string.IsNullOrWhiteSpace(txtConfirmPassword.Text))
                 {
-                    if (string.Equals(password, confirmPassword))
-                    {
-                        User user = new User()
-                        {
-                            Name = txtUsername.Text.Trim(),
-                            Password = txtPassword.Text.Trim(),
-                            Email = txtEmail.Text.Trim(),
-                            PhoneNumber = txtPhonenum.Text.Trim(),
-                            Role = "USER"
-                        };
-                        bool succes = await userService.AddUser(user);
-                        if (succes)
-                            await DisplayAlert("SAVING SUCCESS", "User added successfully", "OK");
-                        else
-                            await DisplayAlert("SAVING ERROR", "There was an error adding the user", "OK");
-                    }
-                    else await DisplayAlert("SAVING ERROR", "Your password is not matching", "OK");
+                    await DisplayAlert("Error", "Please fill in all fields.", "OK");
+                    return;
                 }
-                else await DisplayAlert("SAVING ERROR", "This Username is already used", "OK");
+
+                if (txtPassword.Text != txtConfirmPassword.Text)
+                {
+                    await DisplayAlert("Error", "Passwords do not match.", "OK");
+                    return;
+                }
+
+                // Felhasználó létrehozása Firebase-ben
+                var userCredential = await _authService.AuthClient.CreateUserWithEmailAndPasswordAsync(
+                    txtEmail.Text.Trim(), txtPassword.Text.Trim());
+
+                await DisplayAlert("Success", "User registered successfully!", "OK");
+
+                // Navigálás a bejelentkezési oldalra
+                App.Current.MainPage = new NavigationPage(new LoginPage());
             }
-            else await DisplayAlert("SAVING ERROR", "Something is empty", "OK");
+            catch (FirebaseAuthException ex)
+            {
+                await DisplayAlert("Registration Failed", $"Error: {ex.Reason}", "OK");
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", $"An unexpected error occurred: {ex.Message}", "OK");
+            }
         }
     }
 }

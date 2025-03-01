@@ -15,6 +15,7 @@ namespace QuickReserve.Models
         public string ShortDescription { get; set; }
         public string LongDescription { get; set; }
         public List<RestaurantHours> Hours { get; set; }
+        public string UserId { get; set; }
 
         // Több kép Base64 kódolva
         public List<string> ImageBase64List { get; set; } = new List<string>();

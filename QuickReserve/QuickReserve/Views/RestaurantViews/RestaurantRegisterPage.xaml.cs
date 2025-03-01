@@ -1,4 +1,6 @@
-﻿using QuickReserve.Models;
+﻿using Firebase.Auth;
+using Firebase.Auth.Providers;
+using QuickReserve.Models;
 using QuickReserve.Services;
 using System;
 using System.Collections.Generic;
@@ -15,9 +17,23 @@ namespace QuickReserve.Views
     {
         private List<string> imageBase64List = new List<string>();
 
+        public string WEB_API_KEY = "AIzaSyBrYyBcrfzwaWYVU1XbUG7CZ660XTwSmyU";
+
+        private readonly FirebaseAuthClient authClient; // Declare the authClient
+
         public RestaurantRegisterPage()
         {
             InitializeComponent();
+
+            var config = new FirebaseAuthConfig
+            {
+                ApiKey = WEB_API_KEY,
+                AuthDomain = "quickreserve-9b03a.firebaseapp.com",
+                Providers = new FirebaseAuthProvider[] { new EmailProvider() }
+            };
+
+            // Initialize the authClient with the config
+            authClient = new FirebaseAuthClient(config);
         }
 
         protected async void PickImageButton_Clicked(object sender, EventArgs e)
@@ -72,8 +88,8 @@ namespace QuickReserve.Views
                 !string.IsNullOrEmpty(txtStreet.Text) &&
                 !string.IsNullOrEmpty(txtCountry.Text) &&
                 !string.IsNullOrEmpty(txtNumber.Text) &&
-                !string.IsNullOrEmpty(txtShortDescriprion.Text) &&
-                !string.IsNullOrEmpty(txtLongDescriprion.Text) &&
+                !string.IsNullOrEmpty(txtShortDescription.Text) &&
+                !string.IsNullOrEmpty(txtLongDescription.Text) &&
                 imageBase64List.Count > 0)
             {
                 if (await userService.GetUserByName(txtUsername.Text.Trim()) == null)
@@ -88,15 +104,15 @@ namespace QuickReserve.Views
                             PhoneNumber = txtPhonenum.Text.Trim(),
                             Role = "RESTAURANT"
                         };
-                        await userService.AddUser(user);
+                        var userId = await userService.AddUserAndGetId(user);
 
                         Restaurant restaurant = new Restaurant
                         {
                             Name = txtUsername.Text.Trim(),
                             PhoneNumber = txtPhonenum.Text.Trim(),
                             Email = txtEmail.Text.Trim(),
-                            ShortDescription = txtShortDescriprion.Text.Trim(),
-                            LongDescription = txtLongDescriprion.Text.Trim(),
+                            ShortDescription = txtShortDescription.Text.Trim(),
+                            LongDescription = txtLongDescription.Text.Trim(),
                             Address = new RestaurantLocation
                             {
                                 City = txtCity.Text.Trim(),
@@ -104,10 +120,14 @@ namespace QuickReserve.Views
                                 Street = txtStreet.Text.Trim(),
                                 Number = txtNumber.Text.Trim()
                             },
-                            ImageBase64List = new List<string>(imageBase64List)
+                            ImageBase64List = new List<string>(imageBase64List),
+                            UserId = userId
                         };
 
                         string restaurantId = await restaurantService.AddRestaurantAndGetId(restaurant);
+
+                        // Felhasználó létrehozása Firebase-ben
+                        var userCredential = await authClient.CreateUserWithEmailAndPasswordAsync(txtEmail.Text.Trim(), txtPassword.Text.Trim());
 
                         if (!string.IsNullOrEmpty(restaurantId))
                         {
@@ -138,11 +158,6 @@ namespace QuickReserve.Views
         protected async void GoToLoginPage(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new LoginPage());
-        }
-
-        protected async void GoToUserRegisterPage(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new UserRegisterPage());
-        }
+        }  
     }
 }

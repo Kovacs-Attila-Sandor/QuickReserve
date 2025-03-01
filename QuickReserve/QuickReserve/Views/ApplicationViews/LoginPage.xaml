@@ -5,78 +5,177 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:d="http://xamarin.com/schemas/2014/forms/design"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    BackgroundColor="#121212"
     NavigationPage.HasNavigationBar="False"
-    mc:Ignorable="d"
-    BackgroundImageSource="background1.png">
+    mc:Ignorable="d">
     <ContentPage.Content>
-        <RelativeLayout>
+        <Grid x:Name="MainGrid" Padding="20">
+
+            <!-- Gradient Background -->
+            <Grid.Background>
+                <LinearGradientBrush EndPoint="1,1" StartPoint="0,0">
+                    <GradientStop Color="#121212" Offset="0" />
+                    <GradientStop Color="#282828" Offset="0.5" />
+                    <GradientStop Color="#3f3f3f" Offset="1" />
+                </LinearGradientBrush>
+            </Grid.Background>
+
+            <!--  Cím  -->
             <StackLayout
-                Margin="30,30,30,30"
-                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,
-                                                                       Property=Height,
-                                                                       Factor=1}"
-                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,
-                                                                      Property=Width,
-                                                                      Factor=1}">
+                HorizontalOptions="FillAndExpand"
+                Spacing="25"
+                VerticalOptions="CenterAndExpand">
                 <Label
-                    FontSize="Large"
+                    Margin="0,30,0,40"
+                    FontAttributes="Bold"
+                    FontSize="28"
                     HorizontalOptions="Center"
-                    Text="Welcome to the Quick Reserve App"
-                    TextColor="White" />
+                    Text="Welcome to Quick Reserve"
+                    TextColor="#F0F0F0" />
 
+                <!--  Bejelentkezés Frame  -->
                 <Frame
-                    BackgroundColor="Black"
+                    Padding="25"                 
                     CornerRadius="20"
-                    HorizontalOptions="CenterAndExpand"
-                    Opacity="0.75"
-                    VerticalOptions="EndAndExpand">
+                    HasShadow="True">
+                    <Frame.Background>
+                        <LinearGradientBrush EndPoint="1,1" StartPoint="0,0">
+                            <GradientStop Color="#3d3d3d" Offset="0" />
+                            <GradientStop Color="#262626" Offset="0.5" />
+                            <GradientStop Color="#100f10" Offset="1" />
+                        </LinearGradientBrush>
+                    </Frame.Background>
+                    <StackLayout Spacing="20" VerticalOptions="CenterAndExpand">
 
-                    <StackLayout
-                        Padding="20"
-                        HorizontalOptions="CenterAndExpand"
-                        VerticalOptions="EndAndExpand">
-                        <Entry
-                            x:Name="txtUsername"
-                            Placeholder="Username"
-                            TextColor="GhostWhite" />
-                        <Entry
-                            x:Name="txtPassword"
-                            IsPassword="True"
-                            Placeholder="Password"
-                            TextColor="GhostWhite" />
+                        <!--  Email mező  -->
+                        <Frame
+                            Padding="5"
+                            BackgroundColor="#2C2C2C"
+                            CornerRadius="12"
+                            HasShadow="False">
+
+                            <Grid Padding="7" ColumnDefinitions="Auto, *">
+                                <Image
+                                    BackgroundColor="Transparent"
+                                    HeightRequest="30"
+                                    Source="email_icon.png"
+                                    VerticalOptions="Center"
+                                    WidthRequest="30" />
+                                <Entry
+                                    x:Name="txtEmail"
+                                    Grid.Column="1"
+                                    BackgroundColor="Transparent"
+                                    Placeholder="Email"
+                                    PlaceholderColor="#A0A0A0"
+                                    TextColor="#FFFFFF" />
+                            </Grid>
+                        </Frame>
+
+                        <!--  Jelszó mező  -->
+                        <Frame
+                            Padding="5"
+                            BackgroundColor="#2C2C2C"
+                            CornerRadius="12"
+                            HasShadow="False">
+                            <Grid Padding="7" ColumnDefinitions="Auto, *, Auto">
+                                <Image
+                                    HeightRequest="30"
+                                    Source="password_icon.jpg"
+                                    VerticalOptions="Center"
+                                    WidthRequest="30" />
+                                <Entry
+                                    x:Name="txtPassword"
+                                    Grid.Column="1"
+                                    BackgroundColor="Transparent"
+                                    IsPassword="True"
+                                    Placeholder="Password"
+                                    PlaceholderColor="#A0A0A0"
+                                    TextColor="#FFFFFF" />
+                                <Image
+                                    x:Name="imgTogglePassword"
+                                    Grid.Column="2"
+                                    HeightRequest="30"
+                                    Source="eye_closed.png"
+                                    VerticalOptions="Center"
+                                    WidthRequest="30">
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="TogglePasswordVisibility" />
+                                    </Image.GestureRecognizers>
+                                </Image>
+                            </Grid>
+                        </Frame>
+
+                        <!--  Remember me checkbox  -->
+                        <StackLayout HorizontalOptions="Start" Orientation="Horizontal">
+                            <CheckBox x:Name="chkRememberMe" Color="#6200EE" />
+                            <Label
+                                Margin="5,0,0,0"
+                                Text="Remember Me"
+                                TextColor="#E0E0E0"
+                                VerticalOptions="Center" />
+                        </StackLayout>
+
+                        <!--  Login Button  -->
                         <Button
-                            BackgroundColor="Transparent"
+                            Margin="0,10"
+                            BackgroundColor="#6200EE"
                             Clicked="Login"
-                            CornerRadius="50"
+                            CornerRadius="30"
                             FontAttributes="Bold"
-                            FontSize="15"
-                            HorizontalOptions="CenterAndExpand"
+                            FontSize="18"
+                            HorizontalOptions="Center"
                             Text="Login"
-                            TextColor="GhostWhite"
-                            WidthRequest="200" />
+                            TextColor="#FFFFFF"
+                            VerticalOptions="CenterAndExpand"
+                            WidthRequest="350" />
+
+                        <!--  További regisztrációs gombok  -->
                         <Button
-                            BackgroundColor="Transparent"
+                            Margin="0,5"
+                            BackgroundColor="#444444"
                             Clicked="GoToUserRegisterPage"
-                            CornerRadius="50"
+                            CornerRadius="30"
                             FontAttributes="Bold"
-                            FontSize="15"
-                            HorizontalOptions="CenterAndExpand"
+                            FontSize="16"
+                            HeightRequest="50"
+                            HorizontalOptions="Center"
                             Text="Register as guest"
-                            TextColor="GhostWhite"
-                            WidthRequest="200" />
+                            TextColor="#FFFFFF"
+                            WidthRequest="350" />
+
                         <Button
-                            BackgroundColor="Transparent"
+                            Margin="0,5"
+                            BackgroundColor="#444444"
                             Clicked="GoToRestaurantRegisterPage"
-                            CornerRadius="50"
+                            CornerRadius="30"
                             FontAttributes="Bold"
-                            FontSize="15"
-                            HorizontalOptions="CenterAndExpand"
+                            FontSize="16"
+                            HeightRequest="50"
+                            HorizontalOptions="Center"
                             Text="Register as restaurant"
-                            TextColor="GhostWhite"
-                            WidthRequest="200" />
+                            TextColor="#FFFFFF"
+                            WidthRequest="350" />
+
                     </StackLayout>
                 </Frame>
             </StackLayout>
-        </RelativeLayout>
+
+            <!--  Overlay a betöltéshez  -->
+            <Grid
+                x:Name="LoadingOverlay"
+                BackgroundColor="Black"
+                HorizontalOptions="FillAndExpand"
+                IsVisible="False"
+                Opacity="0.5"
+                VerticalOptions="FillAndExpand">
+                <!--  Activity Indicator  -->
+                <ActivityIndicator
+                    HorizontalOptions="Center"
+                    IsRunning="True"
+                    VerticalOptions="CenterAndExpand"
+                    Color="White" />
+            </Grid>
+
+        </Grid>
     </ContentPage.Content>
 </ContentPage>
