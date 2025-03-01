@@ -14,15 +14,14 @@ namespace QuickReserve.Views
         private RestaurantService _restaurantService;
         private Restaurant _restaurant;
 
-        public RestaurantProfilePage(string userName)
+        public RestaurantProfilePage(string restaurantId)
         {
             InitializeComponent();
-            Title = userName; // Page title
-            _restaurantService = new RestaurantService(); // Init the service
-            LoadRestaurantData(userName);
+            _restaurantService = new RestaurantService();
+            LoadRestaurantData(restaurantId);
         }
 
-        private async void LoadRestaurantData(string userName)
+        private async void LoadRestaurantData(string restaurantId)
         {
             try
             {
@@ -31,7 +30,7 @@ namespace QuickReserve.Views
                 contentLayout.IsVisible = false;
 
                 // Fetch restaurant data asynchronously
-                _restaurant = await _restaurantService.GetRestaurantByName(userName);
+                _restaurant = await _restaurantService.GetRestaurantByUserId(restaurantId);
 
                 if (_restaurant != null)
                 {

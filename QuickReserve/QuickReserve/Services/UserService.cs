@@ -34,6 +34,29 @@ namespace QuickReserve.Services
             }
         }
 
+        public async Task<string> AddUserAndGetId(User user)
+        {
+            try
+            {
+                // Az új felhasználó ID-jának automatikus generálása
+                user.UserId = Guid.NewGuid().ToString();
+
+                // Felhasználó adatainak mentése a "Users" gyűjteménybe a felhasználói azonosítóval
+                await FirebaseService
+                    .Client
+                    .Child("Users")  // "Users" gyűjtemény
+                    .Child(user.UserId.ToString())  // Az int típusú UserId stringgé konvertálva
+                    .PutAsync(JsonConvert.SerializeObject(user));  // Az adatokat JSON formátumban mentjük
+
+                return user.UserId;  // Ha sikeres volt a mentés
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error adding user: {ex.Message}");
+                return null;  // Hiba esetén false
+            }
+        }
+
 
         // Felhasználó lekérése a Firebase-ből a UserId alapján
         public async Task<User> GetUserById(string userId)
@@ -80,6 +103,30 @@ namespace QuickReserve.Services
                 return null;  // Hiba esetén null-t adunk vissza
             }
         }
+
+        public async Task<string> GetUserIdByEmail(string Email)
+        {
+            try
+            {
+                // Lekérjük az összes felhasználót a "Users" gyűjteményből
+                var allUsers = await FirebaseService
+                    .Client
+                    .Child("Users")
+                    .OnceAsync<User>();
+
+                // Megkeressük az első olyan felhasználót, amelynek Email tulajdonsága megegyezik a keresett névvel
+                var user = allUsers
+                    .Select(u => u.Object)  // Csak a felhasználói objektumokat vesszük figyelembe
+                    .FirstOrDefault(u => u.Email == Email);  // Feltétel a Email-re
+
+                return user.UserId;  // Ha találtunk egyezést, visszaadjuk a felhasználót
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching user by name: {ex.Message}");
+                return null;  // Hiba esetén null-t adunk vissza
+            }
+        }
         public async Task<bool> ValidateUserCredentials(string userName, string password)
         {
             try
@@ -106,7 +153,7 @@ namespace QuickReserve.Services
         }
 
         // Lekérdezi a felhasználó típusát az adatbázisból
-        public async Task<string> GetUserType(string userName)
+        public async Task<string> GetUserTypeByUserId(string userId)
         {
             var allUsers = await FirebaseService
                 .Client
@@ -115,7 +162,7 @@ namespace QuickReserve.Services
 
             var user = allUsers
                 .Select(u => u.Object)
-                .FirstOrDefault(u => u.Name == userName);
+                .FirstOrDefault(u => u.UserId == userId);
 
             if (user != null)
             {

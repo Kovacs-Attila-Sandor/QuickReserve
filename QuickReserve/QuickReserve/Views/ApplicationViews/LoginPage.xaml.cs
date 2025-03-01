@@ -1,8 +1,8 @@
-﻿using QuickReserve.Services;
-using QuickReserve.ViewModels;
+﻿using Firebase.Auth;
+using Firebase.Auth.Providers;
+using QuickReserve.Services;
 using System;
-using System.Net.Http;
-using System.Threading.Tasks;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -11,10 +11,21 @@ namespace QuickReserve.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LoginPage : ContentPage
     {
+        public string WEB_API_KEY = "AIzaSyBrYyBcrfzwaWYVU1XbUG7CZ660XTwSmyU";
+
+        private readonly FirebaseAuthService _authService;
+
+        private UserService _userService = new UserService();
+
         public LoginPage()
         {
             InitializeComponent();
-            this.BindingContext = new LoginViewModel();
+
+            _authService = new FirebaseAuthService();
+            _userService = new UserService();
+
+            // Ellenőrizzük, hogy a felhasználó be van-e jelentkezve
+            CheckLoggedInUser();
         }
 
         protected void GoToUserRegisterPage(object sender, EventArgs e)
@@ -26,62 +37,76 @@ namespace QuickReserve.Views
         {
             App.Current.MainPage = new NavigationPage(new RestaurantRegisterPage());
         }
-
-        protected void GoToAboutPage(object sender, EventArgs e)
+        private void TogglePasswordVisibility(object sender, EventArgs e)
         {
-            App.Current.MainPage = new NavigationPage(new AboutPage());
+            txtPassword.IsPassword = !txtPassword.IsPassword;
+            imgTogglePassword.Source = txtPassword.IsPassword ? "eye_closed.png" : "eye_open.png";
+        }
+
+        private void CheckLoggedInUser()
+        {
+            if (Preferences.ContainsKey("userId"))
+            {
+                string userId = Preferences.Get("userId", null);
+                string userEmail = Preferences.Get("userEmail", null);
+
+                if (!string.IsNullOrEmpty(userId))
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        App.Current.MainPage = new NavigationPage(new AboutPage());
+                    });
+                }      
+            }        
         }
 
         public async void Login(object sender, EventArgs e)
         {
-            UserService userService = new UserService();
-
-            // Ellenőrizzük, hogy a felhasználónév és a jelszó nem üres
-            if (string.IsNullOrWhiteSpace(txtUsername.Text) || string.IsNullOrWhiteSpace(txtPassword.Text))
-            {
-                await DisplayAlert("LOGIN ERROR", "Please enter both username and password", "OK");
-                return;
-            }
+            LoadingOverlay.IsVisible = true;
+            MainGrid.IsEnabled = false;
 
             try
             {
-                // Felhasználói hitelesítő adatok ellenőrzése
-                bool isValidUser = await userService.ValidateUserCredentials(txtUsername.Text.Trim(), txtPassword.Text.Trim());
-
-                if (isValidUser)
+                if (string.IsNullOrWhiteSpace(txtEmail.Text) || string.IsNullOrWhiteSpace(txtPassword.Text))
                 {
-                    // A sikeres bejelentkezés után elmenthetjük a felhasználó nevét
-                    App.Current.Properties["LoggedInUserName"] = txtUsername.Text.Trim();
+                    await DisplayAlert("Error", "Please fill in all fields.", "OK");
+                    return;
+                }
 
-                    User user = await userService.GetUserByName(txtUsername.Text.Trim());
-                    Application.Current.Properties["userId"] = user.UserId;
+                var userCredential = await _authService.AuthClient.SignInWithEmailAndPasswordAsync(
+                    txtEmail.Text.Trim(), txtPassword.Text.Trim());
 
-                    App.Current.MainPage = new NavigationPage(new AboutPage());                  
+                string userID = await _userService.GetUserIdByEmail(txtEmail.Text);
+
+                if (!string.IsNullOrEmpty(userID))
+                {
+                    if (chkRememberMe.IsChecked)
+                    {
+                        Preferences.Set("userId", userID);
+                        Preferences.Set("userEmail", txtEmail.Text.Trim());
+                    }
+
+                    // Sikeres bejelentkezés → főoldalra irányítás
+                    App.Current.MainPage = new NavigationPage(new AboutPage());
                 }
                 else
                 {
-                    // Hibás hitelesítő adatok
-                    await DisplayAlert("LOGIN ERROR", "This Username does not exist or incorrect password", "OK");
+                    await DisplayAlert("Error", "User not found.", "OK");
                 }
             }
-            catch (TimeoutException)
+            catch (FirebaseAuthException ex)
             {
-                await DisplayAlert("LOGIN ERROR", "The login process timed out. Please try again later.", "OK");
-            }
-            catch (HttpRequestException)
-            {
-                await DisplayAlert("LOGIN ERROR", "A network error occurred. Please try again later.", "OK");
+                await DisplayAlert("Login Failed", $"Error: {ex.Reason}", "OK");
             }
             catch (Exception ex)
             {
-                // Általános hiba
-                await DisplayAlert("LOGIN ERROR", "An unexpected error occurred: " + ex.Message, "OK");
-
-                // Ha van naplózási mechanizmus, itt használhatjuk
-                Console.WriteLine($"Login error: {ex}");
+                await DisplayAlert("Error", $"An unexpected error occurred: {ex.Message}", "OK");
             }
-
-            
+            finally
+            {
+                LoadingOverlay.IsVisible = false;
+                MainGrid.IsEnabled = true;
+            }
         }
     }
 }

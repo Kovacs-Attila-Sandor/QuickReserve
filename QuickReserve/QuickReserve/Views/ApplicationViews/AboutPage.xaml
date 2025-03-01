@@ -21,7 +21,6 @@
                 WidthRequest="50"
                 Color="#3498db" />
 
-            <!--  Loading szöveg  -->
             <Label
                 x:Name="LoadingLabel"
                 FontAttributes="Bold"
@@ -33,6 +32,7 @@
 
             <!--  Fő tartalom  -->
             <StackLayout
+                x:Name="Content"
                 Orientation="Vertical"
                 Spacing="20"
                 VerticalOptions="FillAndExpand">
@@ -92,7 +92,6 @@
                     IsVisible="False"
                     ItemTapped="OnItemTapped"
                     SeparatorVisibility="None">
-
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
@@ -111,13 +110,12 @@
                                             Source="{Binding ImageSourceUri}"
                                             VerticalOptions="FillAndExpand" />
 
-                                        <!--  Étterem részletek  -->
+                                        <!--  Étterem neve és leírása  -->
                                         <Label
                                             FontAttributes="Bold"
                                             FontSize="18"
                                             Text="{Binding Name}"
                                             TextColor="Orange" />
-                                        <!--  Fehér szöveg a sötét háttéren  -->
                                         <Label
                                             FontSize="14"
                                             Text="{Binding ShortDescription}"

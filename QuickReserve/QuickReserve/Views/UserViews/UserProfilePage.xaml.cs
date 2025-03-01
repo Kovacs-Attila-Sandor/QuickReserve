@@ -5,6 +5,7 @@ using QuickReserve.Models;
 using QuickReserve.Converter;
 using System.IO;
 using System.Reflection;
+using Xamarin.Essentials;
 
 namespace QuickReserve.Views
 {
@@ -12,16 +13,16 @@ namespace QuickReserve.Views
     {
         public User user { get; set; }
 
-        public UserProfilePage(string userName)
+        public UserProfilePage(string userID)
         {
             InitializeComponent();
-            LoadUserData(userName);
+            LoadUserData(userID);
         }
 
-        private async void LoadUserData(string userName)
+        private async void LoadUserData(string userID)
         {
             var userService = new UserService();
-            user = await userService.GetUserByName(userName);
+            user = await userService.GetUserById(userID);
 
             if (user != null)
             {
@@ -54,7 +55,9 @@ namespace QuickReserve.Views
 
         private void OnLogoutClicked(object sender, EventArgs e)
         {
-            App.Current.MainPage = new LoginPage();
+            Preferences.Remove("userId");
+            Preferences.Remove("userEmail");
+            App.Current.MainPage = new NavigationPage(new LoginPage());
         }
     }
 }

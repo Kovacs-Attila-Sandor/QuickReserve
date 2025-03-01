@@ -1,89 +1,211 @@
-﻿<ContentPage
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
     x:Class="QuickReserve.Views.RestaurantRegisterPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    NavigationPage.HasNavigationBar="False">
+    xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    BackgroundColor="#0D0D0D"
+    NavigationPage.HasNavigationBar="False"
+    mc:Ignorable="d">
+
     <ContentPage.Content>
-        <RelativeLayout>
-            <Image
-                Aspect="AspectFill"
-                IsEnabled="False"
-                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,
-                                                                       Property=Height,
-                                                                       Factor=1}"
-                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,
-                                                                      Property=Width,
-                                                                      Factor=1}"
-                Source="background1.png" />
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-            <StackLayout
-                Margin="30,30,30,30"
-                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,
-                                                                       Property=Height,
-                                                                       Factor=1}"
-                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,
-                                                                      Property=Width,
-                                                                      Factor=1}">
-                <Label
-                    FontSize="Large"
-                    HorizontalOptions="Center"
-                    Text="Welcome to the Quick Reserve App"
-                    TextColor="White" />
-                <StackLayout>
-                    <ScrollView VerticalScrollBarVisibility="Always">
-                        <StackLayout>
-                            <Entry
-                                x:Name="txtUsername"
-                                Placeholder="Username"
-                                TextColor="GhostWhite" />
-                            <Entry
-                                x:Name="txtPassword"
-                                IsPassword="True"
-                                Placeholder="Password"
-                                TextColor="GhostWhite" />
-                            <Entry
-                                x:Name="txtConfirmPassword"
-                                IsPassword="True"
-                                Placeholder="ConfirmPassword"
-                                TextColor="GhostWhite" />
-                            <Entry
-                                x:Name="txtEmail"
-                                Placeholder="Email"
-                                TextColor="GhostWhite" />
-                            <Entry
-                                x:Name="txtPhonenum"
-                                Placeholder="Tel."
-                                TextColor="GhostWhite" />
-                            <Entry
-                                x:Name="txtCountry"
-                                Placeholder="Country"
-                                TextColor="GhostWhite" />
-                            <Entry
-                                x:Name="txtCity"
-                                Placeholder="City"
-                                TextColor="GhostWhite" />
-                            <Entry
-                                x:Name="txtStreet"
-                                Placeholder="Street"
-                                TextColor="GhostWhite" />
-                            <Entry
-                                x:Name="txtNumber"
-                                Placeholder="Number"
-                                TextColor="GhostWhite" />
-                            <Entry
-                                x:Name="txtShortDescriprion"
-                                Placeholder="Short Description"
-                                TextColor="GhostWhite" />
-                            <Entry
-                                x:Name="txtLongDescriprion"
-                                Placeholder="Long Description"
-                                TextColor="GhostWhite" />
+            <!--  Fixált cím a képernyő tetején  -->
+            <Label
+                Grid.Row="0"
+                Margin="0,40,0,40"
+                FontAttributes="Bold"
+                FontSize="28"
+                HorizontalOptions="Center"
+                Text="Register Your Restaurant"
+                TextColor="#E0E0E0" />
+            <!--  Cím az első sorban  -->
+
+            <!--  Görgethető tartalom  -->
+            <ScrollView Grid.Row="1">
+                <StackLayout
+                    Margin="5"
+                    Padding="0"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="FillAndExpand">
+
+                    <Frame
+                        Margin="15"
+                        Padding="25"
+                        BackgroundColor="#1A1A1A"
+                        CornerRadius="20"
+                        HasShadow="True">
+
+                        <StackLayout Spacing="20">
+
+                            <!--  Beviteli mezők  -->
+                            <Frame
+                                Padding="5"
+                                BackgroundColor="#292929"
+                                CornerRadius="15"
+                                HasShadow="False">
+                                <Entry
+                                    x:Name="txtUsername"
+                                    BackgroundColor="Transparent"
+                                    Placeholder="Username"
+                                    PlaceholderColor="#A0A0A0"
+                                    TextColor="#FFFFFF" />
+                            </Frame>
+
+                            <Frame
+                                Padding="5"
+                                BackgroundColor="#292929"
+                                CornerRadius="15"
+                                HasShadow="False">
+                                <Entry
+                                    x:Name="txtEmail"
+                                    BackgroundColor="Transparent"
+                                    Placeholder="Email"
+                                    PlaceholderColor="#A0A0A0"
+                                    TextColor="#FFFFFF" />
+                            </Frame>
+
+                            <Frame
+                                Padding="5"
+                                BackgroundColor="#292929"
+                                CornerRadius="15"
+                                HasShadow="False">
+                                <Entry
+                                    x:Name="txtPassword"
+                                    BackgroundColor="Transparent"
+                                    IsPassword="True"
+                                    Placeholder="Password"
+                                    PlaceholderColor="#A0A0A0"
+                                    TextColor="#FFFFFF" />
+                            </Frame>
+
+                            <Frame
+                                Padding="5"
+                                BackgroundColor="#292929"
+                                CornerRadius="15"
+                                HasShadow="False">
+                                <Entry
+                                    x:Name="txtConfirmPassword"
+                                    BackgroundColor="Transparent"
+                                    IsPassword="True"
+                                    Placeholder="Confirm Password"
+                                    PlaceholderColor="#A0A0A0"
+                                    TextColor="#FFFFFF" />
+                            </Frame>
+
+                            <!--  Telefon és cím adatok  -->
+                            <Frame
+                                Padding="5"
+                                BackgroundColor="#292929"
+                                CornerRadius="15"
+                                HasShadow="False">
+                                <Entry
+                                    x:Name="txtPhonenum"
+                                    BackgroundColor="Transparent"
+                                    Placeholder="Phone Number"
+                                    PlaceholderColor="#A0A0A0"
+                                    TextColor="#FFFFFF" />
+                            </Frame>
+
+                            <Frame
+                                Padding="5"
+                                BackgroundColor="#292929"
+                                CornerRadius="15"
+                                HasShadow="False">
+                                <Entry
+                                    x:Name="txtCountry"
+                                    BackgroundColor="Transparent"
+                                    Placeholder="Country"
+                                    PlaceholderColor="#A0A0A0"
+                                    TextColor="#FFFFFF" />
+                            </Frame>
+
+                            <Frame
+                                Padding="5"
+                                BackgroundColor="#292929"
+                                CornerRadius="15"
+                                HasShadow="False">
+                                <Entry
+                                    x:Name="txtCity"
+                                    BackgroundColor="Transparent"
+                                    Placeholder="City"
+                                    PlaceholderColor="#A0A0A0"
+                                    TextColor="#FFFFFF" />
+                            </Frame>
+
+                            <Frame
+                                Padding="5"
+                                BackgroundColor="#292929"
+                                CornerRadius="15"
+                                HasShadow="False">
+                                <Entry
+                                    x:Name="txtStreet"
+                                    BackgroundColor="Transparent"
+                                    Placeholder="Street"
+                                    PlaceholderColor="#A0A0A0"
+                                    TextColor="#FFFFFF" />
+                            </Frame>
+
+                            <Frame
+                                Padding="5"
+                                BackgroundColor="#292929"
+                                CornerRadius="15"
+                                HasShadow="False">
+                                <Entry
+                                    x:Name="txtNumber"
+                                    BackgroundColor="Transparent"
+                                    Placeholder="Street Number"
+                                    PlaceholderColor="#A0A0A0"
+                                    TextColor="#FFFFFF" />
+                            </Frame>
+
+                            <!--  Leírások  -->
+                            <Frame
+                                Padding="5"
+                                BackgroundColor="#292929"
+                                CornerRadius="15"
+                                HasShadow="False">
+                                <Entry
+                                    x:Name="txtShortDescription"
+                                    BackgroundColor="Transparent"
+                                    Placeholder="Short Description"
+                                    PlaceholderColor="#A0A0A0"
+                                    TextColor="#FFFFFF" />
+                            </Frame>
+
+                            <Frame
+                                Padding="5"
+                                BackgroundColor="#292929"
+                                CornerRadius="15"
+                                HasShadow="False">
+                                <Entry
+                                    x:Name="txtLongDescription"
+                                    BackgroundColor="Transparent"
+                                    Placeholder="Long Description"
+                                    PlaceholderColor="#A0A0A0"
+                                    TextColor="#FFFFFF" />
+                            </Frame>
+
+                            <!--  Kép feltöltés  -->
                             <Button
+                                Margin="0,10"
+                                BackgroundColor="#6200EE"
                                 Clicked="PickImageButton_Clicked"
-                                CornerRadius="10"
-                                Text="Pick an image" />
+                                CornerRadius="30"
+                                FontAttributes="Bold"
+                                FontSize="18"
+                                HorizontalOptions="Center"
+                                Text="Pick an Image"
+                                TextColor="#FFFFFF"
+                                WidthRequest="350" />
 
-                            <!--  CollectionView to preview selected images  -->
+                            <!--  Képek előnézete  -->
                             <CollectionView
                                 x:Name="ImagePreviewCollection"
                                 Margin="0,20,0,0"
@@ -98,45 +220,37 @@
                                     </DataTemplate>
                                 </CollectionView.ItemTemplate>
                             </CollectionView>
+
+                            <!--  Regisztráció gomb  -->
+                            <Button
+                                Margin="0,10"
+                                BackgroundColor="#6200EE"
+                                Clicked="GoToAddMenuPage"
+                                CornerRadius="30"
+                                FontAttributes="Bold"
+                                FontSize="18"
+                                HorizontalOptions="Center"
+                                Text="Register as Restaurant"
+                                TextColor="#FFFFFF"
+                                WidthRequest="350" />
+
+                            <!--  Vissza a bejelentkezéshez  -->
+                            <Button
+                                Margin="0,10"
+                                BackgroundColor="#444444"
+                                Clicked="GoToLoginPage"
+                                CornerRadius="30"
+                                FontAttributes="Bold"
+                                FontSize="16"
+                                HorizontalOptions="Center"
+                                Text="Back to Login"
+                                TextColor="#FFFFFF"
+                                WidthRequest="350" />
+
                         </StackLayout>
-                    </ScrollView>
-                    <StackLayout
-                        Padding="20"
-                        HorizontalOptions="CenterAndExpand"
-                        VerticalOptions="EndAndExpand">
-                        <Button
-                            BackgroundColor="Transparent"
-                            Clicked="GoToLoginPage"
-                            CornerRadius="50"
-                            FontAttributes="Bold"
-                            FontSize="15"
-                            HorizontalOptions="CenterAndExpand"
-                            Text="Back to Login"
-                            TextColor="GhostWhite"
-                            WidthRequest="200" />
-                        <Button
-                            BackgroundColor="Transparent"
-                            Clicked="GoToUserRegisterPage"
-                            CornerRadius="50"
-                            FontAttributes="Bold"
-                            FontSize="15"
-                            HorizontalOptions="CenterAndExpand"
-                            Text="Register as guest"
-                            TextColor="GhostWhite"
-                            WidthRequest="200" />
-                        <Button
-                            BackgroundColor="Transparent"
-                            Clicked="GoToAddMenuPage"
-                            CornerRadius="50"
-                            FontAttributes="Bold"
-                            FontSize="15"
-                            HorizontalOptions="CenterAndExpand"
-                            Text="Register as restaurant"
-                            TextColor="GhostWhite"
-                            WidthRequest="200" />
-                    </StackLayout>
+                    </Frame>
                 </StackLayout>
-            </StackLayout>
-        </RelativeLayout>
+            </ScrollView>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

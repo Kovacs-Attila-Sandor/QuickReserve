@@ -1,19 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Shell xmlns="http://xamarin.com/schemas/2014/forms" 
-       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-       xmlns:local="clr-namespace:QuickReserve.Views"
-       Title="QuickReserve"
-       x:Class="QuickReserve.AppShell">
-
-
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="QuickReserve.AppShell"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:QuickReserve.Views"
+    Title="QuickReserve">
 
     <Shell.Resources>
-        <ResourceDictionary>
-            
-           
-        </ResourceDictionary>
+        <ResourceDictionary />
     </Shell.Resources>
-
-  
-
 </Shell>
