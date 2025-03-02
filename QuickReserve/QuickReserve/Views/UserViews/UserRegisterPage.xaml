@@ -3,140 +3,308 @@
     x:Class="QuickReserve.Views.UserRegisterPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Name="MainPage"
     BackgroundColor="#0D0D0D"
     NavigationPage.HasNavigationBar="False">
 
     <ContentPage.Content>
-        <RelativeLayout>
-            <StackLayout
-                Margin="5"
-                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,
-                                                                       Property=Height,
-                                                                       Factor=1}"
-                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,
-                                                                      Property=Width,
-                                                                      Factor=1}">
+        <AbsoluteLayout>
+            <RelativeLayout AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All">
+                <RelativeLayout.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Offset="0" Color="#121212" />
+                        <GradientStop Offset="0.5" Color="#282828" />
+                        <GradientStop Offset="1" Color="#3f3f3f" />
+                    </LinearGradientBrush>
+                </RelativeLayout.Background>
+                <StackLayout RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}" RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}">
 
-                <Label
-                    Margin="0,20,0,40"
-                    FontAttributes="Bold"
-                    FontSize="28"
-                    HorizontalOptions="Center"
-                    Text="Create an Account"
-                    TextColor="#E0E0E0" />
+                    <Label
+                        Margin="0,30,0,40"
+                        FontAttributes="Bold"
+                        FontSize="28"
+                        HorizontalOptions="Center"
+                        Text="Create an Account"
+                        TextColor="#E0E0E0" />
 
-                <Frame
-                    Margin="25"
-                    Padding="25"
-                    BackgroundColor="#1A1A1A"
-                    CornerRadius="30"
-                    HasShadow="True">
-                    <StackLayout
-                        HorizontalOptions="FillAndExpand"
-                        Spacing="20"
-                        VerticalOptions="Center">
+                    <Frame
+                        Margin="20"
+                        Padding="25"
+                        BackgroundColor="#1A1A1A"
+                        CornerRadius="30"
+                        HasShadow="True">
 
-                        <Frame
-                            Padding="5"
-                            BackgroundColor="#292929"
-                            CornerRadius="15"
-                            HasShadow="False">
-                            <Entry
-                                x:Name="txtUsername"
+                        <Frame.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Offset="0" Color="#3d3d3d" />
+                                <GradientStop Offset="0.5" Color="#262626" />
+                                <GradientStop Offset="1" Color="#100f10" />
+                            </LinearGradientBrush>
+                        </Frame.Background>
+
+                        <StackLayout
+                            HorizontalOptions="FillAndExpand"
+                            Spacing="20"
+                            VerticalOptions="Center">
+
+                            <Frame
+                                Padding="5"
+                                BackgroundColor="#2C2C2C"
+                                CornerRadius="12"
+                                HasShadow="False">
+                                <Grid
+                                    Padding="7"
+                                    ColumnDefinitions="Auto, *"
+                                    RowDefinitions="Auto, Auto">
+                                    <Label
+                                        x:Name="lblUsernamePlaceholder"
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        FontSize="14"
+                                        IsVisible="False"
+                                        Text="Username"
+                                        TextColor="#A0A0A0" />
+                                    <Image
+                                        Grid.Row="1"
+                                        HeightRequest="30"
+                                        Source="user_name_icon.png"
+                                        WidthRequest="30" />
+                                    <Entry
+                                        x:Name="txtUsername"
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        BackgroundColor="Transparent"
+                                        Focused="OnFocused"
+                                        Placeholder="Username"
+                                        PlaceholderColor="#A0A0A0"
+                                        TextChanged="OnTextChanged"
+                                        TextColor="#FFFFFF"
+                                        Unfocused="OnUnfocused" />
+                                </Grid>
+                            </Frame>
+
+                            <Frame
+                                Padding="5"
+                                BackgroundColor="#292929"
+                                CornerRadius="15"
+                                HasShadow="False">
+                                <Grid
+                                    Padding="7"
+                                    ColumnDefinitions="Auto, *"
+                                    RowDefinitions="Auto, Auto">
+                                    <Label
+                                        x:Name="lblEmailPlaceholder"
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        FontSize="14"
+                                        IsVisible="False"
+                                        Text="Email"
+                                        TextColor="#A0A0A0" />
+                                    <Image
+                                        Grid.Row="1"
+                                        HeightRequest="30"
+                                        Source="email_icon.png"
+                                        WidthRequest="30" />
+                                    <Entry
+                                        x:Name="txtEmail"
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        BackgroundColor="Transparent"
+                                        Focused="OnFocused"
+                                        Keyboard="Email"
+                                        Placeholder="Email"
+                                        PlaceholderColor="#A0A0A0"
+                                        TextChanged="OnTextChanged"
+                                        TextColor="#FFFFFF"
+                                        Unfocused="OnUnfocused" />
+                                </Grid>
+                            </Frame>
+
+                            <Frame
+                                Padding="5"
+                                BackgroundColor="#292929"
+                                CornerRadius="15"
+                                HasShadow="False">
+                                <Grid
+                                    Padding="7"
+                                    ColumnDefinitions="Auto, *, Auto"
+                                    RowDefinitions="Auto, Auto">
+                                    <Label
+                                        x:Name="lblPasswordPlaceholder"
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        FontSize="14"
+                                        IsVisible="False"
+                                        Text="Password"
+                                        TextColor="#A0A0A0" />
+                                    <Image
+                                        Grid.Row="1"
+                                        HeightRequest="30"
+                                        Source="password_icon.png"
+                                        WidthRequest="30" />
+                                    <Entry
+                                        x:Name="txtPassword"
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        BackgroundColor="Transparent"
+                                        Focused="OnFocused"
+                                        IsPassword="True"
+                                        Placeholder="Password"
+                                        PlaceholderColor="#A0A0A0"
+                                        TextChanged="OnTextChanged"
+                                        TextColor="#FFFFFF"
+                                        Unfocused="OnUnfocused" />
+                                    <Image
+                                        x:Name="imgTogglePassword"
+                                        Grid.Row="1"
+                                        Grid.Column="2"
+                                        HeightRequest="30"
+                                        Source="eye_closed.png"
+                                        VerticalOptions="Center"
+                                        WidthRequest="30">
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="TogglePasswordVisibility" />
+                                        </Image.GestureRecognizers>
+                                    </Image>
+                                </Grid>
+                            </Frame>
+
+                            <Frame
+                                Padding="5"
+                                BackgroundColor="#292929"
+                                CornerRadius="15"
+                                HasShadow="False">
+                                <Grid
+                                    Padding="7"
+                                    ColumnDefinitions="Auto, *, Auto"
+                                    RowDefinitions="Auto, Auto">
+                                    <Label
+                                        x:Name="lblConfirmPasswordPlaceholder"
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        FontSize="14"
+                                        IsVisible="False"
+                                        Text="Confirm Password"
+                                        TextColor="#A0A0A0" />
+                                    <Image
+                                        Grid.Row="1"
+                                        HeightRequest="30"
+                                        Source="password_icon.png"
+                                        WidthRequest="30" />
+                                    <Entry
+                                        x:Name="txtConfirmPassword"
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        BackgroundColor="Transparent"
+                                        Focused="OnFocused"
+                                        IsPassword="True"
+                                        Placeholder="Confirm Password"
+                                        PlaceholderColor="#A0A0A0"
+                                        TextChanged="OnTextChanged"
+                                        TextColor="#FFFFFF"
+                                        Unfocused="OnUnfocused" />
+                                    <Image
+                                        x:Name="imgToggleConfirmPassword"
+                                        Grid.Row="1"
+                                        Grid.Column="2"
+                                        HeightRequest="30"
+                                        Source="eye_closed.png"
+                                        VerticalOptions="Center"
+                                        WidthRequest="30">
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="ToggleConfirmPasswordVisibility" />
+                                        </Image.GestureRecognizers>
+                                    </Image>
+                                </Grid>
+                            </Frame>
+
+                            <Frame
+                                Padding="5"
+                                BackgroundColor="#292929"
+                                CornerRadius="15"
+                                HasShadow="False">
+                                <Grid
+                                    Padding="7"
+                                    ColumnDefinitions="Auto, *"
+                                    RowDefinitions="Auto, Auto">
+                                    <Label
+                                        x:Name="lblPhonePlaceholder"
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        FontSize="14"
+                                        IsVisible="False"
+                                        Text="Phone Number"
+                                        TextColor="#A0A0A0" />
+                                    <Image
+                                        Grid.Row="1"
+                                        HeightRequest="30"
+                                        Source="phone_icon.png"
+                                        WidthRequest="30" />
+                                    <Entry
+                                        x:Name="txtPhonenum"
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        BackgroundColor="Transparent"
+                                        Focused="OnFocused"
+                                        Keyboard="Telephone"
+                                        Placeholder="Phone Number"
+                                        PlaceholderColor="#A0A0A0"
+                                        TextChanged="OnTextChanged"
+                                        TextColor="#FFFFFF"
+                                        Unfocused="OnUnfocused" />
+                                </Grid>
+                            </Frame>
+
+
+                            <Button
+                                Margin="0,10"
+                                BackgroundColor="#6200EE"
+                                Clicked="RegisterAsGuest"
+                                CornerRadius="30"
+                                FontAttributes="Bold"
+                                FontSize="18"
+                                HorizontalOptions="Center"
+                                Text="Register"
+                                TextColor="#FFFFFF"
+                                VerticalOptions="CenterAndExpand"
+                                WidthRequest="350" />
+
+                            <Button
                                 Margin="0,5"
-                                BackgroundColor="Transparent"
-                                Placeholder="Username"
-                                PlaceholderColor="#A0A0A0"
-                                TextColor="#FFFFFF" />
-                        </Frame>
+                                BackgroundColor="#444444"
+                                Clicked="GoToLoginPage"
+                                CornerRadius="30"
+                                FontAttributes="Bold"
+                                FontSize="16"
+                                HeightRequest="50"
+                                HorizontalOptions="Center"
+                                Text="Back to Login"
+                                TextColor="#FFFFFF"
+                                WidthRequest="350" />
 
-                        <Frame
-                            Padding="5"
-                            BackgroundColor="#292929"
-                            CornerRadius="15"
-                            HasShadow="False">
-                            <Entry
-                                x:Name="txtEmail"
-                                Margin="0,5"
-                                BackgroundColor="Transparent"
-                                Placeholder="Email"
-                                PlaceholderColor="#A0A0A0"
-                                TextColor="#FFFFFF" />
-                        </Frame>
+                        </StackLayout>
+                    </Frame>
+                </StackLayout>
+            </RelativeLayout>
 
-                        <Frame
-                            Padding="5"
-                            BackgroundColor="#292929"
-                            CornerRadius="15"
-                            HasShadow="False">
-                            <Entry
-                                x:Name="txtPassword"
-                                Margin="0,5"
-                                BackgroundColor="Transparent"
-                                IsPassword="True"
-                                Placeholder="Password"
-                                PlaceholderColor="#A0A0A0"
-                                TextColor="#FFFFFF" />
-                        </Frame>
+            <ContentView
+                x:Name="LoadingOverlay"
+                AbsoluteLayout.LayoutBounds="0,0,1,1"
+                AbsoluteLayout.LayoutFlags="All"
+                BackgroundColor="Black"
+                IsVisible="False"
+                Opacity="0.5">
 
-                        <Frame
-                            Padding="5"
-                            BackgroundColor="#292929"
-                            CornerRadius="15"
-                            HasShadow="False">
-                            <Entry
-                                x:Name="txtConfirmPassword"
-                                Margin="0,5"
-                                BackgroundColor="Transparent"
-                                IsPassword="True"
-                                Placeholder="Confirm Password"
-                                PlaceholderColor="#A0A0A0"
-                                TextColor="#FFFFFF" />
-                        </Frame>
+                <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                    <ActivityIndicator
+                        x:Name="LoadingIndicator"
+                        HeightRequest="60"
+                        IsRunning="True"
+                        WidthRequest="60"
+                        Color="White" />
 
-                        <Frame
-                            Padding="5"
-                            BackgroundColor="#292929"
-                            CornerRadius="15"
-                            HasShadow="False">
-                            <Entry
-                                x:Name="txtPhonenum"
-                                Margin="0,5"
-                                BackgroundColor="Transparent"
-                                Placeholder="Phone Number"
-                                PlaceholderColor="#A0A0A0"
-                                TextColor="#FFFFFF" />
-                        </Frame>
-
-                        <Button
-                            Margin="0,10"
-                            BackgroundColor="#6200EE"
-                            Clicked="RegisterAsGuest"
-                            CornerRadius="30"
-                            FontAttributes="Bold"
-                            FontSize="18"
-                            HorizontalOptions="Center"
-                            Text="Register"
-                            TextColor="#FFFFFF"
-                            VerticalOptions="CenterAndExpand"
-                            WidthRequest="350" />
-
-                        <Button
-                            Margin="0,5"
-                            BackgroundColor="#444444"
-                            Clicked="GoToLoginPage"
-                            CornerRadius="30"
-                            FontAttributes="Bold"
-                            FontSize="16"
-                            HeightRequest="50"
-                            HorizontalOptions="Center"
-                            Text="Back to Login"
-                            TextColor="#FFFFFF"
-                            WidthRequest="350" />
-
-                    </StackLayout>
-                </Frame>
-            </StackLayout>
-        </RelativeLayout>
+                </StackLayout>
+            </ContentView>
+        </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -110,11 +110,13 @@
     <Content Include="Resources\drawable\grey.png" />
     <AndroidResource Include="Resources\drawable\placeholder.jpg" />
     <AndroidResource Include="Resources\drawable\password_icon.png" />
+    <AndroidResource Include="Resources\drawable\user_name_icon.png" />
+    <AndroidResource Include="Resources\drawable\phone_icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties XamarinHotReloadDebuggerTimeoutExceptionQuickReserveAndroidHideInfoBar="True" XamarinHotReloadGenericExceptionInfoBarQuickReserveAndroidHideInfoBar="True" />
+      <UserProperties XamarinHotReloadGenericExceptionInfoBarQuickReserveAndroidHideInfoBar="True" XamarinHotReloadDebuggerTimeoutExceptionQuickReserveAndroidHideInfoBar="True" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

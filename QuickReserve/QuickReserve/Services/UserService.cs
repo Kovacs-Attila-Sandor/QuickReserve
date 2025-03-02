@@ -127,30 +127,6 @@ namespace QuickReserve.Services
                 return null;  // Hiba esetén null-t adunk vissza
             }
         }
-        public async Task<bool> ValidateUserCredentials(string userName, string password)
-        {
-            try
-            {
-                // Lekérjük az összes felhasználót a "Users" gyűjteményből
-                var allUsers = await FirebaseService
-                    .Client
-                    .Child("Users")
-                    .OnceAsync<User>();
-
-                // Megkeressük az első olyan felhasználót, amelynek UserName és Password tulajdonságai megegyeznek a keresett értékekkel
-                var user = allUsers
-                    .Select(u => u.Object)  // Csak a felhasználói objektumokat vesszük figyelembe
-                    .FirstOrDefault(u => u.Name == userName && u.Password == password);  // Feltételek a UserName és Password-ra
-
-                // Ha találtunk egyezést, visszatérünk true-val, ellenkező esetben false
-                return user != null;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error validating user credentials: {ex.Message}");
-                return false;  // Hiba esetén false-t adunk vissza
-            }
-        }
 
         // Lekérdezi a felhasználó típusát az adatbázisból
         public async Task<string> GetUserTypeByUserId(string userId)

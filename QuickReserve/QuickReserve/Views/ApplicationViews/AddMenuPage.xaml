@@ -1,45 +1,100 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="QuickReserve.Views.AddMenuPage"
-             NavigationPage.HasNavigationBar="False"
-             >
+<ContentPage
+    x:Class="QuickReserve.Views.AddMenuPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
         <RelativeLayout>
             <Image
-                 Aspect="AspectFill"
-                 Source="background1.png"
-                 RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
-                 RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
-                 IsEnabled="False"/>
-            
-                <StackLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
-                  RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
-                  Margin="30,30,30,30">
-                   
-                        <Label Text="Add New Menu Item" 
-                   FontSize="24" 
-                   FontAttributes="Bold" 
-                   HorizontalOptions="Center" 
-                   VerticalOptions="Center" 
-                   TextColor="White" />
+                Aspect="AspectFill"
+                IsEnabled="False"
+                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,
+                                                                       Property=Height,
+                                                                       Factor=1}"
+                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,
+                                                                      Property=Width,
+                                                                      Factor=1}"
+                Source="background1.png" />
 
-                <Frame CornerRadius="20"
-BackgroundColor="Black"         
- Opacity="0.75"         
-HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand">
-                    <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand" Padding="20">
-                        <Entry x:Name="txtMenuItemName" Placeholder="Menu Item Name" TextColor="GhostWhite" />
-                        <Entry x:Name="txtMenuItemDescription" Placeholder="Menu Item Description" TextColor="GhostWhite"/>
-                        <Entry x:Name="txtMenuItemType" Placeholder="Menu Item Type" TextColor="GhostWhite" />
-                        <Entry x:Name="txtPrice" Placeholder="Menu Item Price" TextColor="GhostWhite" Keyboard="Numeric" />
-                        <Button Clicked="AddItem" CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent" FontSize="15" WidthRequest="200" FontAttributes="Bold"   Text="Add Menu Item"/>
-                        <Button Clicked="AddLayout" CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent"  FontSize="15" WidthRequest="200" FontAttributes="Bold" Text="Add Restaurant Layout"/>
-                        <Button Clicked="GoToLoginPage" CornerRadius="50" TextColor="GhostWhite" HorizontalOptions="CenterAndExpand" BackgroundColor="Transparent" FontSize="15" WidthRequest="200" FontAttributes="Bold" Text="Finish Registration"/>
+            <StackLayout
+                Margin="30,30,30,30"
+                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,
+                                                                       Property=Height,
+                                                                       Factor=1}"
+                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,
+                                                                      Property=Width,
+                                                                      Factor=1}">
+
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="24"
+                    HorizontalOptions="Center"
+                    Text="Add New Menu Item"
+                    TextColor="White"
+                    VerticalOptions="Center" />
+
+                <Frame
+                    BackgroundColor="Black"
+                    CornerRadius="20"
+                    HorizontalOptions="CenterAndExpand"
+                    Opacity="0.75"
+                    VerticalOptions="EndAndExpand">
+                    <StackLayout
+                        Padding="20"
+                        HorizontalOptions="CenterAndExpand"
+                        VerticalOptions="EndAndExpand">
+                        <Entry
+                            x:Name="txtMenuItemName"
+                            Placeholder="Menu Item Name"
+                            TextColor="GhostWhite" />
+                        <Entry
+                            x:Name="txtMenuItemDescription"
+                            Placeholder="Menu Item Description"
+                            TextColor="GhostWhite" />
+                        <Entry
+                            x:Name="txtMenuItemType"
+                            Placeholder="Menu Item Type"
+                            TextColor="GhostWhite" />
+                        <Entry
+                            x:Name="txtPrice"
+                            Keyboard="Numeric"
+                            Placeholder="Menu Item Price"
+                            TextColor="GhostWhite" />
+                        <Button
+                            BackgroundColor="Transparent"
+                            Clicked="AddItem"
+                            CornerRadius="50"
+                            FontAttributes="Bold"
+                            FontSize="15"
+                            HorizontalOptions="CenterAndExpand"
+                            Text="Add Menu Item"
+                            TextColor="GhostWhite"
+                            WidthRequest="200" />
+                        <Button
+                            BackgroundColor="Transparent"
+                            Clicked="AddLayout"
+                            CornerRadius="50"
+                            FontAttributes="Bold"
+                            FontSize="15"
+                            HorizontalOptions="CenterAndExpand"
+                            Text="Add Restaurant Layout"
+                            TextColor="GhostWhite"
+                            WidthRequest="200" />
+                        <Button
+                            BackgroundColor="Transparent"
+                            Clicked="GoToLoginPage"
+                            CornerRadius="50"
+                            FontAttributes="Bold"
+                            FontSize="15"
+                            HorizontalOptions="CenterAndExpand"
+                            Text="Finish Registration"
+                            TextColor="GhostWhite"
+                            WidthRequest="200" />
                     </StackLayout>
                 </Frame>
             </StackLayout>
-            
+
         </RelativeLayout>
     </ContentPage.Content>
 </ContentPage>

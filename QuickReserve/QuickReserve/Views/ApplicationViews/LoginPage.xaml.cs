@@ -2,6 +2,8 @@
 using Firebase.Auth.Providers;
 using QuickReserve.Services;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -11,8 +13,6 @@ namespace QuickReserve.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LoginPage : ContentPage
     {
-        public string WEB_API_KEY = "AIzaSyBrYyBcrfzwaWYVU1XbUG7CZ660XTwSmyU";
-
         private readonly FirebaseAuthService _authService;
 
         private UserService _userService = new UserService();
@@ -56,14 +56,14 @@ namespace QuickReserve.Views
                     {
                         App.Current.MainPage = new NavigationPage(new AboutPage());
                     });
-                }      
-            }        
+                }
+            }
         }
 
         public async void Login(object sender, EventArgs e)
         {
             LoadingOverlay.IsVisible = true;
-            MainGrid.IsEnabled = false;
+            MainPage.IsEnabled = false;
 
             try
             {
@@ -105,7 +105,58 @@ namespace QuickReserve.Views
             finally
             {
                 LoadingOverlay.IsVisible = false;
-                MainGrid.IsEnabled = true;
+                MainPage.IsEnabled = true;
+            }
+        }
+        private void OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (sender is Entry entry)
+            {
+                Label placeholderLabel = entry == txtEmail ? lblEmailPlaceholder : lblPasswordPlaceholder;
+
+                if (!string.IsNullOrWhiteSpace(entry.Text))
+                {
+                    placeholderLabel.IsVisible = true;
+                    placeholderLabel.FadeTo(1, 160);
+                    placeholderLabel.TranslateTo(2, -3, 170);
+                    entry.Placeholder = "";
+                }
+                else
+                {
+                    placeholderLabel.FadeTo(0, 150, Easing.Linear);
+                    placeholderLabel.IsVisible = false;
+                    entry.Placeholder = entry == txtEmail ? "Email" : "Password";
+                }
+            }
+        }
+
+        private void OnFocused(object sender, FocusEventArgs e)
+        {
+            if (sender is Entry entry)
+            {
+                Label placeholderLabel = entry == txtEmail ? lblEmailPlaceholder : lblPasswordPlaceholder;
+
+                if (!string.IsNullOrWhiteSpace(entry.Text))
+                {
+                    placeholderLabel.IsVisible = true;
+                    placeholderLabel.FadeTo(1, 150);
+                    placeholderLabel.TranslateTo(0, 0, 150);
+                }
+            }
+        }
+
+        private void OnUnfocused(object sender, FocusEventArgs e)
+        {
+            if (sender is Entry entry)
+            {
+                Label placeholderLabel = entry == txtEmail ? lblEmailPlaceholder : lblPasswordPlaceholder;
+
+                if (string.IsNullOrWhiteSpace(entry.Text))
+                {
+                    placeholderLabel.FadeTo(0, 150);
+                    placeholderLabel.IsVisible = false;
+                    entry.Placeholder = entry == txtEmail ? "Email" : "Password";
+                }
             }
         }
     }

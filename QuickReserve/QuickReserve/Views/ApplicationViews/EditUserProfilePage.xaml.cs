@@ -26,7 +26,6 @@ namespace QuickReserve.Views
                 PhoneNumber = PhoneNumberEntry.Text.Trim(),
                 Email = EmailEntry.Text.Trim(),
                 Name = NameEntry.Text.Trim(),
-                Password = user.Password,
                 Role = user.Role,
                 CreatedAt = user.CreatedAt,
                 ProfileImage = user.ProfileImage,

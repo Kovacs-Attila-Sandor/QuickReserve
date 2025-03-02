@@ -4,253 +4,609 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+    xmlns:local="clr-namespace:QuickReserve.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="MainPage"
     BackgroundColor="#0D0D0D"
     NavigationPage.HasNavigationBar="False"
     mc:Ignorable="d">
 
     <ContentPage.Content>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+        <AbsoluteLayout>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-            <!--  Fixált cím a képernyő tetején  -->
-            <Label
-                Grid.Row="0"
-                Margin="0,40,0,40"
-                FontAttributes="Bold"
-                FontSize="28"
-                HorizontalOptions="Center"
-                Text="Register Your Restaurant"
-                TextColor="#E0E0E0" />
-            <!--  Cím az első sorban  -->
+                <Grid.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Offset="0" Color="#121212" />
+                        <GradientStop Offset="0.5" Color="#282828" />
+                        <GradientStop Offset="1" Color="#3f3f3f" />
+                    </LinearGradientBrush>
+                </Grid.Background>
 
-            <!--  Görgethető tartalom  -->
-            <ScrollView Grid.Row="1">
-                <StackLayout
-                    Margin="5"
-                    Padding="0"
-                    HorizontalOptions="FillAndExpand"
-                    VerticalOptions="FillAndExpand">
+                <Label
+                    Grid.Row="0"
+                    Margin="0,40,0,40"
+                    FontAttributes="Bold"
+                    FontSize="28"
+                    HorizontalOptions="Center"
+                    Text="Register Your Restaurant"
+                    TextColor="#E0E0E0" />
 
-                    <Frame
-                        Margin="15"
-                        Padding="25"
-                        BackgroundColor="#1A1A1A"
-                        CornerRadius="20"
-                        HasShadow="True">
+                <ScrollView Grid.Row="1">
+                    <StackLayout
+                        Margin="5"
+                        Padding="0"
+                        HorizontalOptions="FillAndExpand"
+                        VerticalOptions="FillAndExpand">
+                        <Frame
+                            Margin="15"
+                            Padding="25"
+                            BackgroundColor="#1A1A1A"
+                            CornerRadius="20"
+                            HasShadow="True">
+                            <Frame.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Offset="0" Color="#3d3d3d" />
+                                    <GradientStop Offset="0.5" Color="#262626" />
+                                    <GradientStop Offset="1" Color="#100f10" />
+                                </LinearGradientBrush>
+                            </Frame.Background>
+                            <StackLayout Spacing="20">
 
-                        <StackLayout Spacing="20">
+                                <!--  Account Information  -->
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="18"
+                                    Text="Account Information"
+                                    TextColor="#E0E0E0" />
 
-                            <!--  Beviteli mezők  -->
-                            <Frame
-                                Padding="5"
-                                BackgroundColor="#292929"
-                                CornerRadius="15"
-                                HasShadow="False">
-                                <Entry
-                                    x:Name="txtUsername"
-                                    BackgroundColor="Transparent"
-                                    Placeholder="Username"
-                                    PlaceholderColor="#A0A0A0"
-                                    TextColor="#FFFFFF" />
-                            </Frame>
-
-                            <Frame
-                                Padding="5"
-                                BackgroundColor="#292929"
-                                CornerRadius="15"
-                                HasShadow="False">
-                                <Entry
-                                    x:Name="txtEmail"
-                                    BackgroundColor="Transparent"
-                                    Placeholder="Email"
-                                    PlaceholderColor="#A0A0A0"
-                                    TextColor="#FFFFFF" />
-                            </Frame>
-
-                            <Frame
-                                Padding="5"
-                                BackgroundColor="#292929"
-                                CornerRadius="15"
-                                HasShadow="False">
-                                <Entry
-                                    x:Name="txtPassword"
-                                    BackgroundColor="Transparent"
-                                    IsPassword="True"
-                                    Placeholder="Password"
-                                    PlaceholderColor="#A0A0A0"
-                                    TextColor="#FFFFFF" />
-                            </Frame>
-
-                            <Frame
-                                Padding="5"
-                                BackgroundColor="#292929"
-                                CornerRadius="15"
-                                HasShadow="False">
-                                <Entry
-                                    x:Name="txtConfirmPassword"
-                                    BackgroundColor="Transparent"
-                                    IsPassword="True"
-                                    Placeholder="Confirm Password"
-                                    PlaceholderColor="#A0A0A0"
-                                    TextColor="#FFFFFF" />
-                            </Frame>
-
-                            <!--  Telefon és cím adatok  -->
-                            <Frame
-                                Padding="5"
-                                BackgroundColor="#292929"
-                                CornerRadius="15"
-                                HasShadow="False">
-                                <Entry
-                                    x:Name="txtPhonenum"
-                                    BackgroundColor="Transparent"
-                                    Placeholder="Phone Number"
-                                    PlaceholderColor="#A0A0A0"
-                                    TextColor="#FFFFFF" />
-                            </Frame>
-
-                            <Frame
-                                Padding="5"
-                                BackgroundColor="#292929"
-                                CornerRadius="15"
-                                HasShadow="False">
-                                <Entry
-                                    x:Name="txtCountry"
-                                    BackgroundColor="Transparent"
-                                    Placeholder="Country"
-                                    PlaceholderColor="#A0A0A0"
-                                    TextColor="#FFFFFF" />
-                            </Frame>
-
-                            <Frame
-                                Padding="5"
-                                BackgroundColor="#292929"
-                                CornerRadius="15"
-                                HasShadow="False">
-                                <Entry
-                                    x:Name="txtCity"
-                                    BackgroundColor="Transparent"
-                                    Placeholder="City"
-                                    PlaceholderColor="#A0A0A0"
-                                    TextColor="#FFFFFF" />
-                            </Frame>
-
-                            <Frame
-                                Padding="5"
-                                BackgroundColor="#292929"
-                                CornerRadius="15"
-                                HasShadow="False">
-                                <Entry
-                                    x:Name="txtStreet"
-                                    BackgroundColor="Transparent"
-                                    Placeholder="Street"
-                                    PlaceholderColor="#A0A0A0"
-                                    TextColor="#FFFFFF" />
-                            </Frame>
-
-                            <Frame
-                                Padding="5"
-                                BackgroundColor="#292929"
-                                CornerRadius="15"
-                                HasShadow="False">
-                                <Entry
-                                    x:Name="txtNumber"
-                                    BackgroundColor="Transparent"
-                                    Placeholder="Street Number"
-                                    PlaceholderColor="#A0A0A0"
-                                    TextColor="#FFFFFF" />
-                            </Frame>
-
-                            <!--  Leírások  -->
-                            <Frame
-                                Padding="5"
-                                BackgroundColor="#292929"
-                                CornerRadius="15"
-                                HasShadow="False">
-                                <Entry
-                                    x:Name="txtShortDescription"
-                                    BackgroundColor="Transparent"
-                                    Placeholder="Short Description"
-                                    PlaceholderColor="#A0A0A0"
-                                    TextColor="#FFFFFF" />
-                            </Frame>
-
-                            <Frame
-                                Padding="5"
-                                BackgroundColor="#292929"
-                                CornerRadius="15"
-                                HasShadow="False">
-                                <Entry
-                                    x:Name="txtLongDescription"
-                                    BackgroundColor="Transparent"
-                                    Placeholder="Long Description"
-                                    PlaceholderColor="#A0A0A0"
-                                    TextColor="#FFFFFF" />
-                            </Frame>
-
-                            <!--  Kép feltöltés  -->
-                            <Button
-                                Margin="0,10"
-                                BackgroundColor="#6200EE"
-                                Clicked="PickImageButton_Clicked"
-                                CornerRadius="30"
-                                FontAttributes="Bold"
-                                FontSize="18"
-                                HorizontalOptions="Center"
-                                Text="Pick an Image"
-                                TextColor="#FFFFFF"
-                                WidthRequest="350" />
-
-                            <!--  Képek előnézete  -->
-                            <CollectionView
-                                x:Name="ImagePreviewCollection"
-                                Margin="0,20,0,0"
-                                ItemsSource="{Binding}">
-                                <CollectionView.ItemTemplate>
-                                    <DataTemplate>
+                                <Frame
+                                    Padding="5"
+                                    BackgroundColor="#292929"
+                                    CornerRadius="15"
+                                    HasShadow="False">
+                                    <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto">
+                                        <Label
+                                            x:Name="lblUserNamePlaceholder"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            FontSize="12"
+                                            IsVisible="False"
+                                            Opacity="0"
+                                            Text="UserName"
+                                            TextColor="#A0A0A0"
+                                            TranslationX="2"
+                                            TranslationY="-7" />
                                         <Image
-                                            Margin="10"
-                                            HeightRequest="100"
-                                            Source="{Binding}"
-                                            WidthRequest="100" />
-                                    </DataTemplate>
-                                </CollectionView.ItemTemplate>
-                            </CollectionView>
+                                            Grid.Row="1"
+                                            HeightRequest="30"
+                                            Source="user_name_icon.png"
+                                            WidthRequest="30" />
+                                        <Entry
+                                            x:Name="txtUsername"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            BackgroundColor="Transparent"
+                                            Focused="OnFocused"
+                                            Placeholder="Username"
+                                            PlaceholderColor="#A0A0A0"
+                                            TextChanged="OnTextChanged"
+                                            TextColor="#FFFFFF"
+                                            Unfocused="OnUnfocused" />
+                                    </Grid>
+                                </Frame>
 
-                            <!--  Regisztráció gomb  -->
-                            <Button
-                                Margin="0,10"
-                                BackgroundColor="#6200EE"
-                                Clicked="GoToAddMenuPage"
-                                CornerRadius="30"
-                                FontAttributes="Bold"
-                                FontSize="18"
-                                HorizontalOptions="Center"
-                                Text="Register as Restaurant"
-                                TextColor="#FFFFFF"
-                                WidthRequest="350" />
+                                <Frame
+                                    Padding="5"
+                                    BackgroundColor="#292929"
+                                    CornerRadius="15"
+                                    HasShadow="False">
+                                    <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto">
+                                        <Label
+                                            x:Name="lblEmailPlaceholder"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            FontSize="12"
+                                            IsVisible="False"
+                                            Opacity="0"
+                                            Text="Email"
+                                            TextColor="#A0A0A0"
+                                            TranslationX="2"
+                                            TranslationY="-7" />
+                                        <Image
+                                            Grid.Row="1"
+                                            HeightRequest="30"
+                                            Source="email_icon.png"
+                                            WidthRequest="30" />
+                                        <Entry
+                                            x:Name="txtEmail"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            BackgroundColor="Transparent"
+                                            Focused="OnFocused"
+                                            Keyboard="Email"
+                                            Placeholder="Email"
+                                            PlaceholderColor="#A0A0A0"
+                                            TextChanged="OnTextChanged"
+                                            TextColor="#FFFFFF"
+                                            Unfocused="OnUnfocused" />
 
-                            <!--  Vissza a bejelentkezéshez  -->
-                            <Button
-                                Margin="0,10"
-                                BackgroundColor="#444444"
-                                Clicked="GoToLoginPage"
-                                CornerRadius="30"
-                                FontAttributes="Bold"
-                                FontSize="16"
-                                HorizontalOptions="Center"
-                                Text="Back to Login"
-                                TextColor="#FFFFFF"
-                                WidthRequest="350" />
+                                    </Grid>
+                                </Frame>
 
-                        </StackLayout>
-                    </Frame>
+                                <Frame
+                                    Padding="5"
+                                    BackgroundColor="#292929"
+                                    CornerRadius="15"
+                                    HasShadow="False">
+                                    <Grid ColumnDefinitions="Auto, *, Auto" RowDefinitions="Auto, Auto">
+                                        <Label
+                                            x:Name="lblPasswordPlaceholder"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            FontSize="12"
+                                            IsVisible="False"
+                                            Opacity="0"
+                                            Text="Password"
+                                            TextColor="#A0A0A0"
+                                            TranslationX="2"
+                                            TranslationY="-7" />
+                                        <Image
+                                            Grid.Row="1"
+                                            HeightRequest="30"
+                                            Source="password_icon.png"
+                                            WidthRequest="30" />
+                                        <Entry
+                                            x:Name="txtPassword"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            BackgroundColor="Transparent"
+                                            Focused="OnFocused"
+                                            IsPassword="True"
+                                            Placeholder="Password"
+                                            PlaceholderColor="#A0A0A0"
+                                            TextChanged="OnTextChanged"
+                                            TextColor="#FFFFFF"
+                                            Unfocused="OnUnfocused" />
+                                        <Image
+                                            x:Name="imgTogglePassword"
+                                            Grid.Row="1"
+                                            Grid.Column="2"
+                                            HeightRequest="30"
+                                            Source="eye_closed.png"
+                                            VerticalOptions="Center"
+                                            WidthRequest="30">
+                                            <Image.GestureRecognizers>
+                                                <TapGestureRecognizer Tapped="TogglePasswordVisibility" />
+                                            </Image.GestureRecognizers>
+                                        </Image>
+
+                                    </Grid>
+                                </Frame>
+
+                                <Frame
+                                    Padding="5"
+                                    BackgroundColor="#292929"
+                                    CornerRadius="15"
+                                    HasShadow="False">
+                                    <Grid ColumnDefinitions="Auto, *, Auto" RowDefinitions="Auto, Auto">
+                                        <Label
+                                            x:Name="lblConfirmPasswordPlaceholder"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            FontSize="12"
+                                            IsVisible="False"
+                                            Opacity="0"
+                                            Text="Confirm Password"
+                                            TextColor="#A0A0A0"
+                                            TranslationX="2"
+                                            TranslationY="-7" />
+
+                                        <Image
+                                            Grid.Row="1"
+                                            HeightRequest="30"
+                                            Source="password_icon.png"
+                                            WidthRequest="30" />
+
+                                        <Entry
+                                            x:Name="txtConfirmPassword"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            BackgroundColor="Transparent"
+                                            Focused="OnFocused"
+                                            IsPassword="True"
+                                            Placeholder="Confirm Password"
+                                            PlaceholderColor="#A0A0A0"
+                                            TextChanged="OnTextChanged"
+                                            TextColor="#FFFFFF"
+                                            Unfocused="OnUnfocused" />
+
+                                        <Image
+                                            x:Name="imgToggleConfirmPassword"
+                                            Grid.Row="1"
+                                            Grid.Column="2"
+                                            HeightRequest="30"
+                                            Source="eye_closed.png"
+                                            VerticalOptions="Center"
+                                            WidthRequest="30">
+                                            <Image.GestureRecognizers>
+                                                <TapGestureRecognizer Tapped="ToggleConfirmPasswordVisibility" />
+                                            </Image.GestureRecognizers>
+                                        </Image>
+                                    </Grid>
+                                </Frame>
+
+                                <!--  Contact Information  -->
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="18"
+                                    Text="Contact Information"
+                                    TextColor="#E0E0E0" />
+
+                                <Frame
+                                    Padding="5"
+                                    BackgroundColor="#292929"
+                                    CornerRadius="15"
+                                    HasShadow="False">
+                                    <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto">
+                                        <Label
+                                            x:Name="lblPhoneNumberPlaceholder"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            FontSize="12"
+                                            IsVisible="False"
+                                            Opacity="0"
+                                            Text="Phone Number"
+                                            TextColor="#A0A0A0"
+                                            TranslationX="2"
+                                            TranslationY="-7" />
+
+                                        <Image
+                                            Grid.Row="1"
+                                            HeightRequest="30"
+                                            Source="phone_icon.png"
+                                            WidthRequest="30" />
+
+                                        <Entry
+                                            x:Name="txtPhonenum"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            BackgroundColor="Transparent"
+                                            Focused="OnFocused"
+                                            Keyboard="Telephone"
+                                            Placeholder="Phone Number"
+                                            PlaceholderColor="#A0A0A0"
+                                            TextChanged="OnTextChanged"
+                                            TextColor="#FFFFFF"
+                                            Unfocused="OnUnfocused" />
+                                    </Grid>
+                                </Frame>
+
+                                <!--  Address  -->
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="18"
+                                    Text="Address"
+                                    TextColor="#E0E0E0" />
+
+                                <Frame
+                                    Padding="5"
+                                    BackgroundColor="#292929"
+                                    CornerRadius="15"
+                                    HasShadow="False">
+                                    <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto">
+                                        <Label
+                                            x:Name="lblCountryPlaceholder"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            FontSize="12"
+                                            IsVisible="False"
+                                            Opacity="0"
+                                            Text="Country"
+                                            TextColor="#A0A0A0"
+                                            TranslationX="2"
+                                            TranslationY="-7" />
+
+                                        <Entry
+                                            x:Name="txtCountry"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            BackgroundColor="Transparent"
+                                            Focused="OnFocused"
+                                            Placeholder="Country"
+                                            PlaceholderColor="#A0A0A0"
+                                            TextChanged="OnTextChanged"
+                                            TextColor="#FFFFFF"
+                                            Unfocused="OnUnfocused" />
+                                    </Grid>
+                                </Frame>
+
+                                <Frame
+                                    Padding="5"
+                                    BackgroundColor="#292929"
+                                    CornerRadius="15"
+                                    HasShadow="False">
+                                    <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto">
+                                        <Label
+                                            x:Name="lblCityPlaceholder"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            FontSize="12"
+                                            IsVisible="False"
+                                            Opacity="0"
+                                            Text="City"
+                                            TextColor="#A0A0A0"
+                                            TranslationX="2"
+                                            TranslationY="-7" />
+                                        <Entry
+                                            x:Name="txtCity"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            BackgroundColor="Transparent"
+                                            Focused="OnFocused"
+                                            Placeholder="City"
+                                            PlaceholderColor="#A0A0A0"
+                                            TextChanged="OnTextChanged"
+                                            TextColor="#FFFFFF"
+                                            Unfocused="OnUnfocused" />
+                                    </Grid>
+                                </Frame>
+
+                                <Frame
+                                    Padding="5"
+                                    BackgroundColor="#292929"
+                                    CornerRadius="15"
+                                    HasShadow="False">
+                                    <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto">
+                                        <Label
+                                            x:Name="lblStreetPlaceholder"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            FontSize="12"
+                                            IsVisible="False"
+                                            Opacity="0"
+                                            Text="Street"
+                                            TextColor="#A0A0A0"
+                                            TranslationX="2"
+                                            TranslationY="-7" />
+                                        <Entry
+                                            x:Name="txtStreet"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            BackgroundColor="Transparent"
+                                            Focused="OnFocused"
+                                            Placeholder="Street"
+                                            PlaceholderColor="#A0A0A0"
+                                            TextChanged="OnTextChanged"
+                                            TextColor="#FFFFFF"
+                                            Unfocused="OnUnfocused" />
+                                    </Grid>
+                                </Frame>
+
+                                <Frame
+                                    Padding="5"
+                                    BackgroundColor="#292929"
+                                    CornerRadius="15"
+                                    HasShadow="False">
+                                    <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto">
+                                        <Label
+                                            x:Name="lblStreetNumberPlaceholder"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            FontSize="12"
+                                            IsVisible="False"
+                                            Opacity="0"
+                                            Text="Street Number"
+                                            TextColor="#A0A0A0"
+                                            TranslationX="2"
+                                            TranslationY="-7" />
+                                        <Entry
+                                            x:Name="txtNumber"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            BackgroundColor="Transparent"
+                                            Focused="OnFocused"
+                                            Placeholder="Street Number"
+                                            PlaceholderColor="#A0A0A0"
+                                            TextChanged="OnTextChanged"
+                                            TextColor="#FFFFFF"
+                                            Unfocused="OnUnfocused" />
+                                    </Grid>
+                                </Frame>
+
+                                <!--  Restaurant Details  -->
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="18"
+                                    Text="Restaurant Details"
+                                    TextColor="#E0E0E0" />
+
+                                <Frame
+                                    Padding="5"
+                                    BackgroundColor="#292929"
+                                    CornerRadius="15"
+                                    HasShadow="False">
+                                    <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto">
+                                        <Label
+                                            x:Name="lblShortDescriptionPlaceholder"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            FontSize="12"
+                                            IsVisible="False"
+                                            Opacity="0"
+                                            Text="Short Description"
+                                            TextColor="#A0A0A0"
+                                            TranslationX="2"
+                                            TranslationY="-7" />
+                                        <Entry
+                                            x:Name="txtShortDescription"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            BackgroundColor="Transparent"
+                                            Focused="OnFocused"
+                                            Placeholder="Short Description"
+                                            PlaceholderColor="#A0A0A0"
+                                            TextChanged="OnTextChanged"
+                                            TextColor="#FFFFFF"
+                                            Unfocused="OnUnfocused" />
+                                    </Grid>
+                                </Frame>
+
+                                <Frame
+                                    Padding="5"
+                                    BackgroundColor="#292929"
+                                    CornerRadius="15"
+                                    HasShadow="False">
+                                    <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto">
+                                        <Label
+                                            x:Name="lblLongDescriptionPlaceholder"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            FontSize="12"
+                                            IsVisible="False"
+                                            Opacity="0"
+                                            Text="Long Description"
+                                            TextColor="#A0A0A0"
+                                            TranslationX="2"
+                                            TranslationY="-7" />
+                                        <Entry
+                                            x:Name="txtLongDescription"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            BackgroundColor="Transparent"
+                                            Focused="OnFocused"
+                                            Placeholder="Long Description"
+                                            PlaceholderColor="#A0A0A0"
+                                            TextChanged="OnTextChanged"
+                                            TextColor="#FFFFFF"
+                                            Unfocused="OnUnfocused" />
+                                    </Grid>
+                                </Frame>
+
+                                <!--  Upload Images  -->
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="18"
+                                    Text="Upload Images"
+                                    TextColor="#E0E0E0" />
+
+                                <Button
+                                    Margin="0,10"
+                                    BackgroundColor="#6200EE"
+                                    Clicked="PickImageButton_Clicked"
+                                    CornerRadius="30"
+                                    FontAttributes="Bold"
+                                    FontSize="18"
+                                    HorizontalOptions="Center"
+                                    Text="Pick Images"
+                                    TextColor="#FFFFFF"
+                                    WidthRequest="350" />
+
+                                <CollectionView
+                                    x:Name="ImagePreviewCollection"
+                                    Margin="0,20,0,0"
+                                    HeightRequest="150"
+                                    ItemsSource="{Binding ImageSourceList}">
+                                    <CollectionView.ItemsLayout>
+                                        <LinearItemsLayout Orientation="Horizontal" />
+                                    </CollectionView.ItemsLayout>
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate>
+                                            <Frame
+                                                Margin="5"
+                                                Padding="5"
+                                                BackgroundColor="#1A1A1A"
+                                                CornerRadius="15"
+                                                HasShadow="True">
+                                                <Grid>
+                                                    <Image
+                                                        Aspect="AspectFill"
+                                                        HeightRequest="120"
+                                                        Source="{Binding}"
+                                                        WidthRequest="120" />
+                                                    <Button
+                                                        Padding="0"
+                                                        BackgroundColor="#FF0000"
+                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type local:RestaurantRegisterPage}}, Path=DeleteCommand}"
+                                                        CommandParameter="{Binding .}"
+                                                        CornerRadius="12"
+                                                        FontSize="14"
+                                                        HeightRequest="30"
+                                                        HorizontalOptions="End"
+                                                        Text="X"
+                                                        TextColor="White"
+                                                        TranslationX="-3"
+                                                        TranslationY="3"
+                                                        VerticalOptions="Start"
+                                                        WidthRequest="30" />
+                                                </Grid>
+                                            </Frame>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+
+                                <Label
+                                    x:Name="NoImagesLabel"
+                                    FontSize="16"
+                                    HorizontalOptions="Center"
+                                    IsVisible="true"
+                                    Text="No images selected."
+                                    TextColor="Gray"
+                                    TranslationY="-100" />
+
+                                <!--  Register Button  -->
+                                <Button
+                                    Margin="0,10"
+                                    BackgroundColor="#6200EE"
+                                    Clicked="GoToAddMenuPage"
+                                    CornerRadius="30"
+                                    FontAttributes="Bold"
+                                    FontSize="18"
+                                    HorizontalOptions="Center"
+                                    Text="Register as Restaurant"
+                                    TextColor="#FFFFFF"
+                                    WidthRequest="350" />
+
+                                <!--  Back to Login  -->
+                                <Button
+                                    Margin="0,10"
+                                    BackgroundColor="#444444"
+                                    Clicked="GoToLoginPage"
+                                    CornerRadius="30"
+                                    FontAttributes="Bold"
+                                    FontSize="16"
+                                    HorizontalOptions="Center"
+                                    Text="Back to Login"
+                                    TextColor="#FFFFFF"
+                                    WidthRequest="350" />
+                            </StackLayout>
+                        </Frame>
+                    </StackLayout>
+                </ScrollView>
+            </Grid>
+
+            <ContentView
+                x:Name="LoadingOverlay"
+                AbsoluteLayout.LayoutBounds="0,0,1,1"
+                AbsoluteLayout.LayoutFlags="All"
+                BackgroundColor="Black"
+                IsVisible="False"
+                Opacity="0.5">
+
+                <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                    <ActivityIndicator
+                        x:Name="LoadingIndicator"
+                        HeightRequest="60"
+                        IsRunning="True"
+                        WidthRequest="60"
+                        Color="White" />
+
                 </StackLayout>
-            </ScrollView>
-        </Grid>
+            </ContentView>
+        </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>
