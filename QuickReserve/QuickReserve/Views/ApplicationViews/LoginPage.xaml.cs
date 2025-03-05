@@ -15,7 +15,8 @@ namespace QuickReserve.Views
     {
         private readonly FirebaseAuthService _authService;
 
-        private UserService _userService = new UserService();
+        private readonly UserService _userService;
+        private readonly RestaurantService _restaurantService;
 
         public LoginPage()
         {
@@ -23,6 +24,7 @@ namespace QuickReserve.Views
 
             _authService = new FirebaseAuthService();
             _userService = new UserService();
+            _restaurantService = new RestaurantService();
 
             // Ellenőrizzük, hogy a felhasználó be van-e jelentkezve
             CheckLoggedInUser();
@@ -43,18 +45,21 @@ namespace QuickReserve.Views
             imgTogglePassword.Source = txtPassword.IsPassword ? "eye_closed.png" : "eye_open.png";
         }
 
-        private void CheckLoggedInUser()
+        private async void CheckLoggedInUser()
         {
             if (Preferences.ContainsKey("userId"))
             {
                 string userId = Preferences.Get("userId", null);
                 string userEmail = Preferences.Get("userEmail", null);
+                App.Current.Properties["userId"] = userId;
+                string userType = await _userService.GetUserTypeByUserId(userId);
+                App.Current.Properties["userType"] = userType;
 
                 if (!string.IsNullOrEmpty(userId))
                 {
                     Device.BeginInvokeOnMainThread(() =>
                     {
-                        App.Current.MainPage = new NavigationPage(new AboutPage());
+                        App.Current.MainPage = new NavigationPage(new MainPage(userType));
                     });
                 }
             }
@@ -76,18 +81,30 @@ namespace QuickReserve.Views
                 var userCredential = await _authService.AuthClient.SignInWithEmailAndPasswordAsync(
                     txtEmail.Text.Trim(), txtPassword.Text.Trim());
 
-                string userID = await _userService.GetUserIdByEmail(txtEmail.Text);
+                var  (userId, userType) = await _userService.GetUserIdAndUserTypeByEmail(txtEmail.Text);
+                
 
-                if (!string.IsNullOrEmpty(userID))
+                if (!string.IsNullOrEmpty(userId))
                 {
                     if (chkRememberMe.IsChecked)
                     {
-                        Preferences.Set("userId", userID);
+                        Preferences.Set("userId", userId);
+                        Preferences.Set("userStatus", userType);
                         Preferences.Set("userEmail", txtEmail.Text.Trim());
                     }
+                    App.Current.Properties["userId"] = userId;
+                    App.Current.Properties["userType"] = userType;
+
 
                     // Sikeres bejelentkezés → főoldalra irányítás
-                    App.Current.MainPage = new NavigationPage(new AboutPage());
+                    try
+                    {
+                        App.Current.MainPage = new NavigationPage(new MainPage(userType));
+                    }
+                    catch (Exception ex)
+                    {
+                        await DisplayAlert("Error", ex.Message, "OK");
+                    }
                 }
                 else
                 {

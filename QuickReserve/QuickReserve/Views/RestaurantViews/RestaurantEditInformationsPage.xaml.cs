@@ -137,6 +137,7 @@ namespace QuickReserve.Views.RestaurantViews
             if (result)
             {
                 await DisplayAlert("Success", "Restaurant details updated successfully!", "OK");
+                App.Current.Properties["ReloadRestaurantProfilePage"] = "yes";
                 await Navigation.PopAsync();
             }
             else

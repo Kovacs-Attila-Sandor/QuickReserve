@@ -1,6 +1,7 @@
 ﻿using QuickReserve.Views;
 using System;
 using System.Collections.Generic;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace QuickReserve
@@ -9,8 +10,7 @@ namespace QuickReserve
     {
         public AppShell()
         {
-            InitializeComponent();
-            
-        }  
+            InitializeComponent();        
+        }
     }
 }

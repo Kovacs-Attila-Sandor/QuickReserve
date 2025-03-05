@@ -2,8 +2,8 @@
     x:Class="QuickReserve.Views.RestaurantReservationsPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    BackgroundColor="#2d3436"
-    Title="Reservations">
+    Title="Reservations"
+    BackgroundColor="#2d3436">
 
     <ContentPage.Content>
 

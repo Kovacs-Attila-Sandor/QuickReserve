@@ -107,7 +107,7 @@ namespace QuickReserve.Views
                     await DisplayAlert("Success", "Food details updated successfully.", "OK");
                     Restaurant restaurant = new Restaurant();
                     restaurant = await _restaurantService.GetRestaurantById(_restaurantId);
-                    App.Current.MainPage = new NavigationPage(new RestaurantProfilePage(restaurant.Name));
+                    App.Current.MainPage = new NavigationPage(new RestaurantProfilePage());
                 }
                 else
                 {

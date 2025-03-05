@@ -15,24 +15,39 @@ namespace QuickReserve.Views
         private ReservationService _reservationService;
         private RestaurantService _restaurantService;
         private string _restaurantId;
+        private readonly string _userId;
 
         public bool _isDoneVisible = false;  // Flag to determine if the Done reservations are visible     
 
         List<Reservation> InProgressReservations = new List<Reservation>();
         List<Reservation> DoneReservations = new List<Reservation>();
 
-        public RestaurantReservationsPage(string restaurantId)
+        public RestaurantReservationsPage()
         {
             InitializeComponent();
 
             _reservationService = new ReservationService();
-            _restaurantId = restaurantId;
             _restaurantService = new RestaurantService();
+
+            _userId = App.Current.Properties["userId"].ToString();
+            InitializeRestaurantId();
 
             // Load the data when the page is displayed
             LoadReservations();
         }
-
+        private async void InitializeRestaurantId()
+        {
+            try
+            {
+                // Fetch the restaurant ID by the user ID
+                _restaurantId = await _restaurantService.GetRestaurantIdByUserId(_userId);
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", "Failed to get the restaurant ID. Please try again.", "OK");
+                Console.WriteLine($"Error getting the restaurant ID: {ex.Message}");
+            }
+        }
         private async void LoadReservations()
         {
             try
@@ -115,9 +130,7 @@ namespace QuickReserve.Views
             }
 
         }
-
-
-        private async void OnViewDoneReservationsClicked(object sender, EventArgs e)
+        private void OnViewDoneReservationsClicked(object sender, EventArgs e)
         {
             var button = (Button)sender;
 

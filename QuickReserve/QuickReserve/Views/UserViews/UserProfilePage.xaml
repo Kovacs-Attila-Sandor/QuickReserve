@@ -8,107 +8,109 @@
     <!--  White text for navbar  -->
 
     <ContentPage.Content>
-        <StackLayout
-            Padding="20"
-            HorizontalOptions="FillAndExpand"
-            Spacing="20"
-            VerticalOptions="FillAndExpand">
-
-            <!--  Profile Picture  -->
-            <Frame
-                Padding="0"
-                CornerRadius="60"
-                HasShadow="True"
-                HeightRequest="160"
-                HorizontalOptions="Center"
-                VerticalOptions="Start">
-                <Image
-                    Aspect="AspectFill"
-                    HeightRequest="160"
-                    Source="{Binding user.ProfileImageSource}"
-                    WidthRequest="160" />
-            </Frame>
-
-            <!--  User Information Card  -->
-            <Frame
+        <Grid>
+            <StackLayout
                 Padding="20"
-                BackgroundColor="#34495e"
-                CornerRadius="20"
-                HasShadow="True"
                 HorizontalOptions="FillAndExpand"
-                VerticalOptions="Center">
-                <StackLayout Spacing="15">
-                    <!--  Name  -->
-                    <Label
-                        FontAttributes="Bold"
-                        FontSize="28"
-                        HorizontalOptions="Center"
-                        Text="{Binding user.Name}"
-                        TextColor="White" />
+                Spacing="20"
+                VerticalOptions="FillAndExpand">
 
-                    <!--  Email  -->
-                    <StackLayout Orientation="Horizontal" Spacing="10">
+                <!--  Profile Picture  -->
+                <Frame
+                    Padding="0"
+                    CornerRadius="60"
+                    HasShadow="True"
+                    HeightRequest="160"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Start">
+                    <Image
+                        Aspect="AspectFill"
+                        HeightRequest="160"
+                        Source="{Binding user.ProfileImageSource}"
+                        WidthRequest="160" />
+                </Frame>
+
+                <!--  User Information Card  -->
+                <Frame
+                    Padding="20"
+                    BackgroundColor="#34495e"
+                    CornerRadius="20"
+                    HasShadow="True"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="Center">
+                    <StackLayout Spacing="15">
+                        <!--  Name  -->
                         <Label
                             FontAttributes="Bold"
-                            FontSize="20"
-                            Text="Email:"
-                            TextColor="#bdc3c7" />
-                        <Label
-                            FontSize="20"
-                            Text="{Binding user.Email}"
+                            FontSize="28"
+                            HorizontalOptions="Center"
+                            Text="{Binding user.Name}"
                             TextColor="White" />
-                        <!--  White text for details  -->
-                    </StackLayout>
 
-                    <!--  Phone Number  -->
-                    <StackLayout Orientation="Horizontal" Spacing="10">
-                        <Label
-                            FontAttributes="Bold"
-                            FontSize="20"
-                            Text="Phone:"
-                            TextColor="#bdc3c7" />
-                        <Label
-                            FontSize="20"
-                            Text="{Binding user.PhoneNumber}"
-                            TextColor="White" />
-                    </StackLayout>
+                        <!--  Email  -->
+                        <StackLayout Orientation="Horizontal" Spacing="10">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="20"
+                                Text="Email:"
+                                TextColor="#bdc3c7" />
+                            <Label
+                                FontSize="20"
+                                Text="{Binding user.Email}"
+                                TextColor="White" />
+                            <!--  White text for details  -->
+                        </StackLayout>
 
-                    <!--  Created At  -->
-                    <StackLayout Orientation="Horizontal" Spacing="10">
-                        <Label
-                            FontAttributes="Bold"
-                            FontSize="20"
-                            Text="Member Since:"
-                            TextColor="#bdc3c7" />
-                        <Label
-                            FontSize="20"
-                            Text="{Binding user.CreatedAt}"
-                            TextColor="White" />
-                    </StackLayout>
+                        <!--  Phone Number  -->
+                        <StackLayout Orientation="Horizontal" Spacing="10">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="20"
+                                Text="Phone:"
+                                TextColor="#bdc3c7" />
+                            <Label
+                                FontSize="20"
+                                Text="{Binding user.PhoneNumber}"
+                                TextColor="White" />
+                        </StackLayout>
 
-                    <!--  Edit Profile Button  -->
-                    <Button
-                        Padding="10"
-                        BackgroundColor="#2980b9"
-                        Clicked="OnEditProfileClicked"
-                        CornerRadius="30"
-                        FontSize="20"
-                        HorizontalOptions="Center"
-                        Text="Edit Profile"
-                        TextColor="White"
-                        WidthRequest="250" />
-                    <Button
-                        Padding="10"
-                        BackgroundColor="red"
-                        Clicked="OnLogoutClicked"
-                        CornerRadius="30"
-                        FontSize="20"
-                        HorizontalOptions="Center"
-                        Text="Logout"
-                        TextColor="White"
-                        WidthRequest="250" />
-                </StackLayout>
-            </Frame>
-        </StackLayout>
+                        <!--  Created At  -->
+                        <StackLayout Orientation="Horizontal" Spacing="10">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="20"
+                                Text="Member Since:"
+                                TextColor="#bdc3c7" />
+                            <Label
+                                FontSize="20"
+                                Text="{Binding user.CreatedAt}"
+                                TextColor="White" />
+                        </StackLayout>
+
+                        <!--  Edit Profile Button  -->
+                        <Button
+                            Padding="10"
+                            BackgroundColor="#2980b9"
+                            Clicked="OnEditProfileClicked"
+                            CornerRadius="30"
+                            FontSize="20"
+                            HorizontalOptions="Center"
+                            Text="Edit Profile"
+                            TextColor="White"
+                            WidthRequest="250" />
+                        <Button
+                            Padding="10"
+                            BackgroundColor="red"
+                            Clicked="OnLogoutClicked"
+                            CornerRadius="30"
+                            FontSize="20"
+                            HorizontalOptions="Center"
+                            Text="Logout"
+                            TextColor="White"
+                            WidthRequest="250" />
+                    </StackLayout>
+                </Frame>
+            </StackLayout>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

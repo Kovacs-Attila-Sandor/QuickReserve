@@ -3,98 +3,216 @@
     x:Class="QuickReserve.Views.AddMenuPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    NavigationPage.HasNavigationBar="False">
+    xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="MainPage"
+    NavigationPage.HasNavigationBar="False"
+    mc:Ignorable="d">
+
     <ContentPage.Content>
-        <RelativeLayout>
-            <Image
-                Aspect="AspectFill"
-                IsEnabled="False"
-                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,
-                                                                       Property=Height,
-                                                                       Factor=1}"
-                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,
-                                                                      Property=Width,
-                                                                      Factor=1}"
-                Source="background1.png" />
+        <AbsoluteLayout>
+            <Grid
+                Padding="20"
+                AbsoluteLayout.LayoutBounds="0,0,1,1"
+                AbsoluteLayout.LayoutFlags="All">
 
-            <StackLayout
-                Margin="30,30,30,30"
-                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,
-                                                                       Property=Height,
-                                                                       Factor=1}"
-                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,
-                                                                      Property=Width,
-                                                                      Factor=1}">
+                <Grid.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Offset="0" Color="#121212" />
+                        <GradientStop Offset="0.5" Color="#282828" />
+                        <GradientStop Offset="1" Color="#3f3f3f" />
+                    </LinearGradientBrush>
+                </Grid.Background>
 
-                <Label
-                    FontAttributes="Bold"
-                    FontSize="24"
-                    HorizontalOptions="Center"
-                    Text="Add New Menu Item"
-                    TextColor="White"
-                    VerticalOptions="Center" />
+                <StackLayout
+                    HorizontalOptions="FillAndExpand"
+                    Spacing="30"
+                    VerticalOptions="CenterAndExpand">
 
-                <Frame
-                    BackgroundColor="Black"
-                    CornerRadius="20"
-                    HorizontalOptions="CenterAndExpand"
-                    Opacity="0.75"
-                    VerticalOptions="EndAndExpand">
-                    <StackLayout
-                        Padding="20"
-                        HorizontalOptions="CenterAndExpand"
-                        VerticalOptions="EndAndExpand">
-                        <Entry
-                            x:Name="txtMenuItemName"
-                            Placeholder="Menu Item Name"
-                            TextColor="GhostWhite" />
-                        <Entry
-                            x:Name="txtMenuItemDescription"
-                            Placeholder="Menu Item Description"
-                            TextColor="GhostWhite" />
-                        <Entry
-                            x:Name="txtMenuItemType"
-                            Placeholder="Menu Item Type"
-                            TextColor="GhostWhite" />
-                        <Entry
-                            x:Name="txtPrice"
-                            Keyboard="Numeric"
-                            Placeholder="Menu Item Price"
-                            TextColor="GhostWhite" />
+                    <!--  Fejléc  -->
+                    <Label
+                        Margin="0,20,0,30"
+                        FontAttributes="Bold"
+                        FontSize="28"
+                        HorizontalOptions="Center"
+                        Text="Add New Menu Item"
+                        TextColor="#F0F0F0" />
+
+                    <!--  Űrlap mezők  -->
+                    <Frame
+                        Padding="30"
+                        CornerRadius="20"
+                        HasShadow="True">
+                        <Frame.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Offset="0" Color="#3d3d3d" />
+                                <GradientStop Offset="0.5" Color="#262626" />
+                                <GradientStop Offset="1" Color="#100f10" />
+                            </LinearGradientBrush>
+                        </Frame.Background>
+
+                        <StackLayout Spacing="25">
+                            <Frame
+                                Padding="5"
+                                BackgroundColor="#2C2C2C"
+                                CornerRadius="12"
+                                HasShadow="False">
+                                <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto">
+                                    <Label
+                                        x:Name="lblMenuItemNamePlaceholder"
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        FontSize="12"
+                                        IsVisible="False"
+                                        Opacity="0"
+                                        Text="Name"
+                                        TextColor="#A0A0A0"
+                                        TranslationX="2"
+                                        TranslationY="-7" />
+                                    <Entry
+                                        x:Name="txtMenuItemName"
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        BackgroundColor="Transparent"
+                                        Placeholder="Name"
+                                        PlaceholderColor="#A0A0A0"
+                                        TextChanged="OnTextChanged"
+                                        TextColor="#FFFFFF" />
+                                </Grid>
+                            </Frame>
+                            <Frame
+                                Padding="5"
+                                BackgroundColor="#2C2C2C"
+                                CornerRadius="12"
+                                HasShadow="False">
+                                <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto">
+                                    <Label
+                                        x:Name="lblMenuItemDescriptionPlaceholder"
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        FontSize="12"
+                                        IsVisible="False"
+                                        Opacity="0"
+                                        Text="Description"
+                                        TextColor="#A0A0A0"
+                                        TranslationX="2"
+                                        TranslationY="-7" />
+                                    <Entry
+                                        x:Name="txtMenuItemDescription"
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        BackgroundColor="Transparent"
+                                        Placeholder="Description"
+                                        PlaceholderColor="#A0A0A0"
+                                        TextChanged="OnTextChanged"
+                                        TextColor="#FFFFFF" />
+                                </Grid>
+                            </Frame>
+                            <Frame
+                                Padding="5"
+                                BackgroundColor="#2C2C2C"
+                                CornerRadius="12"
+                                HasShadow="False">
+                                <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto">
+                                    <Label
+                                        x:Name="lblMenuItemTypePlaceholder"
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        FontSize="12"
+                                        IsVisible="False"
+                                        Opacity="0"
+                                        Text="Type"
+                                        TextColor="#A0A0A0"
+                                        TranslationX="2"
+                                        TranslationY="-7" />
+                                    <Entry
+                                        x:Name="txtMenuItemType"
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        BackgroundColor="Transparent"
+                                        Placeholder="Type"
+                                        PlaceholderColor="#A0A0A0"
+                                        TextChanged="OnTextChanged"
+                                        TextColor="#FFFFFF" />
+                                </Grid>
+                            </Frame>
+                            <Frame
+                                Padding="5"
+                                BackgroundColor="#2C2C2C"
+                                CornerRadius="12"
+                                HasShadow="False">
+                                <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto">
+                                    <Label
+                                        x:Name="lblMenuItemPrice"
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        FontSize="12"
+                                        IsVisible="False"
+                                        Opacity="0"
+                                        Text="Price"
+                                        TextColor="#A0A0A0"
+                                        TranslationX="2"
+                                        TranslationY="-7" />
+                                    <Entry
+                                        x:Name="txtPrice"
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        BackgroundColor="Transparent"
+                                        Keyboard="Numeric"
+                                        Placeholder="Price"
+                                        PlaceholderColor="#A0A0A0"
+                                        TextChanged="OnTextChanged"
+                                        TextColor="#FFFFFF" />
+                                </Grid>
+                            </Frame>
+
+                            <!--  Add Menu Item gomb (az űrlap részeként)  -->
+                            <Button
+                                BackgroundColor="#6200EE"
+                                Clicked="AddItem"
+                                CornerRadius="30"
+                                FontAttributes="Bold"
+                                FontSize="18"
+                                HorizontalOptions="Center"
+                                Text="Add Menu Item"
+                                TextColor="#FFFFFF"
+                                WidthRequest="350" />
+                        </StackLayout>
+                    </Frame>
+
+                    <!--  Finish Menu gomb (különállóan)  -->
+                    <StackLayout Padding="10,30,10,0">
                         <Button
-                            BackgroundColor="Transparent"
-                            Clicked="AddItem"
-                            CornerRadius="50"
-                            FontAttributes="Bold"
-                            FontSize="15"
-                            HorizontalOptions="CenterAndExpand"
-                            Text="Add Menu Item"
-                            TextColor="GhostWhite"
-                            WidthRequest="200" />
-                        <Button
-                            BackgroundColor="Transparent"
+                            BackgroundColor="Green"
                             Clicked="AddLayout"
-                            CornerRadius="50"
+                            CornerRadius="30"
                             FontAttributes="Bold"
-                            FontSize="15"
-                            HorizontalOptions="CenterAndExpand"
-                            Text="Add Restaurant Layout"
-                            TextColor="GhostWhite"
-                            WidthRequest="200" />
-                        <Button
-                            BackgroundColor="Transparent"
-                            Clicked="GoToLoginPage"
-                            CornerRadius="50"
-                            FontAttributes="Bold"
-                            FontSize="15"
-                            HorizontalOptions="CenterAndExpand"
-                            Text="Finish Registration"
-                            TextColor="GhostWhite"
-                            WidthRequest="200" />
+                            FontSize="18"
+                            HorizontalOptions="Center"
+                            Text="Finish Menu"
+                            TextColor="#FFFFFF"
+                            WidthRequest="350" />
                     </StackLayout>
-                </Frame>
-            </StackLayout>
+                </StackLayout>
+            </Grid>
 
-        </RelativeLayout>
+            <!--  Betöltési animáció  -->
+            <ContentView
+                x:Name="LoadingOverlay"
+                AbsoluteLayout.LayoutBounds="0,0,1,1"
+                AbsoluteLayout.LayoutFlags="All"
+                BackgroundColor="Black"
+                IsVisible="False"
+                Opacity="0.5">
+                <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                    <ActivityIndicator
+                        x:Name="LoadingIndicator"
+                        HeightRequest="60"
+                        IsRunning="True"
+                        WidthRequest="60"
+                        Color="White" />
+                </StackLayout>
+            </ContentView>
+        </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>

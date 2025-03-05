@@ -121,9 +121,6 @@
                                                 </BindableLayout.ItemTemplate>
                                             </StackLayout>
                                         </Frame>
-
-
-
                                     </StackLayout>
                                 </Frame>
                             </ViewCell>

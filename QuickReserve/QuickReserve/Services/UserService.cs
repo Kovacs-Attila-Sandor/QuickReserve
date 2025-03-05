@@ -104,7 +104,7 @@ namespace QuickReserve.Services
             }
         }
 
-        public async Task<string> GetUserIdByEmail(string Email)
+        public async Task<(string UserId, string UserStatus)> GetUserIdAndUserTypeByEmail(string Email)
         {
             try
             {
@@ -119,14 +119,23 @@ namespace QuickReserve.Services
                     .Select(u => u.Object)  // Csak a felhasználói objektumokat vesszük figyelembe
                     .FirstOrDefault(u => u.Email == Email);  // Feltétel a Email-re
 
-                return user.UserId;  // Ha találtunk egyezést, visszaadjuk a felhasználót
+                if (user != null)
+                {
+                    // Ha találtunk egyezést, visszaadjuk a UserId és UserStatus értékeket
+                    return (user.UserId, user.Role);
+                }
+                else
+                {
+                    return (null, null); // Ha nem találunk felhasználót
+                }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error fetching user by name: {ex.Message}");
-                return null;  // Hiba esetén null-t adunk vissza
+                Console.WriteLine($"Error fetching user by email: {ex.Message}");
+                return (null, null);  // Hiba esetén null értékeket adunk vissza
             }
         }
+
 
         // Lekérdezi a felhasználó típusát az adatbázisból
         public async Task<string> GetUserTypeByUserId(string userId)
@@ -210,7 +219,5 @@ namespace QuickReserve.Services
                 return false;  // Return false if there was an error
             }
         }
-
-
     }
 }

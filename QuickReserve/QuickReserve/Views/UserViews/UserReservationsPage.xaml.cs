@@ -23,12 +23,12 @@ namespace QuickReserve.Views
         List<Reservation> FinishedReservations = new List<Reservation>();
         List<Reservation> ActiveReservation = new List<Reservation>();
 
-        public UserReservationsPage(string userId)
+        public UserReservationsPage()
         {
             InitializeComponent();
 
             _reservationService = new ReservationService();
-            _userId = userId;
+            _userId = App.Current.Properties["userId"].ToString();
 
             LoadReservations();
         }

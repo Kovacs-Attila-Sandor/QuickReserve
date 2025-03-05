@@ -36,9 +36,8 @@ namespace QuickReserve.Views
 
             if (success)
             {
-                App.Current.Properties["LoggedInUserName"] = user.Name.Trim();
                 await DisplayAlert("Success", "Your profile has been updated.", "OK");
-                App.Current.MainPage = new NavigationPage(new AboutPage());
+                App.Current.MainPage = new NavigationPage(new MainPage(App.Current.Properties["userType"].ToString()));
             }
             else
             {

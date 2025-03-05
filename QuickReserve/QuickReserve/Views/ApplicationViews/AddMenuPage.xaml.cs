@@ -57,9 +57,43 @@ namespace QuickReserve.Views
         {
             App.Current.MainPage = new NavigationPage(new CreateLayoutPage(_restaurantId));
         }
-        protected void GoToLoginPage(object sender, EventArgs e)
+       
+        private void OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            App.Current.MainPage = new NavigationPage(new LoginPage());
+            if (sender is Entry entry)
+            {
+                Label placeholderLabel = GetPlaceholderLabel(entry);
+
+                if (!string.IsNullOrWhiteSpace(entry.Text))
+                {
+                    placeholderLabel.IsVisible = true;
+                    placeholderLabel.FadeTo(1, 160);
+                    placeholderLabel.TranslateTo(2, -3, 170);
+                    entry.Placeholder = "";
+                }
+                else
+                {
+                    placeholderLabel.FadeTo(0, 150, Easing.Linear);
+                    placeholderLabel.IsVisible = false;
+                    entry.Placeholder = GetPlaceholderText(entry);
+                }
+            }
+        }
+
+        private Label GetPlaceholderLabel(Entry entry)
+        {
+            return entry == txtMenuItemDescription ? lblMenuItemDescriptionPlaceholder :
+                   entry == txtMenuItemName ? lblMenuItemNamePlaceholder :
+                   entry == txtMenuItemType ? lblMenuItemTypePlaceholder :
+                   entry == txtPrice ? lblMenuItemPrice : null;
+        }
+
+        private string GetPlaceholderText(Entry entry)
+        {
+            return entry == txtMenuItemDescription ? "Menu Item Description" :
+                   entry == txtMenuItemName ? "Menu Item Name" :
+                   entry == txtMenuItemType ? "Menu Item Type" :
+                   entry == txtPrice ? "Price" : "";               
         }
     }
 }

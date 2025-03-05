@@ -13,15 +13,16 @@ namespace QuickReserve.Views
     {
         public User user { get; set; }
 
-        public UserProfilePage(string userID)
+        public UserProfilePage()
         {
             InitializeComponent();
-            LoadUserData(userID);
+            LoadUserData();
         }
 
-        private async void LoadUserData(string userID)
+        private async void LoadUserData()
         {
             var userService = new UserService();
+            string userID = App.Current.Properties["userId"].ToString();
             user = await userService.GetUserById(userID);
 
             if (user != null)
@@ -59,5 +60,7 @@ namespace QuickReserve.Views
             Preferences.Remove("userEmail");
             App.Current.MainPage = new NavigationPage(new LoginPage());
         }
+       
+
     }
 }

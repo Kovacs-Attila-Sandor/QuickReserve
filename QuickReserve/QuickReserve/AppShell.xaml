@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8" ?>
 <Shell
     x:Class="QuickReserve.AppShell"
     xmlns="http://xamarin.com/schemas/2014/forms"
@@ -9,4 +8,11 @@
     <Shell.Resources>
         <ResourceDictionary />
     </Shell.Resources>
+
+    <!--  TabBar Navigáció  -->
+    <TabBar>
+        <ShellContent Title="Home" Icon="home_icon.png" ContentTemplate="{DataTemplate local:AboutPage}" />
+        <ShellContent Title="Profile" Icon="profile_icon.png" ContentTemplate="{DataTemplate local:UserProfilePage}" />
+        <ShellContent Title="Reservations" Icon="reservation_icon.png" ContentTemplate="{DataTemplate local:UserReservationsPage}" />
+    </TabBar>
 </Shell>

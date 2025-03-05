@@ -6,6 +6,7 @@ using QuickReserve.Services;
 using QuickReserve.Converter;
 using System.Threading.Tasks;
 using QuickReserve.Views.RestaurantViews;
+using Xamarin.Essentials;
 
 namespace QuickReserve.Views
 {
@@ -13,15 +14,20 @@ namespace QuickReserve.Views
     {
         private RestaurantService _restaurantService;
         private Restaurant _restaurant;
+        private string _userId;
+        private readonly UserService _userService;
 
-        public RestaurantProfilePage(string restaurantId)
+        public RestaurantProfilePage()
         {
             InitializeComponent();
             _restaurantService = new RestaurantService();
-            LoadRestaurantData(restaurantId);
+            _userService = new UserService();
+            _userId = App.Current.Properties["userId"].ToString();
+            App.Current.Properties["ReloadRestaurantProfilePage"] = "no";
+            LoadRestaurantData();
         }
 
-        private async void LoadRestaurantData(string restaurantId)
+        private async void LoadRestaurantData()
         {
             try
             {
@@ -30,7 +36,7 @@ namespace QuickReserve.Views
                 contentLayout.IsVisible = false;
 
                 // Fetch restaurant data asynchronously
-                _restaurant = await _restaurantService.GetRestaurantByUserId(restaurantId);
+                _restaurant = await _restaurantService.GetRestaurantByUserId(_userId);
 
                 if (_restaurant != null)
                 {
@@ -54,7 +60,7 @@ namespace QuickReserve.Views
                 }
                 else
                 {
-                    await DisplayAlert("Error", "No restaurant found with the given name.", "OK");
+                    await DisplayAlert("Error", "No restaurant found with the given Id.", "OK");
                 }
             }
             catch (Exception ex)
@@ -76,8 +82,12 @@ namespace QuickReserve.Views
             // Re-fetch the restaurant data to ensure it's up-to-date
             if (_restaurant != null)
             {
-                LoadRestaurantData(_restaurant.Name);  // Reload restaurant data
-            }
+                if (App.Current.Properties["ReloadRestaurantProfilePage"].ToString() == "yes")
+                {
+                    LoadRestaurantData();  // Reload restaurant data
+                    App.Current.Properties["ReloadRestaurantProfilePage"] = "no";
+                }
+            } 
         }
 
         // Delete food logic (for handling delete button click event)
@@ -111,7 +121,7 @@ namespace QuickReserve.Views
                 {
                     await DisplayAlert("Success", "Food deleted successfully!", "OK");
                     // Refresh restaurant data after deletion
-                    LoadRestaurantData(_restaurant.Name);  // Refresh using the updated restaurant data
+                    LoadRestaurantData();  // Refresh using the updated restaurant data
                 }
                 else
                 {
@@ -144,13 +154,15 @@ namespace QuickReserve.Views
 
         private void OnLogoutClicked(object sender, EventArgs e)
         {
+            Preferences.Remove("userId");
+            Preferences.Remove("userEmail");
             App.Current.MainPage = new LoginPage();
         }
-
 
         private async void OnUpdateRestaurantInfoClicked(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new RestaurantEditInformationsPage(_restaurant));
         }
+    
     }
 }

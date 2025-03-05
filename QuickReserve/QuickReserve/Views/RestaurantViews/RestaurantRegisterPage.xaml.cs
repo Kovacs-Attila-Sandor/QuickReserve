@@ -83,6 +83,7 @@ namespace QuickReserve.Views
 
         protected async void GoToAddMenuPage(object sender, EventArgs e)
         {
+            
             LoadingOverlay.IsVisible = true;
             MainPage.IsEnabled = false;
 
@@ -166,6 +167,7 @@ namespace QuickReserve.Views
                 LoadingOverlay.IsVisible = false;
                 MainPage.IsEnabled = true;
             }
+            
         }
 
         // Törlés funkció
