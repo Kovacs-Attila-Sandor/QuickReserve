@@ -1,60 +1,92 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="QuickReserve.Views.CreateLayoutPage"
-             NavigationPage.HasNavigationBar="False">
+<ContentPage
+    x:Class="QuickReserve.Views.CreateLayoutPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Name="MainPage"
+    NavigationPage.HasNavigationBar="False">
+
     <ContentPage.Content>
-        
-        <RelativeLayout>
-            <!-- Background Image -->
-            <Image
-                Aspect="AspectFill"
-                Source="background1.png"
-                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
-                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
-                IsEnabled="False"/>
-            
-                <StackLayout RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
-             RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
-             Margin="30,30,30,30">
-                
-                  
-                        <Label Text="Add Layout" 
-                       FontSize="24" 
-                       FontAttributes="Bold" 
-                       HorizontalOptions="Center" 
-                       VerticalOptions="Center" 
-                       TextColor="White" />
+        <AbsoluteLayout>
+            <!--  Háttér gradient  -->
+            <Grid AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All">
+                <Grid.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Offset="0" Color="#121212" />
+                        <GradientStop Offset="0.5" Color="#282828" />
+                        <GradientStop Offset="1" Color="#3f3f3f" />
+                    </LinearGradientBrush>
+                </Grid.Background>
+            </Grid>
 
-                <Frame CornerRadius="20"
-BackgroundColor="Black"         
- Opacity="0.75"         
-HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand">
-                    
-                    <Grid x:Name="DynamicGrid"
-                  RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
-                  RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=1}"
-                  HorizontalOptions="CenterAndExpand"
-                  VerticalOptions="CenterAndExpand">
-                        <!-- Buttons will be added dynamically in code-behind -->
-                    </Grid>
-                </Frame>
+            <!--  Tartalom  -->
+            <ScrollView AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All">
+                <StackLayout
+                    Margin="30"
+                    Spacing="20"
+                    VerticalOptions="CenterAndExpand">
 
-                <!-- Finish Registration Button -->
-                    <StackLayout HorizontalOptions="Center" VerticalOptions="End" Padding="20">
-                    <Frame CornerRadius="20"
-BackgroundColor="Black"         
- Opacity="0.75"         
-HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand">
-                        <Button Clicked="GoToLoginPage" CornerRadius="50" TextColor="GhostWhite"
-                        BackgroundColor="Transparent" FontSize="15" WidthRequest="200"
-                        FontAttributes="Bold" Text="Finish Registration"/>
-                        </Frame>
-                    </StackLayout>
-                
-            </StackLayout>
-            
-        </RelativeLayout>
+                    <!--  Cím  -->
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="24"
+                        HorizontalOptions="Center"
+                        Text="Add Layout"
+                        TextColor="White"
+                        VerticalOptions="Center" />
+
+                    <!--  Dinamikus rács  -->
+                    <Frame
+                        Padding="20"
+                        BackgroundColor="#2C2C2C"
+                        CornerRadius="20"
+                        HorizontalOptions="FillAndExpand"
+                        VerticalOptions="CenterAndExpand">
+                        <Grid
+                            x:Name="DynamicGrid"
+                            HorizontalOptions="CenterAndExpand"
+                            VerticalOptions="CenterAndExpand">
+                            <!--  Gombok dinamikusan lesznek hozzáadva  -->
+                        </Grid>
+                    </Frame>
+
+                    <!--  Finish Registration gomb  -->
+                    <Frame
+                        Padding="15"
+                        BackgroundColor="#6200EE"
+                        CornerRadius="30"
+                        HorizontalOptions="Center"
+                        VerticalOptions="End">
+                        <Button
+                            BackgroundColor="Transparent"
+                            Clicked="GoToLoginPage"
+                            CornerRadius="50"
+                            FontAttributes="Bold"
+                            FontSize="15"
+                            Text="Finish Registration"
+                            TextColor="White"
+                            WidthRequest="200" />
+                    </Frame>
+                </StackLayout>
+            </ScrollView>
+            <ContentView
+                x:Name="LoadingOverlay"
+                AbsoluteLayout.LayoutBounds="0,0,1,1"
+                AbsoluteLayout.LayoutFlags="All"
+                BackgroundColor="Black"
+                IsVisible="False"
+                Opacity="0.5">
+
+                <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                    <ActivityIndicator
+                        x:Name="LoadingIndicator"
+                        HeightRequest="60"
+                        IsRunning="True"
+                        WidthRequest="60"
+                        Color="White" />
+
+                </StackLayout>
+            </ContentView>
+        </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>
-

@@ -1,7 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Xamarin.Forms;
 
 namespace QuickReserve.Models
@@ -14,10 +11,9 @@ namespace QuickReserve.Models
         public string Description { get; set; }
         public string Category { get; set; }
         public string Picture { get; set; }
-
+        public double Rating { get; set; } = 0;
         [JsonIgnore]
         public ImageSource ImageSource { get; set; }
-
         public bool IsButtonVisible { get; set; }
     }
 }

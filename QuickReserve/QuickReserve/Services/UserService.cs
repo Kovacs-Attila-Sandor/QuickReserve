@@ -1,7 +1,5 @@
-﻿using Firebase.Database;
-using Firebase.Database.Query;
+﻿using Firebase.Database.Query;
 using Newtonsoft.Json;
-using QuickReserve.Models;
 using System;
 using System.Linq;
 using System.Threading.Tasks;

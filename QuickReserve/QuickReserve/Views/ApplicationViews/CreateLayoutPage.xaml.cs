@@ -57,14 +57,8 @@ namespace QuickReserve.Views
                     };
                     button.Clicked += OnButtonClicked;
 
-
-
                     // Add both elements to the grid in the same position
                     dynamicGrid.Children.Add(button, col, row);
-
-
-
-
                 }
             }
         }
@@ -72,7 +66,6 @@ namespace QuickReserve.Views
         private async void OnButtonClicked(object sender, EventArgs e)
         {
             var button = sender as Button;
-
 
             if (button.Text == null)
             {
@@ -98,6 +91,8 @@ namespace QuickReserve.Views
         // Navigate to the LoginPage when "Finish Registration" button is clicked
         protected async void GoToLoginPage(object sender, EventArgs e)
         {
+            MainPage.IsEnabled = false;
+            LoadingOverlay.IsVisible = true;
             try
             {
                 // Gyűjtsük össze az összes asztalt a DynamicGrid-ből
@@ -146,7 +141,12 @@ namespace QuickReserve.Views
                 Console.WriteLine($"Error saving tables: {ex.Message}");
                 await DisplayAlert("Error", "Failed to save tables.", "OK");
             }
-            App.Current.MainPage = new NavigationPage(new LoginPage());
+            finally
+            {
+                LoadingOverlay.IsVisible = false;
+                MainPage.IsEnabled = true;
+                App.Current.MainPage = new NavigationPage(new LoginPage());
+            }
         }
     }
 }

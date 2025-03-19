@@ -89,6 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\background1.png" />
+    <AndroidResource Include="Resources\drawable\add_category_icon.png" />
     <Content Include="Resources\drawable\background.jpg" />
     <Content Include="Resources\drawable\background.png" />
     <AndroidResource Include="Resources\drawable\icon_about.png" />
@@ -107,6 +108,9 @@
     <AndroidResource Include="Resources\drawable\email_icon.png" />
     <AndroidResource Include="Resources\drawable\eye_closed.png" />
     <AndroidResource Include="Resources\drawable\eye_open.png" />
+    <AndroidResource Include="Resources\drawable\dropdown_icon.png" />
+    <AndroidResource Include="Resources\drawable\back_icon.png" />
+    <AndroidResource Include="Resources\drawable\delete_category_icon.png" />
     <Content Include="Resources\drawable\grey.png" />
     <AndroidResource Include="Resources\drawable\placeholder.jpg" />
     <AndroidResource Include="Resources\drawable\password_icon.png" />
@@ -115,11 +119,20 @@
     <AndroidResource Include="Resources\drawable\home_icon.png" />
     <AndroidResource Include="Resources\drawable\reservation_icon.png" />
     <AndroidResource Include="Resources\drawable\profile_icon.png" />
+    <AndroidResource Include="Resources\drawable\app_icon.png">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\location_icon.png" />
+    <AndroidResource Include="Resources\drawable\rating_icon.png" />
+    <AndroidResource Include="Resources\drawable\filled_heart_icon.png" />
+    <AndroidResource Include="Resources\drawable\not_filled_heart_icon.png" />
+    <AndroidResource Include="Resources\drawable\make_a_reservation_icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties XamarinHotReloadDebuggerTimeoutExceptionQuickReserveAndroidHideInfoBar="True" XamarinHotReloadGenericExceptionInfoBarQuickReserveAndroidHideInfoBar="True" />
+      <UserProperties XamarinHotReloadGenericExceptionInfoBarQuickReserveAndroidHideInfoBar="True" XamarinHotReloadDebuggerTimeoutExceptionQuickReserveAndroidHideInfoBar="True" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

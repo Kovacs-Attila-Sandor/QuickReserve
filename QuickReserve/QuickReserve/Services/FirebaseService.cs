@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Firebase.Database;
-
+﻿using Firebase.Database;
+using QuickReserve.Config;
 namespace QuickReserve.Services
 {
     public class FirebaseService
@@ -11,7 +8,8 @@ namespace QuickReserve.Services
 
         static FirebaseService()
         {
-            firebaseClient = new FirebaseClient("https://quickreserve-9b03a-default-rtdb.firebaseio.com/");
+            var apiKey = QuickReserve.Config.Config.FIREBASE_DATABASE_API_KEY;
+            firebaseClient = new FirebaseClient(apiKey);
         }
 
         // Nyilvános elérési pont a FirebaseClient-hez

@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="QuickReserve.Views.SplashPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    BackgroundColor="#1E1E1E">
+    <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+        <!--  Háttér gradiens (opcionális)  -->
+        <BoxView>
+            <BoxView.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Offset="0.0" Color="#1E1E1E" />
+                    <GradientStop Offset="1.0" Color="#2A2A2A" />
+                </LinearGradientBrush>
+            </BoxView.Background>
+        </BoxView>
+
+        <!--  Központi tartalom  -->
+        <StackLayout
+            HorizontalOptions="CenterAndExpand"
+            Spacing="20"
+            VerticalOptions="CenterAndExpand">
+            <!--  Logó modern kerettel  -->
+            <Frame
+                Padding="10"
+                BackgroundColor="#3A3A3A"
+                CornerRadius="50"
+                HasShadow="True"
+                HeightRequest="120"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                WidthRequest="120">
+                <Image
+                    Aspect="AspectFit"
+                    HorizontalOptions="Center"
+                    Source="app_icon.png" />
+            </Frame>
+
+            <!--  Szöveg modern betűtípussal  -->
+            <Label
+                FontAttributes="Bold"
+                FontSize="30"
+                HorizontalOptions="Center"
+                Opacity="0.9"
+                Text="QuickReserve"
+                TextColor="White" />
+
+            <!--  Betöltési állapotjelző  -->
+            <ActivityIndicator
+                x:Name="LoadingIndicator"
+                HeightRequest="40"
+                HorizontalOptions="Center"
+                IsRunning="True"
+                WidthRequest="40"
+                Color="#00D4FF" />
+        </StackLayout>
+    </Grid>
+</ContentPage>

@@ -20,14 +20,12 @@ namespace QuickReserve.Views
 
         public LoginPage()
         {
+
             InitializeComponent();
 
             _authService = new FirebaseAuthService();
             _userService = new UserService();
             _restaurantService = new RestaurantService();
-
-            // Ellenőrizzük, hogy a felhasználó be van-e jelentkezve
-            CheckLoggedInUser();
         }
 
         protected void GoToUserRegisterPage(object sender, EventArgs e)
@@ -43,26 +41,6 @@ namespace QuickReserve.Views
         {
             txtPassword.IsPassword = !txtPassword.IsPassword;
             imgTogglePassword.Source = txtPassword.IsPassword ? "eye_closed.png" : "eye_open.png";
-        }
-
-        private async void CheckLoggedInUser()
-        {
-            if (Preferences.ContainsKey("userId"))
-            {
-                string userId = Preferences.Get("userId", null);
-                string userEmail = Preferences.Get("userEmail", null);
-                App.Current.Properties["userId"] = userId;
-                string userType = await _userService.GetUserTypeByUserId(userId);
-                App.Current.Properties["userType"] = userType;
-
-                if (!string.IsNullOrEmpty(userId))
-                {
-                    Device.BeginInvokeOnMainThread(() =>
-                    {
-                        App.Current.MainPage = new NavigationPage(new MainPage(userType));
-                    });
-                }
-            }
         }
 
         public async void Login(object sender, EventArgs e)
@@ -125,6 +103,7 @@ namespace QuickReserve.Views
                 MainPage.IsEnabled = true;
             }
         }
+
         private void OnTextChanged(object sender, TextChangedEventArgs e)
         {
             if (sender is Entry entry)

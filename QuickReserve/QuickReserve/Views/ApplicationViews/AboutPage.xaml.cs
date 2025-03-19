@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Xamarin.Forms;
 using QuickReserve.Services;
 using QuickReserve.Models;
@@ -7,11 +9,10 @@ using QuickReserve.Converter;
 namespace QuickReserve.Views
 {
     public partial class AboutPage : ContentPage
-
     {
         private UserService _userService;
         private RestaurantService _restaurantService;
-        private Restaurant _restaurant;
+        private List<Restaurant> originalItems; // Az összes étterem listája
 
         public AboutPage()
         {
@@ -26,13 +27,11 @@ namespace QuickReserve.Views
             _userService = new UserService();
             _restaurantService = new RestaurantService();
 
-            //App.Current.Properties["restaurantId"] = _restaurant.RestaurantId;
-
             // Éttermek betöltése
             DisplayRestaurants();
         }
 
-        // Fetch restaurants from Firebase and display them in ListView
+        // Éttermek betöltése Firebase-ból és megjelenítése ListView-ban
         public async void DisplayRestaurants()
         {
             var allRestaurants = await _restaurantService.GetAllRestaurants();
@@ -48,8 +47,11 @@ namespace QuickReserve.Views
                     }
                 }
 
+                // Az eredeti lista frissítése
+                originalItems = allRestaurants;
+
                 // A ListView adatainak beállítása
-                lstmoments.ItemsSource = allRestaurants;
+                lstmoments.ItemsSource = originalItems;
 
                 // A tartalom megjelenítése
                 Content.IsVisible = true;
@@ -75,10 +77,26 @@ namespace QuickReserve.Views
                 Navigation.PushAsync(new RestaurantDetailsPage(selectedRestaurant));
             }
 
-             // A ListView automatikus kijelölésének eltávolítása
-             ((ListView)sender).SelectedItem = null;
+            // A ListView automatikus kijelölésének eltávolítása
+            ((ListView)sender).SelectedItem = null;
         }
 
-      
+        // Keresési szöveg változásakor futó eseménykezelő
+        private void OnSearchTextChanged(object sender, TextChangedEventArgs e)
+        {
+            var searchText = e.NewTextValue;
+            if (string.IsNullOrWhiteSpace(searchText))
+            {
+                // Ha nincs keresési szöveg, visszaállítjuk az eredeti listát
+                lstmoments.ItemsSource = originalItems;
+            }
+            else
+            {
+                // Szűrés a keresési szöveg alapján (kis- és nagybetűk figyelmen kívül hagyása)
+                lstmoments.ItemsSource = originalItems
+                    .Where(item => item.Name.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0)
+                    .ToList();
+            }
+        }
     }
 }

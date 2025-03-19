@@ -464,6 +464,65 @@ namespace QuickReserve.Services
             }
         }
 
+        public async Task<bool> AddCategoryToRestaurant(string restaurantId, List<string> newCategories)
+        {
+            try
+            {
+                // Az étterem lekérése a Firebase-ból
+                var restaurantData = await FirebaseService
+                    .Client
+                    .Child("Restaurant")  // "Restaurant" gyűjtemény
+                    .Child(restaurantId)  // Az étterem egyedi azonosítója
+                    .OnceSingleAsync<Restaurant>();  // Az étterem adatainak lekérése
+
+                if (restaurantData != null)
+                {
+                    // Ha a kategóriák listája null, inicializáljuk
+                    if (restaurantData.Categorys == null)
+                    {
+                        restaurantData.Categorys = new List<string>();
+                    }
+
+                    // Új kategóriák hozzáadása (csak ha még nem léteznek)
+                    bool categoryAdded = false;
+                    foreach (var category in newCategories)
+                    {
+                        if (!restaurantData.Categorys.Contains(category))
+                        {
+                            restaurantData.Categorys.Add(category);
+                            categoryAdded = true;
+                        }
+                    }
+
+                    // Csak akkor frissítjük az adatbázist, ha új kategória került hozzáadásra
+                    if (categoryAdded)
+                    {
+                        await FirebaseService
+                            .Client
+                            .Child("Restaurant")
+                            .Child(restaurantId)
+                            .PutAsync(restaurantData);  // Az étterem adatainak frissítése
+
+                        return true;  // Sikeres frissítés
+                    }
+                    else
+                    {
+                        Console.WriteLine("No new categories were added.");
+                        return false;  // Nem volt új kategória
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Restaurant not found.");
+                    return false;  // Az étterem nem található
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error adding categories to restaurant: {ex.Message}");
+                return false;  // Hiba esetén false értékkel térünk vissza
+            }
+        }
 
     }
 }
