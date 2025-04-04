@@ -17,7 +17,7 @@ namespace QuickReserve.Views.RestaurantViews
         {
             InitializeComponent();
             _restaurant = restaurant;
-            restaurantService = new RestaurantService();
+            restaurantService = RestaurantService.Instance;
             BindRestaurantData();
         }
 

@@ -1,159 +1,163 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage
+﻿<ContentPage
     x:Class="QuickReserve.Views.RestaurantLayoutPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     NavigationPage.HasNavigationBar="False">
-
-
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="ButtonStyle" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="#6200EE" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="CornerRadius" Value="25" />
+                <Setter Property="HeightRequest" Value="50" />
+                <Setter Property="WidthRequest" Value="120" />
+            </Style>
+            <Style x:Key="FrameStyle" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="#2A2A2A" />
+                <Setter Property="CornerRadius" Value="15" />
+                <Setter Property="HasShadow" Value="True" />
+                <Setter Property="Padding" Value="15" />
+            </Style>
+            <Style x:Key="PickerStyle" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="#3A3A3A" />
+                <Setter Property="CornerRadius" Value="10" />
+                <Setter Property="Padding" Value="10" />
+                <Setter Property="HasShadow" Value="False" />
+                <Setter Property="BorderColor" Value="Black" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <ContentPage.Content>
-        <RelativeLayout>
+        <AbsoluteLayout>
+            <Grid AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All">
+                <Grid.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Offset="0" Color="#121212" />
+                        <GradientStop Offset="0.5" Color="#282828" />
+                        <GradientStop Offset="1" Color="#3f3f3f" />
+                    </LinearGradientBrush>
+                </Grid.Background>
+            </Grid>
 
-            <Image
-                Aspect="AspectFill"
-                IsEnabled="False"
-                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,
-                                                                       Property=Height,
-                                                                       Factor=1}"
-                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,
-                                                                      Property=Width,
-                                                                      Factor=1}"
-                Source="background1.png" />
+            <!--  Tartalom  -->
+            <ScrollView AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All">
+                <StackLayout
+                    Margin="20"
+                    Spacing="25"
+                    VerticalOptions="CenterAndExpand">
+                    <StackLayout x:Name="Buttons">
+                        <Grid ColumnDefinitions="Auto" RowDefinitions="Auto">
+                            <ImageButton
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                BackgroundColor="Transparent"
+                                Clicked="GoToAboutPage"
+                                Source="back_icon.png"
+                                WidthRequest="40" />
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                FontAttributes="Bold"
+                                FontSize="28"
+                                HorizontalOptions="Center"
+                                Text="Restaurant Layout"
+                                TextColor="White"
+                                VerticalOptions="Center" />
+                        </Grid>
 
-
-            <!--  Main content  -->
-            <StackLayout
-                Margin="30,30,30,30"
-                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,
-                                                                       Property=Height,
-                                                                       Factor=1}"
-                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,
-                                                                      Property=Width,
-                                                                      Factor=1}">
-                <StackLayout Orientation="Horizontal">
-                    <Button
-                        BackgroundColor="Transparent"
-                        BorderColor="GhostWhite"
-                        BorderWidth="2"
-                        Clicked="GoToAboutPage"
-                        CornerRadius="50"
-                        FontAttributes="Bold"
-                        FontSize="14"
-                        HorizontalOptions="StartAndExpand"
-                        Text="Back"
-                        TextColor="GhostWhite"
-                        VerticalOptions="StartAndExpand" />
-                    <Button
-                        BackgroundColor="Transparent"
-                        BorderColor="GhostWhite"
-                        BorderWidth="2"
-                        Clicked="ConfirmButton"
-                        CornerRadius="50"
-                        FontAttributes="Bold"
-                        FontSize="14"
-                        HorizontalOptions="EndAndExpand"
-                        Text="Confirm"
-                        TextColor="GhostWhite"
-                        VerticalOptions="StartAndExpand" />
-                </StackLayout>
-                <Frame
-                    BackgroundColor="Black"
-                    CornerRadius="20"
-                    HorizontalOptions="CenterAndExpand"
-                    Opacity="0.75"
-                    VerticalOptions="EndAndExpand">
-                    <StackLayout
-                        HorizontalOptions="CenterAndExpand"
-                        Orientation="Vertical"
-                        VerticalOptions="CenterAndExpand">
-                        <DatePicker
-                            x:Name="reservationDatePicker"
-                            Date="{x:Static sys:DateTime.Now}"
-                            MaximumDate="{x:Static sys:DateTime.MaxValue}"
-                            MinimumDate="{x:Static sys:DateTime.Now}" />
-
-                        <Picker x:Name="myPicker" Title="Select a time">
-                            <Picker.ItemsSource>
-                                <x:Array Type="{x:Type x:String}">
-                                    <x:String>00:00-00:30</x:String>
-                                    <x:String>00:30-01:00</x:String>
-                                    <x:String>01:00-01:30</x:String>
-                                    <x:String>01:30-02:00</x:String>
-                                    <x:String>02:00-02:30</x:String>
-                                    <x:String>02:30-03:00</x:String>
-                                    <x:String>03:00-03:30</x:String>
-                                    <x:String>03:30-04:00</x:String>
-                                    <x:String>04:00-04:30</x:String>
-                                    <x:String>04:30-05:00</x:String>
-                                    <x:String>05:00-05:30</x:String>
-                                    <x:String>05:30-06:00</x:String>
-                                    <x:String>06:00-06:30</x:String>
-                                    <x:String>06:30-07:00</x:String>
-                                    <x:String>07:00-07:30</x:String>
-                                    <x:String>07:30-08:00</x:String>
-                                    <x:String>08:00-08:30</x:String>
-                                    <x:String>08:30-09:00</x:String>
-                                    <x:String>09:00-09:30</x:String>
-                                    <x:String>09:30-10:00</x:String>
-                                    <x:String>10:00-10:30</x:String>
-                                    <x:String>10:30-11:00</x:String>
-                                    <x:String>11:00-11:30</x:String>
-                                    <x:String>11:30-12:00</x:String>
-                                    <x:String>12:00-12:30</x:String>
-                                    <x:String>12:30-13:00</x:String>
-                                    <x:String>13:00-13:30</x:String>
-                                    <x:String>13:30-14:00</x:String>
-                                    <x:String>14:00-14:30</x:String>
-                                    <x:String>14:30-15:00</x:String>
-                                    <x:String>15:00-15:30</x:String>
-                                    <x:String>15:30-16:00</x:String>
-                                    <x:String>16:00-16:30</x:String>
-                                    <x:String>16:30-17:00</x:String>
-                                    <x:String>17:00-17:30</x:String>
-                                    <x:String>17:30-18:00</x:String>
-                                    <x:String>18:00-18:30</x:String>
-                                    <x:String>18:30-19:00</x:String>
-                                    <x:String>19:00-19:30</x:String>
-                                    <x:String>19:30-20:00</x:String>
-                                    <x:String>20:00-20:30</x:String>
-                                    <x:String>20:30-21:00</x:String>
-                                    <x:String>21:00-21:30</x:String>
-                                    <x:String>21:30-22:00</x:String>
-                                    <x:String>22:00-22:30</x:String>
-                                    <x:String>22:30-23:00</x:String>
-                                    <x:String>23:00-23:30</x:String>
-                                    <x:String>23:30-24:00</x:String>
-                                </x:Array>
-                            </Picker.ItemsSource>
-                        </Picker>
+                        <Frame Style="{StaticResource FrameStyle}">
+                            <StackLayout
+                                HorizontalOptions="CenterAndExpand"
+                                Orientation="Vertical"
+                                Spacing="15">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="18"
+                                    HorizontalOptions="Center"
+                                    Text="Please select a date and time"
+                                    TextColor="White" />
+                                <StackLayout Orientation="Horizontal" Spacing="15" HorizontalOptions="Center">
+                                    <Frame Style="{StaticResource PickerStyle}">
+                                        <DatePicker
+                                            x:Name="reservationDatePicker"
+                                            Date="{x:Static sys:DateTime.Now}"
+                                            FontSize="16"
+                                            HorizontalOptions="FillAndExpand"
+                                            MaximumDate="{x:Static sys:DateTime.MaxValue}"
+                                            MinimumDate="{x:Static sys:DateTime.Now}"
+                                            TextColor="#E0E0E0" />
+                                    </Frame>
+                                    <Frame Style="{StaticResource PickerStyle}">
+                                        <TimePicker
+                                            x:Name="reservationTimePicker"
+                                            FontSize="16"
+                                            Format="HH:mm"
+                                            HorizontalOptions="FillAndExpand"
+                                            TextColor="#E0E0E0"
+                                            Time="{Binding Time, Mode=TwoWay}" />
+                                    </Frame>
+                                </StackLayout>
+                            </StackLayout>
+                        </Frame>
                     </StackLayout>
-                </Frame>
 
-                <Frame
-                    BackgroundColor="Black"
-                    CornerRadius="20"
-                    HorizontalOptions="CenterAndExpand"
-                    Opacity="0.75"
-                    VerticalOptions="EndAndExpand">
+                    <Frame Style="{StaticResource FrameStyle}">
+                        <Grid
+                            x:Name="DynamicGrid"
+                            HorizontalOptions="CenterAndExpand"
+                            VerticalOptions="CenterAndExpand" />
+                    </Frame>
 
-                    <Grid
-                        x:Name="DynamicGrid"
-                        HorizontalOptions="CenterAndExpand"
-                        RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,
-                                                                               Property=Height,
-                                                                               Factor=1}"
-                        RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,
-                                                                              Property=Width,
-                                                                              Factor=1}"
-                        VerticalOptions="CenterAndExpand">
-                        <!--  Buttons will be added dynamically in code-behind  -->
-                    </Grid>
-                </Frame>
+                    <StackLayout
+                        x:Name="ConfirmButton"
+                        Margin="0"
+                        HorizontalOptions="FillAndExpand"
+                        Orientation="Horizontal"
+                        Spacing="20"
+                        VerticalOptions="FillAndExpand">
 
+                        <Button
+                            Margin="0,0,0,20"
+                            BackgroundColor="#6200EE"
+                            Clicked="ConfirmButtonClicked"
+                            CornerRadius="25"
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            HeightRequest="50"
+                            HorizontalOptions="FillAndExpand"
+                            Text="Confirm"
+                            TextColor="White" />
+                    </StackLayout>
+                </StackLayout>
+            </ScrollView>
 
-            </StackLayout>
-        </RelativeLayout>
+            <!--  Betöltés overlay  -->
+            <ContentView
+                x:Name="LoadingOverlay"
+                AbsoluteLayout.LayoutBounds="0,0,1,1"
+                AbsoluteLayout.LayoutFlags="All"
+                BackgroundColor="#1A1A2E"
+                IsVisible="False"
+                Opacity="0.7">
+                <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                    <ActivityIndicator
+                        x:Name="LoadingIndicator"
+                        HeightRequest="60"
+                        IsRunning="True"
+                        WidthRequest="60"
+                        Color="#6200EE" />
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        HorizontalOptions="Center"
+                        Text="Loading..."
+                        TextColor="White" />
+                </StackLayout>
+            </ContentView>
+        </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>

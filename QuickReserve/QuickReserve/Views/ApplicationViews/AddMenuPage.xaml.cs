@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using System.Windows.Input;
 
 namespace QuickReserve.Views
 {
@@ -18,29 +19,33 @@ namespace QuickReserve.Views
         private readonly RestaurantService _restaurantService;
         private List<string> _categories;
         private List<Food> _pendingFoods;
-        private bool isDropdownVisible = false;
         private MediaFile _selectedImageFile;
+        public ICommand DeleteCategoryCommand { get; }
+
 
         public AddMenuPage(string restaurantId)
         {
             InitializeComponent();
             _restaurantId = restaurantId ?? throw new ArgumentNullException(nameof(restaurantId));
-            _restaurantService = new RestaurantService();
+            _restaurantService = RestaurantService.Instance;
             _categories = new List<string>();
             _pendingFoods = new List<Food>();
+            categoryPicker.ItemsSource = _categories;
         }
 
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-        }    
+            // Load existing categories if needed
+            var restaurant = await _restaurantService.GetRestaurantById(_restaurantId);         
+        }
 
         private async void OnAddCategoryClicked(object sender, EventArgs e)
         {
             string newCategory = await DisplayPromptAsync("New Category", "Enter a new category name:",
                 maxLength: 50, keyboard: Keyboard.Text);
 
-            newCategory.Trim();
+            newCategory = newCategory?.Trim();
 
             if (string.IsNullOrWhiteSpace(newCategory))
                 return;
@@ -52,31 +57,34 @@ namespace QuickReserve.Views
             }
 
             _categories.Add(newCategory);
-            categoryCollectionView.ItemsSource = null;
-            categoryCollectionView.ItemsSource = _categories;
+            categoryPicker.ItemsSource = null; // Force refresh
+            categoryPicker.ItemsSource = _categories;
+            categoryPicker.SelectedItem = newCategory;
         }
 
         private async void OnDeleteCategoryClicked(object sender, EventArgs e)
         {
-            if (sender is ImageButton button && button.CommandParameter is string categoryToDelete)
+            if (categoryPicker.SelectedIndex == -1)
             {
-                bool confirm = await DisplayAlert("Confirm Delete",
-                    $"Are you sure you want to delete the category '{categoryToDelete}'?",
-                    "Yes", "No");
-
-                if (!confirm)
-                    return;
-
-                _categories.Remove(categoryToDelete);
-                categoryCollectionView.ItemsSource = null;
-                categoryCollectionView.ItemsSource = _categories;
-
-                if (lblSelectedItem.Text == categoryToDelete)
-                    lblSelectedItem.Text = "Select a category";
-
-                // Remove any pending foods with this category
-                _pendingFoods.RemoveAll(food => food.Category == categoryToDelete);
+                await DisplayAlert("Error", "Please select a category to delete", "OK");
+                return;
             }
+
+            string categoryToDelete = _categories[categoryPicker.SelectedIndex];
+
+            bool confirm = await DisplayAlert("Confirm Delete",
+                $"Are you sure you want to delete the category '{categoryToDelete}'?",
+                "Yes", "No");
+
+            if (!confirm)
+                return;
+
+            _categories.Remove(categoryToDelete);
+            categoryPicker.ItemsSource = null;
+            categoryPicker.ItemsSource = _categories;
+
+            // Remove any pending foods with this category
+            _pendingFoods.RemoveAll(food => food.Category == categoryToDelete);
         }
 
         private async void AddItem(object sender, EventArgs e)
@@ -104,23 +112,24 @@ namespace QuickReserve.Views
                 Name = txtMenuItemName.Text.Trim(),
                 Price = price,
                 Description = txtMenuItemDescription.Text.Trim(),
-                Category = lblSelectedItem.Text != "Select a category" ? lblSelectedItem.Text : null,
+                Category = categoryPicker.SelectedItem?.ToString(),
                 FoodId = Guid.NewGuid().ToString(),
                 Picture = base64Image
             };
 
             _pendingFoods.Add(newFood);
             ClearForm();
+            await DisplayAlert("Success", "Menu item added successfully", "OK");
         }
 
         private bool ValidateInput(out double price)
         {
             price = 0;
-            return !string.IsNullOrEmpty(txtMenuItemName.Text) &&
+            return !string.IsNullOrWhiteSpace(txtMenuItemName.Text) &&
                    double.TryParse(txtPrice.Text, out price) &&
                    price >= 0 &&
-                   !string.IsNullOrEmpty(txtMenuItemDescription.Text) &&
-                   lblSelectedItem.Text != "Select a category";
+                   !string.IsNullOrWhiteSpace(txtMenuItemDescription.Text) &&
+                   categoryPicker.SelectedIndex != -1;
         }
 
         private void ClearForm()
@@ -128,19 +137,23 @@ namespace QuickReserve.Views
             txtMenuItemDescription.Text = string.Empty;
             txtPrice.Text = string.Empty;
             txtMenuItemName.Text = string.Empty;
-            dropdownFrame.IsVisible = false;
-            isDropdownVisible = false;
             _selectedImageFile = null;
             imgFood.Source = null;
+            // Don't clear category selection
         }
 
         private async void AddLayout(object sender, EventArgs e)
         {
             try
             {
+                if (!_pendingFoods.Any() && !_categories.Any())
+                {
+                    await DisplayAlert("Warning", "Please add at least one menu item or category before proceeding", "OK");
+                    return;
+                }
+
                 LoadingOverlay.IsVisible = true;
 
-                // Save all pending changes to the database
                 var restaurant = await _restaurantService.GetRestaurantById(_restaurantId);
                 if (restaurant == null)
                 {
@@ -148,18 +161,21 @@ namespace QuickReserve.Views
                     return;
                 }
 
-                await _restaurantService.AddCategoryToRestaurant(_restaurantId, _categories);
+                // Save categories first
+                if (_categories.Any())
+                {
+                    await _restaurantService.AddCategoryToRestaurant(_restaurantId, _categories);
+                }
 
-                // Add all pending foods
+                // Save all pending foods
                 foreach (var food in _pendingFoods)
                 {
                     await _restaurantService.AddFoodToRestaurant(_restaurantId, food);
                 }
 
                 await DisplayAlert("Success", "Menu saved successfully", "OK");
-                _pendingFoods.Clear(); // Clear after successful save
+                _pendingFoods.Clear();
 
-                // Navigate to next page
                 await Navigation.PushAsync(new CreateLayoutPage(_restaurantId));
             }
             catch (Exception ex)
@@ -187,20 +203,9 @@ namespace QuickReserve.Views
             entry.Placeholder = hasText ? string.Empty : GetPlaceholderText(entry);
         }
 
-        private void OnCategoryTapped(object sender, EventArgs e)
+        private void OnCategorySelected(object sender, EventArgs e)
         {
-            isDropdownVisible = !isDropdownVisible;
-            dropdownFrame.IsVisible = isDropdownVisible;
-        }
-
-        private void OnCategorySelected(object sender, SelectionChangedEventArgs e)
-        {
-            if (e.CurrentSelection.FirstOrDefault() is string selectedCategory)
-            {
-                lblSelectedItem.Text = selectedCategory;
-                dropdownFrame.IsVisible = false;
-                isDropdownVisible = false;
-            }
+            // Selection is automatically handled by the Picker
         }
 
         private Label GetPlaceholderLabel(Entry entry)
@@ -223,11 +228,20 @@ namespace QuickReserve.Views
         {
             try
             {
+                await CrossMedia.Current.Initialize();
+
+                if (!CrossMedia.Current.IsPickPhotoSupported)
+                {
+                    await DisplayAlert("Error", "Photo picking is not supported on this device", "OK");
+                    return;
+                }
+
                 _selectedImageFile = await CrossMedia.Current.PickPhotoAsync(new PickMediaOptions
                 {
-                    PhotoSize = PhotoSize.Medium
+                    PhotoSize = PhotoSize.Medium,
+                    CompressionQuality = 80
                 });
-      
+
                 if (_selectedImageFile != null)
                 {
                     imgFood.Source = ImageSource.FromStream(() => _selectedImageFile.GetStream());

@@ -3,22 +3,99 @@ using QuickReserve.Models;
 using System;
 using System.Collections.Generic;
 using QuickReserve.Converter;
+using QuickReserve.Views.PopUps;
+using Rg.Plugins.Popup.Services;
+using QuickReserve.Services;
+using System.Diagnostics;
+using System.Linq;
 
 namespace QuickReserve.Views
 {
     public partial class RestaurantDetailsPage : ContentPage
     {
-        Restaurant restaurant;
+        private Restaurant restaurant;
+        private readonly RestaurantService _restaurantService;
+        private List<Food> allFoods;
 
         public RestaurantDetailsPage(Restaurant selectedRestaurant)
         {
             InitializeComponent();
-            restaurant = new Restaurant();
             restaurant = selectedRestaurant;
+            _restaurantService = RestaurantService.Instance;
+            allFoods = restaurant.Foods?.ToList() ?? new List<Food>();
 
             Application.Current.Properties["restaurantId"] = restaurant.RestaurantId;
+            ConvertImages(restaurant);
+            SetGroupedFoods();
 
-            // Convert images for the selected restaurant
+            BindingContext = restaurant;
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            SetGroupedFoods();
+            BindingContext = restaurant;
+        }
+
+        private void SetGroupedFoods()
+        {
+            foreach (var food in allFoods)
+            {
+                Debug.WriteLine($"Food: {food.Name}, Category: {food.Category ?? "NULL"}");
+            }
+
+            var grouped = allFoods
+                .GroupBy(f => f.Category ?? "Uncategorized")
+                .OrderBy(g => g.Key)
+                .ToList();
+
+            foreach (var group in grouped)
+            {
+                Debug.WriteLine($"Category: {group.Key}, Items: {group.Count()}");
+            }
+
+            restaurant.GroupedFoods = grouped;
+
+            foreach (var group in restaurant.GroupedFoods)
+            {
+                Debug.WriteLine($"Category: {group.Key}, Items: {group.Count()}");
+            }
+        }
+
+        private void OnCategorySelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.CurrentSelection.FirstOrDefault() is string selectedCategory)
+            {
+                var groupIndex = restaurant.GroupedFoods.ToList().FindIndex(g => g.Key == selectedCategory);
+                if (groupIndex >= 0)
+                {
+                    double scrollPosition = 0;
+                    for (int i = 0; i < groupIndex; i++)
+                    {
+                        var group = restaurant.GroupedFoods.ElementAt(i);
+
+                        scrollPosition += 10 + 5 + 24 + 5; 
+
+                        scrollPosition += group.Count() * (220 + 5); 
+                        scrollPosition += 15; 
+                    }
+
+                    Debug.WriteLine($"Kiválasztott kategória: {selectedCategory}");
+                    Debug.WriteLine($"Számított görgetési pozíció: {scrollPosition}");
+
+                    // Görgetés a pontos pozícióhoz
+                    mainScrollView.ScrollToAsync(0, scrollPosition, true);
+                }
+                else
+                {
+                    Debug.WriteLine($"A kategória '{selectedCategory}' nem található a GroupedFoods-ban.");
+                }
+            }
+        }
+
+        private void ConvertImages(Restaurant selectedRestaurant)
+        {
             selectedRestaurant.ImageSourceList = new List<ImageSource>();
             if (selectedRestaurant.ImageBase64List != null)
             {
@@ -38,71 +115,21 @@ namespace QuickReserve.Views
                     }
                 }
             }
-
-            BindingContext = selectedRestaurant;
-        }
-
-        private int _currentIndex = 0;
-
-        private void OnCarouselItemChanged(object sender, CurrentItemChangedEventArgs e)
-        {
-            var carousel = (CarouselView)sender;
-            var newIndex = carousel.Position;
-
-            // Ha a felhasználó vissza akarna lépni, állítsd vissza az előző pozícióra
-            if (newIndex < _currentIndex)
-            {
-                carousel.Position = _currentIndex;
-            }
-            else
-            {
-                // Frissítsd a jelenlegi indexet, ha előre lép
-                _currentIndex = newIndex;
-            }
-        }
-        protected async void GoToAboutpage(object sender, EventArgs e)
-        {
-            await Navigation.PopAsync();
-        }
-
-        protected async void GoToRestaurantLayoutpage(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new RestaurantLayoutPage(restaurant.RestaurantId));
-        }
-
-        protected async void GoToMenuPage(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new RestaurantMenuPage(restaurant));
         }
 
         private async void OnDatePickerClicked(object sender, EventArgs e)
         {
-            DatePicker datePicker = new DatePicker
-            {
-                Format = "D",
-                MinimumDate = DateTime.Today,
-                MaximumDate = DateTime.Today.AddMonths(6)
-            };
 
-            datePicker.DateSelected += (s, args) =>
-            {
-                DisplayAlert("Selected Date", args.NewDate.ToString("D"), "OK");
-            };
-
-            await Navigation.PushModalAsync(new ContentPage
-            {
-                Content = datePicker
-            });
         }
 
         private void OnHeartClicked(object sender, EventArgs e)
         {
-            var button = sender as ImageButton; // ImageButton-ra konvertáljuk, nem Image-re
+            var button = sender as ImageButton;
             if (button != null)
             {
                 if (button.Source is FileImageSource fileSource)
                 {
-                    button.Source = fileSource.File == "not_filled_heart_icon.png" ? "filled_heart_icon.png" : "not_filled_heart_icon.png";                  
+                    button.Source = fileSource.File == "not_filled_heart_icon.png" ? "filled_heart_icon.png" : "not_filled_heart_icon.png";
                 }
             }
         }
@@ -120,5 +147,48 @@ namespace QuickReserve.Views
             await Navigation.PopAsync();
         }
 
+        private async void ReservationButton_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new RestaurantLayoutPage(restaurant.RestaurantId));
+        }
+
+        private async void RefreshView_Refreshing(object sender, EventArgs e)
+        {
+            try
+            {
+                var refreshedRestaurant = await _restaurantService.GetRestaurantById(restaurant.RestaurantId);
+                if (refreshedRestaurant != null)
+                {
+                    ConvertImages(refreshedRestaurant);
+                    allFoods = refreshedRestaurant.Foods?.ToList() ?? new List<Food>();
+                    restaurant = refreshedRestaurant;
+                    SetGroupedFoods();                  
+                    BindingContext = restaurant;
+                }
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Hiba", $"Hiba történt az adatok frissítése közben: {ex.Message}", "OK");
+            }
+            finally
+            {
+                myRefreshView.IsRefreshing = false;
+            }
+        }
+
+        private async void OnItemTapped(object sender, ItemTappedEventArgs e)
+        {
+            if (e.Item != null)
+            {
+                var food = e.Item as Food;
+                if (food != null)
+                {
+                    // Popup megnyitása
+                    await PopupNavigation.Instance.PushAsync(new ViewFoodInformations(food));
+                }
+
+                ((ListView)sender).SelectedItem = null;
+            }
+        }
     }
 }

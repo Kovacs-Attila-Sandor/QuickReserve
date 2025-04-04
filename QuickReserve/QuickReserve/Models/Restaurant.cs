@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using Xamarin.Forms;
 
 namespace QuickReserve.Models
@@ -16,10 +16,11 @@ namespace QuickReserve.Models
         public string LongDescription { get; set; }
         public List<RestaurantHours> Hours { get; set; }
         public string UserId { get; set; }
-        public List<string> Categorys { get; set; }
+        public List<string> Categories { get; set; }
 
         // Több kép Base64 kódolva
         public List<string> ImageBase64List { get; set; } = new List<string>();
+
         [JsonIgnore]
         public string FirstImageBase64
         {
@@ -40,5 +41,8 @@ namespace QuickReserve.Models
 
         public List<Food> Foods { get; set; } = new List<Food>();
         public List<Table> Tables { get; set; } = new List<Table>();
+
+        [JsonIgnore]
+        public IEnumerable<IGrouping<string, Food>> GroupedFoods { get; set; }
     }
 }

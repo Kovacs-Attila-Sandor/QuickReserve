@@ -46,6 +46,10 @@ namespace QuickReserve.Views
             }
         }
 
+        private async void OnBackButtonClicked(object sender, EventArgs e)
+        {
+            await Navigation.PopAsync();
+        }
 
         private async void OnPlaceOrderClicked(object sender, EventArgs e)
         {

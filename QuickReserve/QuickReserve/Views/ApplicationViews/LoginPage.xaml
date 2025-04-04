@@ -229,12 +229,9 @@
                         IsRunning="True"
                         WidthRequest="60"
                         Color="White" />
-
+                    
                 </StackLayout>
             </ContentView>
-
-
         </AbsoluteLayout>
     </ContentPage.Content>
-
 </ContentPage>

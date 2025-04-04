@@ -26,8 +26,8 @@ namespace QuickReserve.Views
         {
             InitializeComponent();
 
-            _reservationService = new ReservationService();
-            _restaurantService = new RestaurantService();
+            _reservationService = ReservationService.Instance;
+            _restaurantService = RestaurantService.Instance;
 
             _userId = App.Current.Properties["userId"].ToString();
             InitializeRestaurantId();

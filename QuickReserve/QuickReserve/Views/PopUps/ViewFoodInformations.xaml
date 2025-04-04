@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<popup:PopupPage
+    x:Class="QuickReserve.Views.PopUps.ViewFoodInformations"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:popup="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup">
+
+    <Frame
+        Padding="20"
+        BackgroundColor="#2C2C2C"
+        CornerRadius="15"
+        HorizontalOptions="Center"
+        VerticalOptions="Center">
+        <Frame.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Offset="0.0" Color="#1A1A1A" />
+                <GradientStop Offset="1.0" Color="#2D2D2D" />
+            </LinearGradientBrush>
+        </Frame.Background>
+        <StackLayout Spacing="15">
+            <!--  Kép  -->
+            <StackLayout HorizontalOptions="Center" Spacing="15">
+                <Frame
+                    Padding="0"
+                    CornerRadius="15"
+                    HeightRequest="100"
+                    HorizontalOptions="Center"
+                    WidthRequest="100">
+                    <Image
+                        Aspect="AspectFill"
+                        HeightRequest="100"
+                        HorizontalOptions="Center"
+                        Source="{Binding ImageSource}"
+                        VerticalOptions="Center"
+                        WidthRequest="100" />
+                </Frame>
+            </StackLayout>
+
+            <!--  Név  -->
+            <Label
+                FontAttributes="Bold"
+                FontSize="20"
+                HorizontalOptions="Center"
+                Text="{Binding Name}"
+                TextColor="White" />
+
+            <!--  Leírás  -->
+            <Label
+                FontSize="14"
+                HorizontalOptions="Center"
+                LineBreakMode="WordWrap"
+                MaxLines="3"
+                Text="{Binding Description}"
+                TextColor="#B0B0B0" />
+
+            <!--  Ár  -->
+            <Label
+                FontAttributes="Bold"
+                FontSize="16"
+                HorizontalOptions="Center"
+                Text="{Binding Price, StringFormat='{0} €'}"
+                TextColor="#4CAF50" />
+
+            <!--  Bezárás gomb  -->
+            <Button
+                BackgroundColor="Red"
+                Clicked="ClosePopup"
+                CornerRadius="8"
+                HorizontalOptions="Center"
+                Text="Close"
+                TextColor="White"
+                WidthRequest="120" />
+        </StackLayout>
+    </Frame>
+</popup:PopupPage>

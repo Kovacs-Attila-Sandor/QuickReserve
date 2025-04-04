@@ -12,7 +12,22 @@ namespace QuickReserve.Services
 {
     public class ReservationService
     {
-        // Foglalás hozzáadása a Firebase adatbázishoz
+        private static ReservationService _instance; 
+
+        private ReservationService() { } 
+
+        public static ReservationService Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new ReservationService();
+                }
+                return _instance;
+            }
+        }
+
         public async Task<bool> AddReservation(Reservation reservation)
         {
             try
@@ -107,7 +122,6 @@ namespace QuickReserve.Services
             }
         }
 
-
         public async Task<bool> UpdateReservationStatus(string reservationId, string newStatus)
         {
             try
@@ -142,6 +156,5 @@ namespace QuickReserve.Services
                 return false;  // Hiba esetén false-t adunk vissza
             }
         }
-
     }
 }

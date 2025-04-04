@@ -9,11 +9,12 @@ namespace QuickReserve
 {
     public partial class App : Application
     {
+        UserService userService = UserService.Instance;
+
         public App()
         {
             InitializeComponent();
-
-            // A SplashPage az induló oldal
+            Sharpnado.CollectionView.Initializer.Initialize(true, false);
             MainPage = new SplashPage();
 
             // Aszinkron inicializáció indítása
@@ -32,7 +33,7 @@ namespace QuickReserve
                 string userId = Preferences.Get("userId", null);
                 try
                 {
-                    string userType = await new UserService().GetUserTypeByUserId(userId);
+                    string userType = await userService.GetUserTypeByUserId(userId);
                     MainPage = new NavigationPage(new MainPage(userType));
                 }
                 catch (Exception ex)

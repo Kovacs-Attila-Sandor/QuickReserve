@@ -19,7 +19,7 @@ namespace QuickReserve.Views
             InitializeComponent();
             _foodId = foodId;
             _restaurantId = restaurantId;
-            _restaurantService = new RestaurantService();
+            _restaurantService = RestaurantService.Instance;
             LoadFoodDetails(foodId);
         }
 

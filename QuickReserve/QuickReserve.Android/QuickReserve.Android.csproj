@@ -88,12 +88,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\background1.png" />
     <AndroidResource Include="Resources\drawable\add_category_icon.png" />
     <Content Include="Resources\drawable\background.jpg" />
-    <Content Include="Resources\drawable\background.png" />
-    <AndroidResource Include="Resources\drawable\icon_about.png" />
-    <AndroidResource Include="Resources\drawable\icon_feed.png" />
     <AndroidResource Include="Resources\drawable\xamarin_logo.png" />
     <AndroidResource Include="Resources\mipmap-hdpi\icon.png" />
     <AndroidResource Include="Resources\mipmap-hdpi\launcher_foreground.png" />
@@ -132,7 +128,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties XamarinHotReloadGenericExceptionInfoBarQuickReserveAndroidHideInfoBar="True" XamarinHotReloadDebuggerTimeoutExceptionQuickReserveAndroidHideInfoBar="True" />
+      <UserProperties XamarinHotReloadDebuggerTimeoutExceptionQuickReserveAndroidHideInfoBar="True" XamarinHotReloadGenericExceptionInfoBarQuickReserveAndroidHideInfoBar="True" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

@@ -39,7 +39,7 @@ namespace QuickReserve.Views
             UserId = Application.Current.Properties["userId"].ToString();
             RestaurantId = Application.Current.Properties["restaurantId"].ToString();
 
-            _restaurantService = new RestaurantService();
+            _restaurantService = RestaurantService.Instance;
         }
 
         // Aszinkron műveletek a megjelenéskor
@@ -77,7 +77,7 @@ namespace QuickReserve.Views
         // A véglegesítés kezelése
         private async void OnFinalizeReservation(object sender, EventArgs e)
         {
-            UserService userService = new UserService();
+            UserService userService = UserService.Instance;
             var reservation = new Reservation()
             {
                 UserId = this.UserId,
@@ -95,7 +95,7 @@ namespace QuickReserve.Views
             try
             {
                 // Foglalás mentése az adatbázisba
-                ReservationService reservationService = new ReservationService();
+                ReservationService reservationService = ReservationService.Instance;
                 await reservationService.AddReservation(reservation);
 
                 await _restaurantService.MarkTableAsReserved(RestaurantId, TableId);

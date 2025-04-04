@@ -3,64 +3,134 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Your Order"
-    BackgroundColor="#f9f9f9">
+    NavigationPage.HasNavigationBar="False">
+    
 
-    <!--  StackLayout beállítva a ContentPage Content tulajdonságaként  -->
-    <StackLayout Padding="15" Spacing="20">
+    <StackLayout>
+        <Grid Padding="10,10,10,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
 
-        <!--  ListView a rendelési tételekhez  -->
-        <ListView HasUnevenRows="True" ItemsSource="{Binding OrderItems}">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <StackLayout
-                            Padding="15"
-                            BackgroundColor="White"
-                            Orientation="Horizontal"
-                            Spacing="20">
-                            <!--  Étkezés neve  -->
-                            <Label
-                                FontAttributes="Bold"
-                                FontSize="18"
-                                Text="{Binding Name}"
-                                TextColor="#2C3E50"
-                                VerticalOptions="Center" />
-                            <!--  Ár  -->
-                            <Label
-                                FontSize="16"
-                                HorizontalOptions="EndAndExpand"
-                                Text="{Binding Price, StringFormat='{0} €'}"
-                                TextColor="#7F8C8D"
-                                VerticalOptions="Center" />
-                            <!--  Törlés gomb  -->
-                            <Button
-                                Padding="10,5"
-                                BackgroundColor="#e74c3c"
-                                Clicked="OnRemoveItemClicked"
-                                CornerRadius="5"
-                                HorizontalOptions="End"
-                                Text="Remove"
-                                TextColor="White"
-                                VerticalOptions="Center" />
-                        </StackLayout>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            <!--  Vissza gomb bal oldalon  -->
+            <ImageButton
+                Grid.Column="0"
+                BackgroundColor="Transparent"
+                Clicked="OnBackButtonClicked"
+                HeightRequest="60"
+                Padding="0"
+                Source="back_icon.png"
+                VerticalOptions="Center"
+                />
 
-        <!--  A rendelés leadása gomb  -->
-        <Button
-            Padding="12"
-            BackgroundColor="#28a745"
-            Clicked="OnPlaceOrderClicked"
-            CornerRadius="10"
-            FontSize="18"
-            HeightRequest="50"
-            HorizontalOptions="FillAndExpand"
-            Text="Confirm Reservation"
-            TextColor="White"
-            VerticalOptions="End" />
+            <!--  Cím középen  -->
+            <Label
+                Grid.Column="1"
+                FontAttributes="Bold"
+                FontSize="28"
+                Text="Your Order"
+                Margin="0,0"
+                Padding="0"
+                TextColor="White"
+                VerticalOptions="Center" />
+        </Grid>
+        <Frame
+            BackgroundColor="Transparent" Padding="0">
+            <Frame.Background>
+                <LinearGradientBrush>
+                    <GradientStop Offset="0.0" Color="#1A1A1A" />
+                    <GradientStop Offset="1.0" Color="#2D2D2D" />
+                </LinearGradientBrush>
+            </Frame.Background>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
 
+                <!--  Görgethető tartalom  -->
+                <ScrollView Grid.Row="0">
+                    <StackLayout Padding="10" Spacing="20">
+                        <!--  ListView a rendelési tételekhez  -->
+
+                        <ListView
+                            BackgroundColor="Transparent"
+                            HasUnevenRows="True"
+                            ItemsSource="{Binding OrderItems}"
+                            SeparatorVisibility="None">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <Frame
+                                            Margin="0,5"
+                                            Padding="15"
+                                            BackgroundColor="#2A2E33"
+                                            CornerRadius="15"
+                                            HasShadow="True">
+                                            <Grid ColumnSpacing="10">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <!--  Étkezés neve  -->
+                                                <Label
+                                                    Grid.Column="0"
+                                                    FontAttributes="Bold"
+                                                    FontSize="18"
+                                                    Text="{Binding Name}"
+                                                    TextColor="#FFFFFF"
+                                                    VerticalOptions="Center" />
+
+                                                <!--  Ár  -->
+                                                <Label
+                                                    Grid.Column="1"
+                                                    FontSize="16"
+                                                    Text="{Binding Price, StringFormat='{0} €'}"
+                                                    TextColor="#4CAF50"
+                                                    VerticalOptions="Center" />
+
+                                                <!--  Törlés gomb  -->
+                                                <Button
+                                                    Grid.Column="2"
+                                                    Padding="10,5"
+                                                    BackgroundColor="#e74c3c"
+                                                    Clicked="OnRemoveItemClicked"
+                                                    CornerRadius="8"
+                                                    FontSize="14"
+                                                    HeightRequest="40"
+                                                    Text="Remove"
+                                                    TextColor="White"
+                                                    VerticalOptions="Center"
+                                                    WidthRequest="80" />
+                                            </Grid>
+                                        </Frame>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </StackLayout>
+                </ScrollView>
+
+                <!--  Fix gomb a képernyő alján  -->
+                <Button
+                    Grid.Row="1"
+                    Margin="15,0,15,15"
+                    Padding="15,10"
+                    BackgroundColor="#28a745"
+                    Clicked="OnPlaceOrderClicked"
+                    CornerRadius="12"
+                    FontAttributes="Bold"
+                    FontSize="18"
+                    HeightRequest="55"
+                    HorizontalOptions="FillAndExpand"
+                    Text="Confirm Reservation"
+                    TextColor="White" />
+            </Grid>
+        </Frame>
     </StackLayout>
 
 </ContentPage>

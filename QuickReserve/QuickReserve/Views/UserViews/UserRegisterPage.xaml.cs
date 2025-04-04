@@ -17,8 +17,8 @@ namespace QuickReserve.Views
         {
             InitializeComponent();
 
-            _authService = new FirebaseAuthService();
-            _userService = new UserService();
+            _authService = FirebaseAuthService.Instance;
+            _userService = UserService.Instance;
         }
 
         protected void GoToLoginPage(object sender, EventArgs e)

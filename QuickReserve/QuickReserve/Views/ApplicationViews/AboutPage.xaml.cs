@@ -24,8 +24,8 @@ namespace QuickReserve.Views
             loadingIndicator.IsVisible = true;
             LoadingLabel.IsVisible = true;
 
-            _userService = new UserService();
-            _restaurantService = new RestaurantService();
+            _userService = UserService.Instance;
+            _restaurantService = RestaurantService.Instance;
 
             // Éttermek betöltése
             DisplayRestaurants();

@@ -3,7 +3,6 @@
     x:Class="QuickReserve.Views.AboutPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:controls="clr-namespace:QuickReserve.Controls"
     BackgroundColor="#1A1A1A"
     NavigationPage.HasNavigationBar="False">
 
@@ -16,6 +15,7 @@
 
     <ContentPage.Content>
         <Grid RowSpacing="0">
+
             <StackLayout
                 Grid.Row="0"
                 Padding="20,40,20,20"

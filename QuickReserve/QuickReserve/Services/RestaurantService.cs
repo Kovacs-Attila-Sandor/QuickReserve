@@ -1,16 +1,34 @@
-﻿using Firebase.Database;
-using Firebase.Database.Query;
+﻿using Firebase.Database.Query;
 using Newtonsoft.Json;
 using QuickReserve.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace QuickReserve.Services
 {
     public class RestaurantService
     {
+        private static RestaurantService _instance;
+
+        private RestaurantService() { }
+
+        public static RestaurantService Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new RestaurantService();
+                }
+                return _instance;
+            }
+        }
+
         // Étterem lekérése a Firebase-ből a RestaurantId alapján
         public async Task<Restaurant> GetRestaurantById(string restaurantId)
         {
@@ -75,29 +93,6 @@ namespace QuickReserve.Services
             {
                 Console.WriteLine($"Error fetching restaurant: {ex.Message}");
                 return null;  // Hiba esetén null-t adunk vissza
-            }
-        }
-
-        public async Task<string> AddRestaurantAndGetId(Restaurant restaurant)
-        {
-            try
-            {
-                // Generálj egy egyedi azonosítót az étteremhez
-                restaurant.RestaurantId = Guid.NewGuid().ToString();
-
-                // Az étterem adatainak mentése a Firebase adatbázisba
-                await FirebaseService
-                    .Client
-                    .Child("Restaurant")
-                    .Child(restaurant.RestaurantId)
-                    .PutAsync(JsonConvert.SerializeObject(restaurant));
-
-                return restaurant.RestaurantId; // Visszaadjuk az étterem ID-t
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error adding restaurant: {ex.Message}");
-                return null; // Hiba esetén null-t adunk vissza
             }
         }
 
@@ -186,30 +181,6 @@ namespace QuickReserve.Services
             {
                 Console.WriteLine($"Error adding tables to restaurant: {ex.Message}");
                 return false; // Hiba esetén false
-            }
-        }
-
-        public async Task<Restaurant> GetRestaurantByName(string name)
-        {
-            try
-            {
-                // Lekérjük az összes éttermet a "Restaurant" gyűjteményből
-                var allRestaurants = await FirebaseService
-                    .Client
-                    .Child("Restaurant")  // "Restaurant" gyűjtemény
-                    .OnceAsync<Restaurant>();  // Az összes étterem lekérése
-
-                // Megkeressük az első olyan éttermet, amelynek Name tulajdonsága megegyezik a keresett névvel
-                var restaurant = allRestaurants
-                    .Select(u => u.Object)  // Csak az étterem objektumokat vesszük figyelembe
-                    .FirstOrDefault(u => u.Name == name);  // Feltétel a Name-re
-
-                return restaurant;  // Ha találtunk egyezést, visszaadjuk az éttermet
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error fetching restaurant by name: {ex.Message}");
-                return null;  // Hiba esetén null-t adunk vissza
             }
         }
 
@@ -478,18 +449,18 @@ namespace QuickReserve.Services
                 if (restaurantData != null)
                 {
                     // Ha a kategóriák listája null, inicializáljuk
-                    if (restaurantData.Categorys == null)
+                    if (restaurantData.Categories == null)
                     {
-                        restaurantData.Categorys = new List<string>();
+                        restaurantData.Categories = new List<string>();
                     }
 
                     // Új kategóriák hozzáadása (csak ha még nem léteznek)
                     bool categoryAdded = false;
                     foreach (var category in newCategories)
                     {
-                        if (!restaurantData.Categorys.Contains(category))
+                        if (!restaurantData.Categories.Contains(category))
                         {
-                            restaurantData.Categorys.Add(category);
+                            restaurantData.Categories.Add(category);
                             categoryAdded = true;
                         }
                     }
@@ -524,5 +495,29 @@ namespace QuickReserve.Services
             }
         }
 
+        public IDisposable ListenForRestaurantChanges(string restaurantId, Action<Restaurant> onRestaurantUpdated)
+        {
+            var firebaseClient = FirebaseService.Client;
+            Debug.WriteLine($"Restaurant ID: {restaurantId}");
+
+            var subscription = firebaseClient
+                .Child("Restaurant")
+                .Child(restaurantId)
+                .AsObservable<Restaurant>()
+                .Subscribe(d =>
+                {
+                    Debug.WriteLine($"🔥 Firebase adat érkezett: {JsonConvert.SerializeObject(d.Object)}");
+
+                    var restaurant = JsonConvert.DeserializeObject<Restaurant>(JsonConvert.SerializeObject(d.Object));
+                    if (restaurant != null)
+                    {
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            onRestaurantUpdated?.Invoke(restaurant);
+                        });
+                    }
+                });
+            return subscription;
+        }
     }
 }

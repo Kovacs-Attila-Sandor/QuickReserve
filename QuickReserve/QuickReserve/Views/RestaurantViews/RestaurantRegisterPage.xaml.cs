@@ -25,9 +25,9 @@ namespace QuickReserve.Views
         public RestaurantRegisterPage()
         {
             InitializeComponent();
-            _authService = new FirebaseAuthService();
-            _userService = new UserService();
-            _restaurantService = new RestaurantService();
+            _authService = FirebaseAuthService.Instance;
+            _userService = UserService.Instance;
+            _restaurantService = RestaurantService.Instance;
 
             DeleteCommand = new Command<ImageSource>(OnDeleteImage);
             BindingContext = this;

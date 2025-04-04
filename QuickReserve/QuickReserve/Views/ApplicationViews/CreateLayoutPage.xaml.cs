@@ -123,7 +123,7 @@ namespace QuickReserve.Views
                 }
 
                 // Hívjuk meg a mentési metódust
-                var restaurantService = new RestaurantService();
+                var restaurantService = RestaurantService.Instance;
                 bool isSaved = await restaurantService.AddTablesToRestaurant(_restaurantId, tables);
 
                 if (isSaved)

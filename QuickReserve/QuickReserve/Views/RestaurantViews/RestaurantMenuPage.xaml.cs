@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using QuickReserve.Converter;
-using System.Windows.Input;
+using QuickReserve.Views.PopUps;
+using Rg.Plugins.Popup.Services;
 
 namespace QuickReserve.Views
 {
@@ -13,25 +14,11 @@ namespace QuickReserve.Views
         public Restaurant CurrentRestaurant { get; set; }
         public List<Food> MenuItems { get; set; }
         public List<Food> OrderItems { get; set; } = new List<Food>();
-
         public string ReservationDateTime { get; set; }
         public string TableId { get; set; }
         public int GuestCount { get; set; }
 
-        // BindableProperty for IsButtonVisible
-        public static readonly BindableProperty IsButtonVisibleProperty =
-         BindableProperty.Create(
-             nameof(IsButtonVisible),
-             typeof(bool),
-             typeof(RestaurantMenuPage),
-             default(bool));
-
-        public bool IsButtonVisible
-        {
-            get => (bool)GetValue(IsButtonVisibleProperty);
-            set => SetValue(IsButtonVisibleProperty, value);
-        }
-
+      
         public RestaurantMenuPage(Restaurant restaurant)
         {
             InitializeComponent();
@@ -39,65 +26,46 @@ namespace QuickReserve.Views
             CurrentRestaurant = restaurant;
             MenuItems = restaurant.Foods;
 
-            BindingContext = this; 
+            // Csoportosítás
+            CurrentRestaurant.GroupedFoods = restaurant.Foods
+                .GroupBy(f => f.Category ?? "Uncategorized");
+
 
             if (!string.IsNullOrEmpty(restaurant.ImageSourceUri?.ToString()))
             {
                 RestaurantImage.Source = restaurant.ImageSourceUri;
             }
 
-            if (restaurant.Foods != null)
+            if (restaurant.Foods != null && restaurant.Foods.Any())
             {
                 foreach (var food in restaurant.Foods)
                 {
                     if (!string.IsNullOrEmpty(food.Picture))
                     {
                         food.ImageSource = ImageConverter.ConvertBase64ToImageSource(food.Picture);
+                        if (food.ImageSource == null)
+                        {
+                            Console.WriteLine($"Failed to load image for {food.Name}");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine($"No picture found for {food.Name}");
                     }
                 }
             }
+            else
+            {
+                Console.WriteLine("No food items available.");
+            }
+            BindingContext = CurrentRestaurant;
 
-            MenuListView.ItemsSource = MenuItems;
         }
-
 
         private async void OnNoPreOrderClicked(object sender, EventArgs e)
         {
-            //await DisplayAlert("asd", $"{ReservationDateTime}, {TableId}, {GuestCount}", "OK");
             await Navigation.PushAsync(new ReservationSummaryPage(new List<Food>(), ReservationDateTime, TableId, GuestCount));
-        }
-
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-
-            // Biztosítjuk, hogy a gombok láthatósága megfelelő
-            if (!string.IsNullOrEmpty(TableId))
-            {
-                foreach (var food in MenuItems)
-                {
-                    food.IsButtonVisible = true;  // Set the button visible for each food item
-                }
-                IsButtonVisible = true;
-            }
-            else
-            {
-                foreach (var food in MenuItems)
-                {
-                    food.IsButtonVisible = false;  // Hide buttons if no table is selected
-                }
-                IsButtonVisible = false;
-            }
-
-            // Frissítjük az ItemsSource-t, hogy az UI észlelje a változást
-            MenuListView.ItemsSource = null;  // Először ürítjük az ItemsSource-t
-            MenuListView.ItemsSource = MenuItems;  // Újra hozzárendeljük a listát
-
-            BindingContext = this;
-        }
-
-
-
+        }     
         private void OnCategorySelected(object sender, EventArgs e)
         {
             var button = sender as Button;
@@ -108,32 +76,40 @@ namespace QuickReserve.Views
 
             if (category == "Main Courses")
             {
-                MenuItems = CurrentRestaurant.Foods.Where(f => f.Category == "Main Course").ToList();
+                CurrentRestaurant.GroupedFoods = CurrentRestaurant.Foods
+                    .Where(f => f.Category == "Main Course")
+                    .GroupBy(f => f.Category ?? "Uncategorized");
             }
             else if (category == "Drinks")
             {
-                MenuItems = CurrentRestaurant.Foods.Where(f => f.Category == "Drink").ToList();
+                CurrentRestaurant.GroupedFoods = CurrentRestaurant.Foods
+                    .Where(f => f.Category == "Drink")
+                    .GroupBy(f => f.Category ?? "Uncategorized");
             }
             else if (category == "Desserts")
             {
-                MenuItems = CurrentRestaurant.Foods.Where(f => f.Category == "Dessert").ToList();
+                CurrentRestaurant.GroupedFoods = CurrentRestaurant.Foods
+                    .Where(f => f.Category == "Dessert")
+                    .GroupBy(f => f.Category ?? "Uncategorized");
             }
             else
             {
-                MenuItems = CurrentRestaurant.Foods;
+                CurrentRestaurant.GroupedFoods = CurrentRestaurant.Foods
+                    .GroupBy(f => f.Category ?? "Uncategorized");
             }
 
-            MenuListView.ItemsSource = MenuItems;
+            BindingContext = null;
+            BindingContext = CurrentRestaurant;
         }
 
-        private void OnAddToOrderClicked(object sender, EventArgs e)
+        private async void OnAddToOrderClicked(object sender, EventArgs e)
         {
             var button = sender as Button;
             var food = button?.BindingContext as Food;
             if (food != null)
             {
                 OrderItems.Add(food);
-                DisplayAlert("Added to Order", $"{food.Name} has been added to your order.", "OK");
+                await PopupNavigation.Instance.PushAsync(new CustomAlert("Successful Addition", $"{food.Name} has been added to your order."));
             }
         }
 
@@ -141,7 +117,7 @@ namespace QuickReserve.Views
         {
             if (OrderItems.Count == 0)
             {
-                await DisplayAlert("No items", "You haven't added any items to the order yet.", "OK");
+                await PopupNavigation.Instance.PushAsync(new CustomAlert("No Items", "You haven't added any items to the order yet"));
             }
             else
             {
@@ -170,12 +146,16 @@ namespace QuickReserve.Views
                 var food = e.Item as Food;
                 if (food != null)
                 {
-                    await DisplayAlert(food.Name, $"{food.Description}\nPrice: {food.Price} €", "OK");
+                    // Popup megnyitása
+                    await PopupNavigation.Instance.PushAsync(new ViewFoodInformations(food));
                 }
 
                 ((ListView)sender).SelectedItem = null;
             }
         }
-
+        private async void OnBackButtonClicked(object sender, EventArgs e)
+        {
+            await Navigation.PopAsync();
+        }
     }
 }

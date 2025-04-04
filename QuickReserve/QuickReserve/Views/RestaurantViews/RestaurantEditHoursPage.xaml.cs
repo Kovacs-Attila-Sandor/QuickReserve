@@ -17,7 +17,7 @@ namespace QuickReserve.Views
         public RestaurantEditHoursPage(Restaurant restaurant)
         {
             InitializeComponent();
-            restaurantService = new RestaurantService();
+            restaurantService = RestaurantService.Instance;
             _restaurant = restaurant; // Az aktuális étterem
             BindingContext = _restaurant; // BindingContext beállítása a helyes modellre
         }

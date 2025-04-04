@@ -20,12 +20,11 @@ namespace QuickReserve.Views
 
         public LoginPage()
         {
-
             InitializeComponent();
 
-            _authService = new FirebaseAuthService();
-            _userService = new UserService();
-            _restaurantService = new RestaurantService();
+            _authService = FirebaseAuthService.Instance;
+            _userService = UserService.Instance;
+            _restaurantService = RestaurantService.Instance;
         }
 
         protected void GoToUserRegisterPage(object sender, EventArgs e)
@@ -37,6 +36,7 @@ namespace QuickReserve.Views
         {
             App.Current.MainPage = new NavigationPage(new RestaurantRegisterPage());
         }
+
         private void TogglePasswordVisibility(object sender, EventArgs e)
         {
             txtPassword.IsPassword = !txtPassword.IsPassword;

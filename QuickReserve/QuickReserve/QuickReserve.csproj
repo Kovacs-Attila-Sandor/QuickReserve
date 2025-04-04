@@ -9,7 +9,8 @@
   <ItemGroup>
     <PackageReference Include="FirebaseAuthentication.net" Version="4.1.0" />
     <PackageReference Include="FirebaseDatabase.net" Version="4.2.0" />
-    <PackageReference Include="Sharpnado.MaterialFrame" Version="1.3.0" />
+    <PackageReference Include="Rg.Plugins.Popup" Version="2.1.0" />
+    <PackageReference Include="Sharpnado.CollectionView" Version="2.1.0" />
     <PackageReference Include="SkiaSharp.Views.Forms" Version="2.88.9" />
     <PackageReference Include="Xam.Plugin.Media" Version="6.0.2" />
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2662" />  
@@ -20,7 +21,13 @@
     <Compile Update="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\SplashPage.xaml.cs">
+    <Compile Update="Views\PopUps\CustomAlert.xaml.cs">
+      <DependentUpon>CustomAlert.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\PopUps\ViewFoodInformations.xaml.cs">
+      <DependentUpon>ViewFoodInformations.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\SplashScreen\SplashPage.xaml.cs">
       <DependentUpon>SplashPage.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\UserViews\UserRegisterPage.xaml.cs">
@@ -39,6 +46,12 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\ApplicationViews\EditUserProfilePage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\PopUps\CustomAlert.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\PopUps\ViewFoodInformations.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\RestaurantViews\RestaurantDetailsPage.xaml">
@@ -65,7 +78,7 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
 
-    <EmbeddedResource Update="Views\SplashPage.xaml">
+    <EmbeddedResource Update="Views\SplashScreen\SplashPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
 

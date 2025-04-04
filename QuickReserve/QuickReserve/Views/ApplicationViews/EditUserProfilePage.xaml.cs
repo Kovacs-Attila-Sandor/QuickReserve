@@ -14,7 +14,7 @@ namespace QuickReserve.Views
         {
             InitializeComponent();
             this.user = user;  // Hozzárendeljük a paramétert az osztály mezőjéhez
-            userService = new UserService();  // Feltételezzük, hogy a UserService kezeli az adatokat
+            userService = UserService.Instance;  // Feltételezzük, hogy a UserService kezeli az adatokat
             BindingContext = this.user;  // A BindingContext-ot a user objektumra állítjuk be
         }
 

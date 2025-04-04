@@ -20,8 +20,8 @@ namespace QuickReserve.Views
         public RestaurantProfilePage()
         {
             InitializeComponent();
-            _restaurantService = new RestaurantService();
-            _userService = new UserService();
+            _restaurantService = RestaurantService.Instance;
+            _userService = UserService.Instance;
             _userId = App.Current.Properties["userId"].ToString();
             App.Current.Properties["ReloadRestaurantProfilePage"] = "no";
             LoadRestaurantData();

@@ -21,7 +21,7 @@ namespace QuickReserve.Views
 
         private async void LoadUserData()
         {
-            var userService = new UserService();
+            var userService = UserService.Instance;
             string userID = App.Current.Properties["userId"].ToString();
             user = await userService.GetUserById(userID);
 

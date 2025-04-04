@@ -23,7 +23,6 @@
                         <GradientStop Offset="1" Color="#3f3f3f" />
                     </LinearGradientBrush>
                 </Grid.Background>
-
                 <StackLayout
                     HorizontalOptions="FillAndExpand"
                     Spacing="20"
@@ -118,81 +117,20 @@
                                     BackgroundColor="#3C3C3C"
                                     CornerRadius="8"
                                     HasShadow="False">
-                                    <Frame.GestureRecognizers>
-                                        <TapGestureRecognizer Tapped="OnCategoryTapped" />
-                                    </Frame.GestureRecognizers>
-                                    <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, *">
-                                        <Label
-                                            x:Name="lblSelectedItem"
-                                            Grid.Row="0"
-                                            Grid.Column="0"
-                                            Margin="10,2,0,0"
-                                            FontSize="18"
-                                            HeightRequest="30"
-                                            HorizontalOptions="Start"
-                                            Text="Select a category"
-                                            TextColor="#FFFFFF"
-                                            VerticalOptions="CenterAndExpand"
-                                            VerticalTextAlignment="Center" />
+                                    <Picker
+                                        x:Name="categoryPicker"
+                                        Title="Select a category"
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        Grid.ColumnSpan="2"
+                                        BackgroundColor="#3C3C3C"
+                                        ItemDisplayBinding="{Binding .}"
+                                        ItemsSource="{Binding Categories}"
+                                        SelectedIndexChanged="OnCategorySelected"
+                                        TextColor="#FFFFFF"
+                                        TitleColor="#FFFFFF" />
 
-                                        <Frame
-                                            x:Name="dropdownFrame"
-                                            Grid.Row="1"
-                                            Grid.Column="0"
-                                            Grid.ColumnSpan="2"
-                                            Padding="5"
-                                            BackgroundColor="#3C3C3C"
-                                            CornerRadius="12"
-                                            HasShadow="True"
-                                            HeightRequest="170"
-                                            IsVisible="False">
-                                            <Grid>
-                                                <Frame
-                                                    Margin="0,5,0,0"
-                                                    BackgroundColor="#2C2C2C"
-                                                    CornerRadius="12"
-                                                    Opacity="0.5" />
-                                                <CollectionView
-                                                    x:Name="categoryCollectionView"
-                                                    BackgroundColor="Transparent"
-                                                    SelectionChanged="OnCategorySelected"
-                                                    SelectionMode="Single"
-                                                    VerticalOptions="FillAndExpand">
-                                                    <CollectionView.ItemsLayout>
-                                                        <LinearItemsLayout ItemSpacing="3" Orientation="Vertical" />
-                                                    </CollectionView.ItemsLayout>
-                                                    <CollectionView.ItemTemplate>
-                                                        <DataTemplate>
-                                                            <Frame
-                                                                Padding="15"
-                                                                BackgroundColor="#4C4C4C"
-                                                                CornerRadius="8"
-                                                                HasShadow="True">
-                                                                <Grid ColumnDefinitions="*, Auto">
-                                                                    <Label
-                                                                        FontSize="18"
-                                                                        HorizontalOptions="StartAndExpand"
-                                                                        Text="{Binding .}"
-                                                                        TextColor="#FFFFFF"
-                                                                        VerticalOptions="Center" />
-                                                                    <ImageButton
-                                                                        Grid.Column="1"
-                                                                        Padding="5"
-                                                                        BackgroundColor="Transparent"
-                                                                        Clicked="OnDeleteCategoryClicked"
-                                                                        CommandParameter="{Binding .}"
-                                                                        HeightRequest="24"
-                                                                        HorizontalOptions="End"
-                                                                        Source="delete_category_icon.png"
-                                                                        WidthRequest="24" />
-                                                                </Grid>
-                                                            </Frame>
-                                                        </DataTemplate>
-                                                    </CollectionView.ItemTemplate>
-                                                </CollectionView>
-                                            </Grid>
-                                        </Frame>
-                                    </Grid>
+
                                 </Frame>
 
                                 <Button
