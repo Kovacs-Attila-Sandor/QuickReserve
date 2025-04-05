@@ -315,9 +315,9 @@
                                                     <Frame
                                                         Margin="0,5"
                                                         Padding="0"
+                                                        BackgroundColor="#1A1A1A"
                                                         CornerRadius="20"
                                                         HasShadow="True"
-                                                        BackgroundColor="#1A1A1A"
                                                         HeightRequest="120">
                                                         <Frame.Background>
                                                             <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
@@ -345,7 +345,7 @@
                                                             <StackLayout
                                                                 Grid.Column="1"
                                                                 Padding="5"
-                                                                Spacing="2"
+                                                                Spacing="4"
                                                                 VerticalOptions="Center">
                                                                 <StackLayout Orientation="Horizontal" Spacing="5">
                                                                     <Label
@@ -371,6 +371,21 @@
                                                                         FontSize="10"
                                                                         Text="{Binding Price, StringFormat='{0} €'}"
                                                                         TextColor="#4CAF50" />
+                                                                    <StackLayout
+                                                                        Orientation="Horizontal"
+                                                                        Spacing="2"
+                                                                        VerticalOptions="Center">
+                                                                        <Image
+                                                                            HeightRequest="12"
+                                                                            Source="star_filled.png"
+                                                                            VerticalOptions="Center"
+                                                                            WidthRequest="12" />
+                                                                        <Label
+                                                                            FontSize="10"
+                                                                            Text="{Binding Rating}"
+                                                                            TextColor="#FFD700"
+                                                                            VerticalOptions="Center" />
+                                                                    </StackLayout>
                                                                 </StackLayout>
                                                             </StackLayout>
                                                         </Grid>

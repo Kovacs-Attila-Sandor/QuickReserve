@@ -165,7 +165,7 @@ namespace QuickReserve.Views
             //    LoadingOverlay.IsVisible = false;
             //    MainPage.IsEnabled = true;
             //}
-            await Navigation.PushAsync(new AddMenuPage("d06b4963-e111-4f72-8057-4dc979ffb420"));
+            await Navigation.PushAsync(new AddMenuPage("700d36c6-81d9-4bab-aba1-d7fbefa413bc"));
         }
 
         // Törlés funkció

@@ -6,6 +6,7 @@ using System;
 using QuickReserve.Converter;
 using QuickReserve.Views.PopUps;
 using Rg.Plugins.Popup.Services;
+using QuickReserve.Views.ApplicationViews;
 
 namespace QuickReserve.Views
 {
@@ -146,8 +147,7 @@ namespace QuickReserve.Views
                 var food = e.Item as Food;
                 if (food != null)
                 {
-                    // Popup megnyitása
-                    await PopupNavigation.Instance.PushAsync(new ViewFoodInformations(food));
+                    await Navigation.PushAsync(new FoodPage(food, CurrentRestaurant.RestaurantId));
                 }
 
                 ((ListView)sender).SelectedItem = null;

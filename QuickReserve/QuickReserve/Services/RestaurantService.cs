@@ -250,38 +250,63 @@ namespace QuickReserve.Services
         {
             try
             {
-                // Lekérjük az étterem adatokat az adott RestaurantId alapján
-                var restaurant = await GetRestaurantById(restaurantId);
-                if (restaurant != null)
+                // Validáció
+                if (string.IsNullOrEmpty(restaurantId) || string.IsNullOrEmpty(foodId) || updatedFood == null)
                 {
-                    // Megkeressük a módosítandó ételt az étterem Foods listájában
-                    var foodToUpdate = restaurant.Foods.FirstOrDefault(f => f.FoodId == foodId);
-                    if (foodToUpdate != null)
-                    {
-                        // Frissítjük az étel adatait
-                        foodToUpdate.Name = updatedFood.Name;
-                        foodToUpdate.Price = updatedFood.Price;
-                        foodToUpdate.Description = updatedFood.Description;
-                        foodToUpdate.Picture = updatedFood.Picture; // Ha van kép is, azt is frissítjük
-
-                        // Frissítjük az étterem adatait a Firebase adatbázisban
-                        await FirebaseService
-                            .Client
-                            .Child("Restaurant")
-                            .Child(restaurantId)
-                            .PutAsync(JsonConvert.SerializeObject(restaurant));
-
-                        return true; // Sikeres frissítés
-                    }
-                    return false; // Ha nem találjuk az ételt
+                    Console.WriteLine("Invalid input parameters for UpdateFoodDetails.");
+                    return false;
                 }
-                return false; // Ha az étterem nem található
+
+                // Lekérjük az étterem adatokat
+                var restaurant = await GetRestaurantById(restaurantId);
+                if (restaurant == null || restaurant.Foods == null)
+                {
+                    Console.WriteLine($"Restaurant with ID {restaurantId} not found or has no foods.");
+                    return false;
+                }
+
+                // Megkeressük a módosítandó ételt
+                var foodToUpdate = restaurant.Foods.FirstOrDefault(f => f.FoodId == foodId);
+                if (foodToUpdate == null)
+                {
+                    Console.WriteLine($"Food with ID {foodId} not found in restaurant {restaurantId}.");
+                    return false;
+                }
+
+                // Frissítjük az étel adatait (csak a szükséges mezőket)
+                UpdateFoodProperties(foodToUpdate, updatedFood);
+
+                // Frissítjük az étterem adatait a Firebase-ban
+                await FirebaseService
+                    .Client
+                    .Child("Restaurant")
+                    .Child(restaurantId)
+                    .PutAsync(JsonConvert.SerializeObject(restaurant));
+
+                return true;
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error updating food details: {ex.Message}");
-                return false; // Hiba esetén false
+                return false;
             }
+        }
+
+        // Segédfüggvény az étel tulajdonságainak frissítésére
+        private void UpdateFoodProperties(Food target, Food source)
+        {
+            target.Name = source.Name ?? target.Name;
+            target.Description = source.Description ?? target.Description;
+            target.Price = source.Price != 0 ? source.Price : target.Price;
+            target.Category = source.Category ?? target.Category;
+            target.Picture = source.Picture ?? target.Picture;
+            target.IsAvailable = source.IsAvailable; // Ez feltételezi, hogy false az alapértelmezett
+            target.PreparationTime = source.PreparationTime != 0 ? source.PreparationTime : target.PreparationTime;
+            target.Ingredients = source.Ingredients ?? target.Ingredients;
+            target.Allergens = source.Allergens ?? target.Allergens;
+            target.NutritionalInfo = source.NutritionalInfo ?? target.NutritionalInfo;
+            target.Tags = source.Tags ?? target.Tags;
+            target.Ratings = source.Ratings ?? target.Ratings;
         }
 
         public async Task<Table> GetTableById(string restaurantId, string tableId)

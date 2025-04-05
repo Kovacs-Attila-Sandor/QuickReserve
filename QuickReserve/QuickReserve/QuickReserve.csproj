@@ -45,7 +45,10 @@
     <EmbeddedResource Update="Views\ApplicationViews\CreateLayoutPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\ApplicationViews\EditUserProfilePage.xaml">
+    <EmbeddedResource Update="Views\ApplicationViews\FoodPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\UserViews\EditUserProfilePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\PopUps\CustomAlert.xaml">

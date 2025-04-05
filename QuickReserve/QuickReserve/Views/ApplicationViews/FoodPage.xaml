@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="QuickReserve.Views.ApplicationViews.FoodPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:QuickReserve.Views.ApplicationViews"
+    NavigationPage.HasNavigationBar="False">
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Offset="0" Color="#1A1A1A" />
+            <GradientStop Offset="1" Color="#3A3A3A" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+    <ContentPage.Resources>
+        <local:BoolToAvailabilityConverter x:Key="BoolToAvailabilityConverter" />
+        <local:ListToStringConverter x:Key="ListToStringConverter" />
+        <local:DictToStringConverter x:Key="DictToStringConverter" />
+        <local:PriceConverter x:Key="PriceConverter" />
+        <local:PreparationTimeConverter x:Key="PreparationTimeConverter" />
+        <local:RatingConverter x:Key="RatingConverter" />
+        <Style x:Key="SectionTitle" TargetType="Label">
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="TextColor" Value="#FFFFFF" />
+            <Setter Property="Margin" Value="0,0,0,5" />
+        </Style>
+        <Style x:Key="SectionContent" TargetType="Label">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="TextColor" Value="#D0D0D0" />
+            <Setter Property="LineBreakMode" Value="WordWrap" />
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Felső sáv: Vissza gomb és cím -->
+        <Frame
+            Grid.Row="0"
+            Padding="15,10"
+            BackgroundColor="#2A2E33"
+            CornerRadius="0"
+            HasShadow="True">
+            <Grid ColumnSpacing="15">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <ImageButton
+                    Grid.Column="0"
+                    Source="back_icon.png"
+                    WidthRequest="40"
+                    HeightRequest="40"
+                    BackgroundColor="Transparent"
+                    Clicked="OnBackButtonClicked"
+                    VerticalOptions="Center" />
+
+                <Label
+                    Grid.Column="1"
+                    Text="{Binding Name}"
+                    FontSize="26"
+                    FontAttributes="Bold"
+                    TextColor="#FFFFFF"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center" />
+            </Grid>
+        </Frame>
+
+        <!-- Görgethető tartalom -->
+        <ScrollView Grid.Row="1" Padding="20,25,20,20">
+            <StackLayout Spacing="30">
+                <!-- Kép -->
+                <Frame
+                    Padding="10"
+                    CornerRadius="25"
+                    BackgroundColor="#3C3C3C"
+                    HorizontalOptions="Center"
+                    HasShadow="True"
+                    BorderColor="#4A4A4A">
+                    <Image
+                        Source="{Binding ImageSource}"
+                        Aspect="AspectFill"
+                        HeightRequest="280"
+                        WidthRequest="280"
+                        Margin="5" />
+                </Frame>
+
+                <!-- Csillagos értékelés -->
+                <Frame
+                    Padding="20"
+                    BackgroundColor="#2A2E33"
+                    CornerRadius="20"
+                    HasShadow="True"
+                    BorderColor="#4A4A4A">
+                    <StackLayout Spacing="15">
+                        <Label
+                            Text="Rate this item"
+                            FontSize="18"
+                            FontAttributes="Bold"
+                            TextColor="#FFFFFF"
+                            HorizontalOptions="Center" />
+                        <StackLayout
+                            Orientation="Horizontal"
+                            Spacing="12"
+                            HorizontalOptions="Center">
+                            <ImageButton
+                                x:Name="star1"
+                                Source="star_empty.png"
+                                WidthRequest="40"
+                                HeightRequest="40"
+                                BackgroundColor="Transparent"
+                                Clicked="OnStarClicked"
+                                CommandParameter="1" />
+                            <ImageButton
+                                x:Name="star2"
+                                Source="star_empty.png"
+                                WidthRequest="40"
+                                HeightRequest="40"
+                                BackgroundColor="Transparent"
+                                Clicked="OnStarClicked"
+                                CommandParameter="2" />
+                            <ImageButton
+                                x:Name="star3"
+                                Source="star_empty.png"
+                                WidthRequest="40"
+                                HeightRequest="40"
+                                BackgroundColor="Transparent"
+                                Clicked="OnStarClicked"
+                                CommandParameter="3" />
+                            <ImageButton
+                                x:Name="star4"
+                                Source="star_empty.png"
+                                WidthRequest="40"
+                                HeightRequest="40"
+                                BackgroundColor="Transparent"
+                                Clicked="OnStarClicked"
+                                CommandParameter="4" />
+                            <ImageButton
+                                x:Name="star5"
+                                Source="star_empty.png"
+                                WidthRequest="40"
+                                HeightRequest="40"
+                                BackgroundColor="Transparent"
+                                Clicked="OnStarClicked"
+                                CommandParameter="5" />
+                        </StackLayout>
+                        <Button
+                            x:Name="submitButton"
+                            Text="Add Rating"
+                            BackgroundColor="#6200EE"
+                            TextColor="White"
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            CornerRadius="12"
+                            Padding="15,10"
+                            Clicked="OnSubmitRatingClicked"
+                            HorizontalOptions="Center" />
+                    </StackLayout>
+                </Frame>
+
+                <!-- Ár -->
+                <Label
+                    Text="{Binding Price, Converter={StaticResource PriceConverter}}"
+                    FontSize="24"
+                    FontAttributes="Bold"
+                    TextColor="#4CAF50"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center" />
+
+                <!-- Leírás -->
+                <Frame
+                    Padding="20"
+                    BackgroundColor="#2A2E33"
+                    CornerRadius="20"
+                    HasShadow="True"
+                    BorderColor="#4A4A4A">
+                    <Label
+                        Text="{Binding Description}"
+                        FontSize="16"
+                        TextColor="#E0E0E0"
+                        LineBreakMode="WordWrap" />
+                </Frame>
+
+                <!-- Részletek -->
+                <Frame
+                    Padding="20"
+                    BackgroundColor="#2A2E33"
+                    CornerRadius="20"
+                    HasShadow="True"
+                    BorderColor="#4A4A4A">
+                    <StackLayout Spacing="15">
+                        <Label
+                            Text="{Binding PreparationTime, Converter={StaticResource PreparationTimeConverter}}"
+                            FontSize="16"
+                            TextColor="#FFFFFF" />
+                        <Label
+                            Text="{Binding Rating, Converter={StaticResource RatingConverter}}"
+                            FontSize="16"
+                            TextColor="#FFFFFF" />
+                        <Label
+                            Text="{Binding Ratings.Count, StringFormat='Number of Ratings: {0}'}"
+                            FontSize="16"
+                            TextColor="#FFFFFF" />
+
+                        <Label Text="Ingredients:" Style="{StaticResource SectionTitle}" />
+                        <Label Text="{Binding Ingredients, Converter={StaticResource ListToStringConverter}}" Style="{StaticResource SectionContent}" />
+
+                        <Label Text="Allergens:" Style="{StaticResource SectionTitle}" />
+                        <Label Text="{Binding Allergens, Converter={StaticResource ListToStringConverter}}" Style="{StaticResource SectionContent}" />
+
+                        <Label Text="Nutritional Info:" Style="{StaticResource SectionTitle}" />
+                        <Label Text="{Binding NutritionalInfo, Converter={StaticResource DictToStringConverter}}" Style="{StaticResource SectionContent}" />
+
+                        <Label Text="Tags:" Style="{StaticResource SectionTitle}" />
+                        <Label Text="{Binding Tags, Converter={StaticResource ListToStringConverter}}" Style="{StaticResource SectionContent}" />
+                    </StackLayout>
+                </Frame>
+            </StackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

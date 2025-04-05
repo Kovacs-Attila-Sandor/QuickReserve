@@ -15,7 +15,6 @@
                 Padding="15,15,15,30"
                 AbsoluteLayout.LayoutBounds="0,0,1,1"
                 AbsoluteLayout.LayoutFlags="All">
-
                 <Grid.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                         <GradientStop Offset="0" Color="#121212" />
@@ -50,7 +49,6 @@
                                     <GradientStop Offset="1" Color="#100f10" />
                                 </LinearGradientBrush>
                             </Frame.Background>
-
                             <StackLayout Spacing="25">
                                 <!--  Név mező  -->
                                 <Frame
@@ -112,6 +110,7 @@
                                     </Grid>
                                 </Frame>
 
+                                <!--  Kategória Picker  -->
                                 <Frame
                                     Padding="2"
                                     BackgroundColor="#3C3C3C"
@@ -120,17 +119,12 @@
                                     <Picker
                                         x:Name="categoryPicker"
                                         Title="Select a category"
-                                        Grid.Row="1"
-                                        Grid.Column="0"
-                                        Grid.ColumnSpan="2"
                                         BackgroundColor="#3C3C3C"
                                         ItemDisplayBinding="{Binding .}"
                                         ItemsSource="{Binding Categories}"
                                         SelectedIndexChanged="OnCategorySelected"
                                         TextColor="#FFFFFF"
                                         TitleColor="#FFFFFF" />
-
-
                                 </Frame>
 
                                 <Button
@@ -168,12 +162,216 @@
                                             Grid.Column="1"
                                             BackgroundColor="Transparent"
                                             Keyboard="Numeric"
-                                            Placeholder="Price"
+                                            Placeholder="Price (in €)"
                                             PlaceholderColor="#A0A0A0"
                                             TextChanged="OnTextChanged"
                                             TextColor="#FFFFFF" />
                                     </Grid>
                                 </Frame>
+
+                                <!--  Elérhetőség  -->
+                                <Frame
+                                    Padding="10"
+                                    BackgroundColor="#2C2C2C"
+                                    CornerRadius="12"
+                                    HasShadow="False">
+                                    <StackLayout Orientation="Horizontal" Spacing="10">
+                                        <Label
+                                            FontSize="16"
+                                            Text="Available"
+                                            TextColor="#FFFFFF"
+                                            VerticalOptions="Center" />
+                                        <Switch
+                                            x:Name="swIsAvailable"
+                                            HorizontalOptions="EndAndExpand"
+                                            IsToggled="True"
+                                            OnColor="#4CAF50" />
+                                    </StackLayout>
+                                </Frame>
+
+                                <!--  Elkészítési idő  -->
+                                <Frame
+                                    Padding="2"
+                                    BackgroundColor="#2C2C2C"
+                                    CornerRadius="12"
+                                    HasShadow="False">
+                                    <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto">
+                                        <Label
+                                            x:Name="lblPreparationTime"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            FontSize="12"
+                                            IsVisible="False"
+                                            Opacity="0"
+                                            Text="Preparation Time"
+                                            TextColor="#A0A0A0"
+                                            TranslationX="2"
+                                            TranslationY="-7" />
+                                        <Entry
+                                            x:Name="txtPreparationTime"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            BackgroundColor="Transparent"
+                                            Keyboard="Numeric"
+                                            Placeholder="Preparation Time (minutes)"
+                                            PlaceholderColor="#A0A0A0"
+                                            TextChanged="OnTextChanged"
+                                            TextColor="#FFFFFF" />
+                                    </Grid>
+                                </Frame>
+
+                                <!--  Készlet mennyiség  -->
+                                <Frame
+                                    Padding="2"
+                                    BackgroundColor="#2C2C2C"
+                                    CornerRadius="12"
+                                    HasShadow="False">
+                                    <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto">
+                                        <Label
+                                            x:Name="lblStockQuantity"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            FontSize="12"
+                                            IsVisible="False"
+                                            Opacity="0"
+                                            Text="Stock Quantity"
+                                            TextColor="#A0A0A0"
+                                            TranslationX="2"
+                                            TranslationY="-7" />
+                                        <Entry
+                                            x:Name="txtStockQuantity"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            BackgroundColor="Transparent"
+                                            Keyboard="Numeric"
+                                            Placeholder="Stock Quantity"
+                                            PlaceholderColor="#A0A0A0"
+                                            TextChanged="OnTextChanged"
+                                            TextColor="#FFFFFF" />
+                                    </Grid>
+                                </Frame>
+
+                                <!--  Összetevők  -->
+                                <Frame
+                                    Padding="2"
+                                    BackgroundColor="#2C2C2C"
+                                    CornerRadius="12"
+                                    HasShadow="False">
+                                    <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto">
+                                        <Label
+                                            x:Name="lblIngredients"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            FontSize="12"
+                                            IsVisible="False"
+                                            Opacity="0"
+                                            Text="Ingredients"
+                                            TextColor="#A0A0A0"
+                                            TranslationX="2"
+                                            TranslationY="-7" />
+                                        <Entry
+                                            x:Name="txtIngredients"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            BackgroundColor="Transparent"
+                                            Placeholder="Ingredients (comma separated)"
+                                            PlaceholderColor="#A0A0A0"
+                                            TextChanged="OnTextChanged"
+                                            TextColor="#FFFFFF" />
+                                    </Grid>
+                                </Frame>
+
+                                <!--  Allergének  -->
+                                <Frame
+                                    Padding="2"
+                                    BackgroundColor="#2C2C2C"
+                                    CornerRadius="12"
+                                    HasShadow="False">
+                                    <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto">
+                                        <Label
+                                            x:Name="lblAllergens"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            FontSize="12"
+                                            IsVisible="False"
+                                            Opacity="0"
+                                            Text="Allergens"
+                                            TextColor="#A0A0A0"
+                                            TranslationX="2"
+                                            TranslationY="-7" />
+                                        <Entry
+                                            x:Name="txtAllergens"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            BackgroundColor="Transparent"
+                                            Placeholder="Allergens (comma separated)"
+                                            PlaceholderColor="#A0A0A0"
+                                            TextChanged="OnTextChanged"
+                                            TextColor="#FFFFFF" />
+                                    </Grid>
+                                </Frame>
+
+                                <!--  Tápérték (egyszerűsítve)  -->
+                                <Frame
+                                    Padding="2"
+                                    BackgroundColor="#2C2C2C"
+                                    CornerRadius="12"
+                                    HasShadow="False">
+                                    <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto">
+                                        <Label
+                                            x:Name="lblCalories"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            FontSize="12"
+                                            IsVisible="False"
+                                            Opacity="0"
+                                            Text="Calories"
+                                            TextColor="#A0A0A0"
+                                            TranslationX="2"
+                                            TranslationY="-7" />
+                                        <Entry
+                                            x:Name="txtCalories"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            BackgroundColor="Transparent"
+                                            Keyboard="Numeric"
+                                            Placeholder="Calories (kcal)"
+                                            PlaceholderColor="#A0A0A0"
+                                            TextChanged="OnTextChanged"
+                                            TextColor="#FFFFFF" />
+                                    </Grid>
+                                </Frame>
+
+                                <!--  Címkék  -->
+                                <Frame
+                                    Padding="2"
+                                    BackgroundColor="#2C2C2C"
+                                    CornerRadius="12"
+                                    HasShadow="False">
+                                    <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto">
+                                        <Label
+                                            x:Name="lblTags"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            FontSize="12"
+                                            IsVisible="False"
+                                            Opacity="0"
+                                            Text="Tags"
+                                            TextColor="#A0A0A0"
+                                            TranslationX="2"
+                                            TranslationY="-7" />
+                                        <Entry
+                                            x:Name="txtTags"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            BackgroundColor="Transparent"
+                                            Placeholder="Tags (comma separated)"
+                                            PlaceholderColor="#A0A0A0"
+                                            TextChanged="OnTextChanged"
+                                            TextColor="#FFFFFF" />
+                                    </Grid>
+                                </Frame>
+
                                 <!--  Képfeltöltés gomb  -->
                                 <Button
                                     x:Name="btnUploadImage"

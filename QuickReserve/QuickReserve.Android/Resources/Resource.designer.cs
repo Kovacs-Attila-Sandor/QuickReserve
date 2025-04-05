@@ -23926,19 +23926,25 @@ namespace QuickReserve.Droid
 			public const int reservation_icon = 2131165552;
 			
 			// aapt resource value: 0x7F070171
-			public const int test_custom_background = 2131165553;
+			public const int star_empty = 2131165553;
 			
 			// aapt resource value: 0x7F070172
-			public const int tooltip_frame_dark = 2131165554;
+			public const int star_filled = 2131165554;
 			
 			// aapt resource value: 0x7F070173
-			public const int tooltip_frame_light = 2131165555;
+			public const int test_custom_background = 2131165555;
 			
 			// aapt resource value: 0x7F070174
-			public const int user_name_icon = 2131165556;
+			public const int tooltip_frame_dark = 2131165556;
 			
 			// aapt resource value: 0x7F070175
-			public const int xamarin_logo = 2131165557;
+			public const int tooltip_frame_light = 2131165557;
+			
+			// aapt resource value: 0x7F070176
+			public const int user_name_icon = 2131165558;
+			
+			// aapt resource value: 0x7F070177
+			public const int xamarin_logo = 2131165559;
 			
 			static Drawable()
 			{

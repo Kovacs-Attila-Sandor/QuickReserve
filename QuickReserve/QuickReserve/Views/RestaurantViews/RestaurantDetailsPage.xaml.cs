@@ -3,11 +3,10 @@ using QuickReserve.Models;
 using System;
 using System.Collections.Generic;
 using QuickReserve.Converter;
-using QuickReserve.Views.PopUps;
-using Rg.Plugins.Popup.Services;
 using QuickReserve.Services;
 using System.Diagnostics;
 using System.Linq;
+using QuickReserve.Views.ApplicationViews;
 
 namespace QuickReserve.Views
 {
@@ -29,6 +28,7 @@ namespace QuickReserve.Views
             SetGroupedFoods();
 
             BindingContext = restaurant;
+            
         }
 
         protected override void OnAppearing()
@@ -75,10 +75,10 @@ namespace QuickReserve.Views
                     {
                         var group = restaurant.GroupedFoods.ElementAt(i);
 
-                        scrollPosition += 10 + 5 + 24 + 5; 
+                        scrollPosition += 10 + 5 + 24 + 5;
 
-                        scrollPosition += group.Count() * (220 + 5); 
-                        scrollPosition += 15; 
+                        scrollPosition += group.Count() * (220 + 5);
+                        scrollPosition += 15;
                     }
 
                     Debug.WriteLine($"Kiválasztott kategória: {selectedCategory}");
@@ -117,10 +117,7 @@ namespace QuickReserve.Views
             }
         }
 
-        private async void OnDatePickerClicked(object sender, EventArgs e)
-        {
-
-        }
+        private async void OnDatePickerClicked(object sender, EventArgs e) { }
 
         private void OnHeartClicked(object sender, EventArgs e)
         {
@@ -162,7 +159,7 @@ namespace QuickReserve.Views
                     ConvertImages(refreshedRestaurant);
                     allFoods = refreshedRestaurant.Foods?.ToList() ?? new List<Food>();
                     restaurant = refreshedRestaurant;
-                    SetGroupedFoods();                  
+                    SetGroupedFoods();
                     BindingContext = restaurant;
                 }
             }
@@ -183,8 +180,7 @@ namespace QuickReserve.Views
                 var food = e.Item as Food;
                 if (food != null)
                 {
-                    // Popup megnyitása
-                    await PopupNavigation.Instance.PushAsync(new ViewFoodInformations(food));
+                    await Navigation.PushAsync(new FoodPage(food, restaurant.RestaurantId));
                 }
 
                 ((ListView)sender).SelectedItem = null;

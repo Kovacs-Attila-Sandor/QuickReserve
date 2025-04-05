@@ -173,6 +173,7 @@
                                     <Frame
                                         Margin="0,5"
                                         Padding="0"
+                                        BackgroundColor="#2D2D2D"
                                         CornerRadius="20"
                                         HasShadow="True"
                                         HeightRequest="120">

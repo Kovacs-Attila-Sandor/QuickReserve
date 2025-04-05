@@ -124,11 +124,13 @@
     <AndroidResource Include="Resources\drawable\filled_heart_icon.png" />
     <AndroidResource Include="Resources\drawable\not_filled_heart_icon.png" />
     <AndroidResource Include="Resources\drawable\make_a_reservation_icon.png" />
+    <AndroidResource Include="Resources\drawable\star_filled.png" />
+    <AndroidResource Include="Resources\drawable\star_empty.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties XamarinHotReloadDebuggerTimeoutExceptionQuickReserveAndroidHideInfoBar="True" XamarinHotReloadGenericExceptionInfoBarQuickReserveAndroidHideInfoBar="True" />
+      <UserProperties XamarinHotReloadGenericExceptionInfoBarQuickReserveAndroidHideInfoBar="True" XamarinHotReloadDebuggerTimeoutExceptionQuickReserveAndroidHideInfoBar="True" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

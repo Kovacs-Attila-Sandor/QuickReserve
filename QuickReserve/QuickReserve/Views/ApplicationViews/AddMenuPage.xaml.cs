@@ -8,7 +8,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using System.Windows.Input;
 
 namespace QuickReserve.Views
 {
@@ -20,8 +19,6 @@ namespace QuickReserve.Views
         private List<string> _categories;
         private List<Food> _pendingFoods;
         private MediaFile _selectedImageFile;
-        public ICommand DeleteCategoryCommand { get; }
-
 
         public AddMenuPage(string restaurantId)
         {
@@ -36,8 +33,12 @@ namespace QuickReserve.Views
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            // Load existing categories if needed
-            var restaurant = await _restaurantService.GetRestaurantById(_restaurantId);         
+            var restaurant = await _restaurantService.GetRestaurantById(_restaurantId);
+            if (restaurant != null && restaurant.Foods != null)
+            {
+                _categories = restaurant.Foods.Select(f => f.Category).Distinct().ToList();
+                categoryPicker.ItemsSource = _categories;
+            }
         }
 
         private async void OnAddCategoryClicked(object sender, EventArgs e)
@@ -57,41 +58,16 @@ namespace QuickReserve.Views
             }
 
             _categories.Add(newCategory);
-            categoryPicker.ItemsSource = null; // Force refresh
+            categoryPicker.ItemsSource = null;
             categoryPicker.ItemsSource = _categories;
             categoryPicker.SelectedItem = newCategory;
         }
 
-        private async void OnDeleteCategoryClicked(object sender, EventArgs e)
-        {
-            if (categoryPicker.SelectedIndex == -1)
-            {
-                await DisplayAlert("Error", "Please select a category to delete", "OK");
-                return;
-            }
-
-            string categoryToDelete = _categories[categoryPicker.SelectedIndex];
-
-            bool confirm = await DisplayAlert("Confirm Delete",
-                $"Are you sure you want to delete the category '{categoryToDelete}'?",
-                "Yes", "No");
-
-            if (!confirm)
-                return;
-
-            _categories.Remove(categoryToDelete);
-            categoryPicker.ItemsSource = null;
-            categoryPicker.ItemsSource = _categories;
-
-            // Remove any pending foods with this category
-            _pendingFoods.RemoveAll(food => food.Category == categoryToDelete);
-        }
-
         private async void AddItem(object sender, EventArgs e)
         {
-            if (!ValidateInput(out double price))
+            if (!ValidateInput(out double price, out int preparationTime, out int stockQuantity, out double calories))
             {
-                await DisplayAlert("Error", "Please fill all fields correctly and select a category", "OK");
+                await DisplayAlert("Error", "Please fill all required fields correctly", "OK");
                 return;
             }
 
@@ -109,12 +85,21 @@ namespace QuickReserve.Views
 
             var newFood = new Food
             {
-                Name = txtMenuItemName.Text.Trim(),
-                Price = price,
-                Description = txtMenuItemDescription.Text.Trim(),
-                Category = categoryPicker.SelectedItem?.ToString(),
                 FoodId = Guid.NewGuid().ToString(),
-                Picture = base64Image
+                Name = txtMenuItemName.Text.Trim(),
+                Description = txtMenuItemDescription.Text.Trim(),
+                Price = price,
+                Category = categoryPicker.SelectedItem?.ToString(),
+                Picture = base64Image,
+                IsAvailable = swIsAvailable.IsToggled,
+                PreparationTime = preparationTime,
+                Ingredients = txtIngredients.Text.Split(',').Select(i => i.Trim()).ToList(),
+                Allergens = txtAllergens.Text.Split(',').Select(a => a.Trim()).ToList(),
+                NutritionalInfo = new Dictionary<string, double> { { "Calories", calories } },
+                Tags = txtTags.Text.Split(',').Select(t => t.Trim()).ToList(),
+                CreatedDate = DateTime.UtcNow,
+                LastUpdated = DateTime.UtcNow,
+                OrderCount = 0
             };
 
             _pendingFoods.Add(newFood);
@@ -122,21 +107,34 @@ namespace QuickReserve.Views
             await DisplayAlert("Success", "Menu item added successfully", "OK");
         }
 
-        private bool ValidateInput(out double price)
+        private bool ValidateInput(out double price, out int preparationTime, out int stockQuantity, out double calories)
         {
             price = 0;
+            preparationTime = 0;
+            stockQuantity = 0;
+            calories = 0;
+
             return !string.IsNullOrWhiteSpace(txtMenuItemName.Text) &&
-                   double.TryParse(txtPrice.Text, out price) &&
-                   price >= 0 &&
                    !string.IsNullOrWhiteSpace(txtMenuItemDescription.Text) &&
-                   categoryPicker.SelectedIndex != -1;
+                   double.TryParse(txtPrice.Text, out price) && price >= 0 &&
+                   categoryPicker.SelectedIndex != -1 &&
+                   int.TryParse(txtPreparationTime.Text, out preparationTime) && preparationTime >= 0 &&
+                   int.TryParse(txtStockQuantity.Text, out stockQuantity) && stockQuantity >= 0 &&
+                   double.TryParse(txtCalories.Text, out calories) && calories >= 0;
         }
 
         private void ClearForm()
         {
+            txtMenuItemName.Text = string.Empty;
             txtMenuItemDescription.Text = string.Empty;
             txtPrice.Text = string.Empty;
-            txtMenuItemName.Text = string.Empty;
+            txtPreparationTime.Text = string.Empty;
+            txtStockQuantity.Text = string.Empty;
+            txtIngredients.Text = string.Empty;
+            txtAllergens.Text = string.Empty;
+            txtCalories.Text = string.Empty;
+            txtTags.Text = string.Empty;
+            swIsAvailable.IsToggled = true;
             _selectedImageFile = null;
             imgFood.Source = null;
             // Don't clear category selection
@@ -161,13 +159,11 @@ namespace QuickReserve.Views
                     return;
                 }
 
-                // Save categories first
                 if (_categories.Any())
                 {
                     await _restaurantService.AddCategoryToRestaurant(_restaurantId, _categories);
                 }
 
-                // Save all pending foods
                 foreach (var food in _pendingFoods)
                 {
                     await _restaurantService.AddFoodToRestaurant(_restaurantId, food);
@@ -205,22 +201,34 @@ namespace QuickReserve.Views
 
         private void OnCategorySelected(object sender, EventArgs e)
         {
-            // Selection is automatically handled by the Picker
+            // Selection handled by Picker
         }
 
         private Label GetPlaceholderLabel(Entry entry)
         {
-            if (entry == txtMenuItemDescription) return lblMenuItemDescriptionPlaceholder;
             if (entry == txtMenuItemName) return lblMenuItemNamePlaceholder;
+            if (entry == txtMenuItemDescription) return lblMenuItemDescriptionPlaceholder;
             if (entry == txtPrice) return lblMenuItemPrice;
+            if (entry == txtPreparationTime) return lblPreparationTime;
+            if (entry == txtStockQuantity) return lblStockQuantity;
+            if (entry == txtIngredients) return lblIngredients;
+            if (entry == txtAllergens) return lblAllergens;
+            if (entry == txtCalories) return lblCalories;
+            if (entry == txtTags) return lblTags;
             return null;
         }
 
         private string GetPlaceholderText(Entry entry)
         {
-            if (entry == txtMenuItemDescription) return "Menu Item Description";
-            if (entry == txtMenuItemName) return "Menu Item Name";
-            if (entry == txtPrice) return "Price";
+            if (entry == txtMenuItemName) return "Name";
+            if (entry == txtMenuItemDescription) return "Description";
+            if (entry == txtPrice) return "Price (in €)";
+            if (entry == txtPreparationTime) return "Preparation Time (minutes)";
+            if (entry == txtStockQuantity) return "Stock Quantity";
+            if (entry == txtIngredients) return "Ingredients (comma separated)";
+            if (entry == txtAllergens) return "Allergens (comma separated)";
+            if (entry == txtCalories) return "Calories (kcal)";
+            if (entry == txtTags) return "Tags (comma separated)";
             return string.Empty;
         }
 
