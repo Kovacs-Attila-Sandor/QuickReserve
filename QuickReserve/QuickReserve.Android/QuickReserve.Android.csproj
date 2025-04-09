@@ -107,6 +107,8 @@
     <AndroidResource Include="Resources\drawable\dropdown_icon.png" />
     <AndroidResource Include="Resources\drawable\back_icon.png" />
     <AndroidResource Include="Resources\drawable\delete_category_icon.png" />
+    <AndroidResource Include="Resources\drawable\calories_icon.png" />
+    <AndroidResource Include="Resources\drawable\back_icon_arrow.png" />
     <Content Include="Resources\drawable\grey.png" />
     <AndroidResource Include="Resources\drawable\placeholder.jpg" />
     <AndroidResource Include="Resources\drawable\password_icon.png" />
@@ -126,6 +128,9 @@
     <AndroidResource Include="Resources\drawable\make_a_reservation_icon.png" />
     <AndroidResource Include="Resources\drawable\star_filled.png" />
     <AndroidResource Include="Resources\drawable\star_empty.png" />
+    <AndroidResource Include="Resources\drawable\time_icon.png" />
+    <AndroidResource Include="Resources\drawable\heart_not_filled_icon.png" />
+    <AndroidResource Include="Resources\drawable\heart_filled_icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>

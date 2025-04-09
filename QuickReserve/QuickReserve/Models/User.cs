@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using Xamarin.Forms;
 
 public class User
@@ -12,6 +13,7 @@ public class User
     public string Role { get; set; }
     public string CreatedAt { get; set; } = DateTime.UtcNow.ToString("o");
     public string ProfileImage { get; set; }
+    public List<string> LikedFoods { get; set; }
     [JsonIgnore]
     public ImageSource ProfileImageSource { get; set; }
 }

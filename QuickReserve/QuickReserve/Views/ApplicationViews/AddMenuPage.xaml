@@ -189,6 +189,36 @@
                                     </StackLayout>
                                 </Frame>
 
+                                <Frame
+                                    Padding="2"
+                                    BackgroundColor="#2C2C2C"
+                                    CornerRadius="12"
+                                    HasShadow="False">
+                                    <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto">
+                                        <Label
+                                            x:Name="lblWeight"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            FontSize="12"
+                                            IsVisible="False"
+                                            Opacity="0"
+                                            Text="Weight"
+                                            TextColor="#A0A0A0"
+                                            TranslationX="2"
+                                            TranslationY="-7" />
+                                        <Entry
+                                            x:Name="txtWeight"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            BackgroundColor="Transparent"
+                                            Keyboard="Numeric"
+                                            Placeholder="Weight (gram)"
+                                            PlaceholderColor="#A0A0A0"
+                                            TextChanged="OnTextChanged"
+                                            TextColor="#FFFFFF" />
+                                    </Grid>
+                                </Frame>
+
                                 <!--  Elkészítési idő  -->
                                 <Frame
                                     Padding="2"

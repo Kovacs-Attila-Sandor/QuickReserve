@@ -1,6 +1,7 @@
 ﻿using Firebase.Database.Query;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -177,6 +178,88 @@ namespace QuickReserve.Services
             {
                 Console.WriteLine($"Error updating user profile: {ex.Message}");
                 return false;  // Return false if there was an error
+            }
+        }
+
+        public async Task<bool> AddFavoriteFood(string userId, string foodId)
+        {
+            try
+            {
+                // Lekérjük a felhasználó adatait a Firebase-ból
+                var user = await GetUserById(userId);
+                if (user == null)
+                {
+                    Console.WriteLine($"User with ID {userId} not found.");
+                    return false;
+                }
+
+                // Ha a LikedFoods még null, inicializáljuk egy üres listával
+                if (user.LikedFoods == null)
+                {
+                    user.LikedFoods = new List<string>();
+                }
+
+                // Ellenőrizzük, hogy az étel már szerepel-e a kedvencek között
+                if (user.LikedFoods.Contains(foodId))
+                {
+                    Console.WriteLine($"Food with ID {foodId} is already a favorite for user {userId}.");
+                    return true; // Már kedvenc, nincs szükség frissítésre
+                }
+
+                // Hozzáadjuk az új FoodId-t a LikedFoods listához
+                user.LikedFoods.Add(foodId);
+
+                // Frissítjük a felhasználó adatait a Firebase-ban
+                await FirebaseService
+                    .Client
+                    .Child("Users")
+                    .Child(userId)
+                    .PutAsync(JsonConvert.SerializeObject(user));
+
+                return true; // Sikeres mentés
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error adding favorite food: {ex.Message}");
+                return false; // Hiba esetén false
+            }
+        }
+
+        public async Task<bool> RemoveFavoriteFood(string userId, string foodId)
+        {
+            try
+            {
+                // Lekérjük a felhasználó adatait
+                var user = await GetUserById(userId);
+                if (user == null)
+                {
+                    Console.WriteLine($"User with ID {userId} not found.");
+                    return false;
+                }
+
+                // Ha a LikedFoods null vagy nem tartalmazza az ételt, nem kell törölni
+                if (user.LikedFoods == null || !user.LikedFoods.Contains(foodId))
+                {
+                    Console.WriteLine($"Food with ID {foodId} is not a favorite for user {userId}.");
+                    return true; // Nincs mit törölni, de "sikeres"
+                }
+
+                // Eltávolítjuk a FoodId-t a LikedFoods listából
+                user.LikedFoods.Remove(foodId);
+
+                // Frissítjük a Firebase-t
+                await FirebaseService
+                    .Client
+                    .Child("Users")
+                    .Child(userId)
+                    .PutAsync(JsonConvert.SerializeObject(user));
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error removing favorite food: {ex.Message}");
+                return false;
             }
         }
     }

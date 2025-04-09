@@ -8,6 +8,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Rg.Plugins.Popup.Services;
+using QuickReserve.Views.PopUps;
 
 namespace QuickReserve.Views
 {
@@ -97,6 +99,7 @@ namespace QuickReserve.Views
                 Allergens = txtAllergens.Text.Split(',').Select(a => a.Trim()).ToList(),
                 NutritionalInfo = new Dictionary<string, double> { { "Calories", calories } },
                 Tags = txtTags.Text.Split(',').Select(t => t.Trim()).ToList(),
+                Weight = txtWeight.Text.Trim(),
                 CreatedDate = DateTime.UtcNow,
                 LastUpdated = DateTime.UtcNow,
                 OrderCount = 0
@@ -104,7 +107,7 @@ namespace QuickReserve.Views
 
             _pendingFoods.Add(newFood);
             ClearForm();
-            await DisplayAlert("Success", "Menu item added successfully", "OK");
+            await PopupNavigation.Instance.PushAsync(new CustomAlert("Success", "Menu item added successfully"));
         }
 
         private bool ValidateInput(out double price, out int preparationTime, out int stockQuantity, out double calories)
@@ -168,8 +171,7 @@ namespace QuickReserve.Views
                 {
                     await _restaurantService.AddFoodToRestaurant(_restaurantId, food);
                 }
-
-                await DisplayAlert("Success", "Menu saved successfully", "OK");
+                await PopupNavigation.Instance.PushAsync(new CustomAlert("Success", "Menu saved successfully"));
                 _pendingFoods.Clear();
 
                 await Navigation.PushAsync(new CreateLayoutPage(_restaurantId));

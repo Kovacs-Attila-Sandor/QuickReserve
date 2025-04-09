@@ -165,7 +165,7 @@ namespace QuickReserve.Views
             //    LoadingOverlay.IsVisible = false;
             //    MainPage.IsEnabled = true;
             //}
-            await Navigation.PushAsync(new AddMenuPage("700d36c6-81d9-4bab-aba1-d7fbefa413bc"));
+            await Navigation.PushAsync(new AddMenuPage("700d36c6-81d9-4bab-aba1-d7fbefa413bc")); //Mamma Mia etterem Id-ja
         }
 
         // Törlés funkció

@@ -24,6 +24,7 @@ namespace QuickReserve.Models
         public DateTime LastUpdated { get; set; }
         public int OrderCount { get; set; }
         public List<Rating> Ratings { get; set; } = new List<Rating>();
+        public string Weight { get; set; }
 
         [JsonIgnore]
         public ImageSource ImageSource { get; set; }
