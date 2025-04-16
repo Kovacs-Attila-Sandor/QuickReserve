@@ -4,57 +4,54 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Your Order"
     NavigationPage.HasNavigationBar="False">
-    
 
     <StackLayout>
-        <Grid Padding="10,10,10,0">
+        <!--  Header with back button and title  -->
+        <Grid Padding="10,10,10,0" BackgroundColor="#1A1A1A">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <!--  Vissza gomb bal oldalon  -->
             <ImageButton
                 Grid.Column="0"
+                Padding="0"
                 BackgroundColor="Transparent"
                 Clicked="OnBackButtonClicked"
                 HeightRequest="60"
-                Padding="0"
                 Source="back_icon.png"
-                VerticalOptions="Center"
-                />
+                VerticalOptions="Center" />
 
-            <!--  Cím középen  -->
             <Label
-                Grid.Column="1"
+                Grid.ColumnSpan="3"
                 FontAttributes="Bold"
                 FontSize="28"
+                HorizontalOptions="Center"
                 Text="Your Order"
-                Margin="0,0"
-                Padding="0"
                 TextColor="White"
                 VerticalOptions="Center" />
         </Grid>
-        <Frame
-            BackgroundColor="Transparent" Padding="0">
+
+        <!--  Main content area  -->
+        <Frame Padding="0" BackgroundColor="Transparent">
             <Frame.Background>
                 <LinearGradientBrush>
                     <GradientStop Offset="0.0" Color="#1A1A1A" />
                     <GradientStop Offset="1.0" Color="#2D2D2D" />
                 </LinearGradientBrush>
             </Frame.Background>
+
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <!--  Görgethető tartalom  -->
+                <!--  Scrollable content  -->
                 <ScrollView Grid.Row="0">
-                    <StackLayout Padding="10" Spacing="20">
-                        <!--  ListView a rendelési tételekhez  -->
-
+                    <StackLayout Padding="15" Spacing="15">
+                        <!--  Order items list  -->
                         <ListView
                             BackgroundColor="Transparent"
                             HasUnevenRows="True"
@@ -65,47 +62,120 @@
                                     <ViewCell>
                                         <Frame
                                             Margin="0,5"
-                                            Padding="15"
+                                            Padding="0"
                                             BackgroundColor="#2A2E33"
                                             CornerRadius="15"
                                             HasShadow="True">
-                                            <Grid ColumnSpacing="10">
+                                            <Grid ColumnSpacing="0" RowSpacing="0">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                </Grid.RowDefinitions>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*" />
                                                     <ColumnDefinition Width="Auto" />
-                                                    <ColumnDefinition Width="Auto" />
                                                 </Grid.ColumnDefinitions>
 
-                                                <!--  Étkezés neve  -->
-                                                <Label
+                                                <!--  Food name and description  -->
+                                                <StackLayout
+                                                    Grid.Row="0"
                                                     Grid.Column="0"
-                                                    FontAttributes="Bold"
-                                                    FontSize="18"
-                                                    Text="{Binding Name}"
-                                                    TextColor="#FFFFFF"
-                                                    VerticalOptions="Center" />
+                                                    Padding="15">
+                                                    <Label
+                                                        FontAttributes="Bold"
+                                                        FontSize="18"
+                                                        Text="{Binding Key.Name}"
+                                                        TextColor="#FFFFFF" />
 
-                                                <!--  Ár  -->
+                                                </StackLayout>
+
+                                                <!--  Price  -->
                                                 <Label
+                                                    Grid.Row="0"
                                                     Grid.Column="1"
-                                                    FontSize="16"
-                                                    Text="{Binding Price, StringFormat='{0} €'}"
+                                                    Padding="15"
+                                                    FontSize="18"
+                                                    HorizontalOptions="End"
+                                                    Text="{Binding Key.Price, StringFormat='{0} €'}"
                                                     TextColor="#4CAF50"
                                                     VerticalOptions="Center" />
 
-                                                <!--  Törlés gomb  -->
-                                                <Button
-                                                    Grid.Column="2"
-                                                    Padding="10,5"
-                                                    BackgroundColor="#e74c3c"
-                                                    Clicked="OnRemoveItemClicked"
-                                                    CornerRadius="8"
-                                                    FontSize="14"
-                                                    HeightRequest="40"
-                                                    Text="Remove"
-                                                    TextColor="White"
-                                                    VerticalOptions="Center"
-                                                    WidthRequest="80" />
+                                                <!--  Quantity controls and remove button  -->
+                                                <StackLayout
+                                                    Grid.Row="1"
+                                                    Grid.Column="0"
+                                                    Grid.ColumnSpan="2"
+                                                    Padding="15,10,15,15"
+                                                    BackgroundColor="#25292E"
+                                                    HorizontalOptions="FillAndExpand"
+                                                    Orientation="Horizontal"
+                                                    Spacing="10"
+                                                    VerticalOptions="Center">
+
+                                                    <!--  Remove button  -->
+                                                    <Button
+                                                        Padding="10,5"
+                                                        BackgroundColor="Transparent"
+                                                        Clicked="OnRemoveItemClicked"
+                                                        CornerRadius="8"
+                                                        FontSize="14"
+                                                        HeightRequest="40"
+                                                        HorizontalOptions="Start"
+                                                        Text="REMOVE"
+                                                        TextColor="#e74c3c"
+                                                        VerticalOptions="Center" />
+
+                                                    <StackLayout
+                                                        HorizontalOptions="EndAndExpand"
+                                                        Orientation="Horizontal"
+                                                        Spacing="5"
+                                                        VerticalOptions="Center">
+                                                        <Grid
+                                                            ColumnDefinitions="*,Auto,*"
+                                                            ColumnSpacing="5"
+                                                            HorizontalOptions="Center"
+                                                            VerticalOptions="Center">
+
+                                                            <!--  Minus Button  -->
+                                                            <Button
+                                                                Grid.Column="0"
+                                                                BackgroundColor="#e74c3c"
+                                                                Clicked="OnDecreaseQuantityClicked"
+                                                                CornerRadius="20"
+                                                                FontAttributes="Bold"
+                                                                FontSize="16"
+                                                                HeightRequest="40"
+                                                                Text="−"
+                                                                TextColor="White"
+                                                                VerticalOptions="Center"
+                                                                WidthRequest="40" />
+
+                                                            <!--  Quantity Number  -->
+                                                            <Label
+                                                                Grid.Column="1"
+                                                                FontSize="16"
+                                                                HorizontalOptions="Center"
+                                                                Text="{Binding Value}"
+                                                                TextColor="#FFFFFF"
+                                                                VerticalOptions="Center"
+                                                                WidthRequest="40" />
+
+                                                            <!--  Plus Button  -->
+                                                            <Button
+                                                                Grid.Column="2"
+                                                                BackgroundColor="#4CAF50"
+                                                                Clicked="OnIncreaseQuantityClicked"
+                                                                CornerRadius="20"
+                                                                FontAttributes="Bold"
+                                                                FontSize="16"
+                                                                HeightRequest="40"
+                                                                Text="+"
+                                                                TextColor="White"
+                                                                VerticalOptions="Center"
+                                                                WidthRequest="40" />
+                                                        </Grid>
+                                                    </StackLayout>
+                                                </StackLayout>
                                             </Grid>
                                         </Frame>
                                     </ViewCell>
@@ -115,22 +185,25 @@
                     </StackLayout>
                 </ScrollView>
 
-                <!--  Fix gomb a képernyő alján  -->
-                <Button
+                <!--  Bottom action button  -->
+                <Frame
                     Grid.Row="1"
-                    Margin="15,0,15,15"
                     Padding="15,10"
-                    BackgroundColor="#28a745"
-                    Clicked="OnPlaceOrderClicked"
-                    CornerRadius="12"
-                    FontAttributes="Bold"
-                    FontSize="18"
-                    HeightRequest="55"
-                    HorizontalOptions="FillAndExpand"
-                    Text="Confirm Reservation"
-                    TextColor="White" />
+                    BackgroundColor="#25292E"
+                    CornerRadius="0"
+                    HasShadow="True">
+                    <Button
+                        BackgroundColor="#28a745"
+                        Clicked="OnPlaceOrderClicked"
+                        CornerRadius="12"
+                        FontAttributes="Bold"
+                        FontSize="18"
+                        HeightRequest="55"
+                        HorizontalOptions="FillAndExpand"
+                        Text="CONFIRM ORDER"
+                        TextColor="White" />
+                </Frame>
             </Grid>
         </Frame>
     </StackLayout>
-
 </ContentPage>

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System;
 using QuickReserve.Services;
 using System.Threading.Tasks;
+using Rg.Plugins.Popup.Services;
+using QuickReserve.Views.PopUps;
 
 namespace QuickReserve.Views
 {
@@ -15,7 +17,7 @@ namespace QuickReserve.Views
         public int GuestCount { get; set; }
         public string UserId { get; set; }
         public string RestaurantId { get; set; }
-        public List<Food> OrderItemsForSummaryPage { get; set; } = new List<Food>();
+        public Dictionary<Food, int> OrderItemsForSummaryPage { get; set; } = new Dictionary<Food, int>();
 
         public bool IsItemsVisible => OrderItemsForSummaryPage.Count > 0;
         public double TotalAmount => CalculateTotalAmount();
@@ -23,7 +25,7 @@ namespace QuickReserve.Views
         private RestaurantService _restaurantService;
 
         // Konstruktor
-        public ReservationSummaryPage(List<Food> orderItems, string reservationDateTime, string tableId, int guestCount)
+        public ReservationSummaryPage(Dictionary<Food, int> orderItems, string reservationDateTime, string tableId, int guestCount)
         {
             InitializeComponent();
 
@@ -78,6 +80,7 @@ namespace QuickReserve.Views
         private async void OnFinalizeReservation(object sender, EventArgs e)
         {
             UserService userService = UserService.Instance;
+
             var reservation = new Reservation()
             {
                 UserId = this.UserId,
@@ -86,33 +89,49 @@ namespace QuickReserve.Views
                 ReservationDateTime = this.ReservationDateTime,
                 GuestCount = this.GuestCount,
                 CreatedAt = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"),
-                Foods = this.OrderItemsForSummaryPage,
                 Status = "In progress",
                 TableNumber = this.TableNumber,
-                UserName = await userService.GetUserNameByUserId(UserId)
+                UserName = await userService.GetUserNameByUserId(UserId),
+                FoodIdsAndQuantity = new List<OrderedFoodsAndQuantity>()
             };
+
+            // Convert Dictionary<Food, int> to List<OrderedFoodsAndQuantity>
+            foreach (var item in OrderItemsForSummaryPage)
+            {
+                reservation.FoodIdsAndQuantity.Add(new OrderedFoodsAndQuantity
+                {
+                    FoodId = item.Key.FoodId,  // Assuming Food class has a FoodId property
+                    Quantity = item.Value
+                });
+            }
 
             try
             {
-                // Foglalás mentése az adatbázisba
-                ReservationService reservationService = ReservationService.Instance;
-                await reservationService.AddReservation(reservation);
+                string userId = App.Current.Properties["userId"].ToString();
+                string userType = await userService.GetUserTypeByUserId(userId);
+                try
+                {
+                    // Foglalás mentése az adatbázisba
+                    ReservationService reservationService = ReservationService.Instance;
 
-                await _restaurantService.MarkTableAsReserved(RestaurantId, TableId);
+                    await reservationService.AddReservation(reservation);
+                    await PopupNavigation.Instance.PushAsync(new CustomAlert("Success", "Your reservation has been finalized!"));
+                    await Navigation.PushAsync(new MainPage(userType));
 
-                // Üzenet a felhasználónak a sikeres véglegesítésről
-                await DisplayAlert("Success", "Your reservation has been finalized!", "OK");
-
-                await Navigation.PushAsync(new AboutPage());
-
-                // Ha sikeres a foglalás mentése, akkor kiürítjük a rendelési tételeket
-                OrderItemsForSummaryPage.Clear();
-                OrderItemsListView.ItemsSource = null; // Frissítjük a ListView-t
+                    await _restaurantService.MarkTableAsReserved(RestaurantId, TableId);
+                    // Ha sikeres a foglalás mentése, akkor kiürítjük a rendelési tételeket
+                    OrderItemsForSummaryPage.Clear();
+                    OrderItemsListView.ItemsSource = null; // Frissítjük a ListView-t
+                }
+                catch (Exception ex)
+                {
+                    // Hiba kezelése, ha a foglalás mentése nem sikerül
+                    await DisplayAlert("Error", "There was an error finalizing your reservation. Please try again.", "OK");
+                    Console.WriteLine($"Error finalizing reservation: {ex.Message}");
+                }
             }
             catch (Exception ex)
             {
-                // Hiba kezelése, ha a foglalás mentése nem sikerül
-                await DisplayAlert("Error", "There was an error finalizing your reservation. Please try again.", "OK");
                 Console.WriteLine($"Error finalizing reservation: {ex.Message}");
             }
         }
@@ -123,9 +142,14 @@ namespace QuickReserve.Views
             double total = 0;
             foreach (var item in OrderItemsForSummaryPage)
             {
-                total += item.Price;
+                total += item.Key.Price * item.Value; // Az ár szorzása a mennyiséggel
             }
             return total;
+        }
+
+        private async void OnCancelClicked(object sender, EventArgs e)
+        {
+            await Navigation.PopAsync();
         }
     }
 }

@@ -67,7 +67,7 @@ namespace QuickReserve.Views
 
         private async void AddItem(object sender, EventArgs e)
         {
-            if (!ValidateInput(out double price, out int preparationTime, out int stockQuantity, out double calories))
+            if (!ValidateInput(out double price, out int preparationTime, out int stockQuantity, out double calories, out double weight))
             {
                 await DisplayAlert("Error", "Please fill all required fields correctly", "OK");
                 return;
@@ -97,9 +97,9 @@ namespace QuickReserve.Views
                 PreparationTime = preparationTime,
                 Ingredients = txtIngredients.Text.Split(',').Select(i => i.Trim()).ToList(),
                 Allergens = txtAllergens.Text.Split(',').Select(a => a.Trim()).ToList(),
-                NutritionalInfo = new Dictionary<string, double> { { "Calories", calories } },
+                Calories = calories,
                 Tags = txtTags.Text.Split(',').Select(t => t.Trim()).ToList(),
-                Weight = txtWeight.Text.Trim(),
+                Weight = weight,
                 CreatedDate = DateTime.UtcNow,
                 LastUpdated = DateTime.UtcNow,
                 OrderCount = 0
@@ -110,12 +110,13 @@ namespace QuickReserve.Views
             await PopupNavigation.Instance.PushAsync(new CustomAlert("Success", "Menu item added successfully"));
         }
 
-        private bool ValidateInput(out double price, out int preparationTime, out int stockQuantity, out double calories)
+        private bool ValidateInput(out double price, out int preparationTime, out int stockQuantity, out double calories, out double weight)
         {
             price = 0;
             preparationTime = 0;
             stockQuantity = 0;
             calories = 0;
+            weight = 0;
 
             return !string.IsNullOrWhiteSpace(txtMenuItemName.Text) &&
                    !string.IsNullOrWhiteSpace(txtMenuItemDescription.Text) &&
@@ -123,7 +124,8 @@ namespace QuickReserve.Views
                    categoryPicker.SelectedIndex != -1 &&
                    int.TryParse(txtPreparationTime.Text, out preparationTime) && preparationTime >= 0 &&
                    int.TryParse(txtStockQuantity.Text, out stockQuantity) && stockQuantity >= 0 &&
-                   double.TryParse(txtCalories.Text, out calories) && calories >= 0;
+                   double.TryParse(txtCalories.Text, out calories) && calories >= 0 &&
+                   double.TryParse(txtWeight.Text, out weight) && weight >= 0;
         }
 
         private void ClearForm()

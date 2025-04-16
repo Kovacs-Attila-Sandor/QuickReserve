@@ -67,7 +67,6 @@
                         WidthRequest="350" />
                 </Frame>
 
-
                 <!--  Kategória gombok  -->
                 <ScrollView Padding="0" Orientation="Horizontal">
                     <StackLayout

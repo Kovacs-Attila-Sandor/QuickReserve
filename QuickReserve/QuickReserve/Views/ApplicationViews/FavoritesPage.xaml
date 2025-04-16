@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="QuickReserve.Views.ApplicationViews.FavoritesPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Offset="0.0" Color="#1A1A1A" />
+            <GradientStop Offset="1.0" Color="#2D2D2D" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <ContentPage.Content>
+        <StackLayout
+            Padding="20"
+            Spacing="20"
+            VerticalOptions="StartAndExpand">
+            <!--  Header with Back Button  -->
+            <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto">
+                <!--  Back Button (Left)  -->
+                <ImageButton
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    BackgroundColor="Transparent"
+                    Clicked="OnBackClicked"
+                    HorizontalOptions="Start"
+                    Source="back_icon.png"
+                    WidthRequest="40" />
+
+                <!--  Centered Title  -->
+                <Label
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                    FontAttributes="Bold"
+                    FontSize="28"
+                    HorizontalOptions="Center"
+                    HorizontalTextAlignment="Center"
+                    Text="Favorites"
+                    TextColor="White"
+                    VerticalOptions="Center" />
+            </Grid>
+
+            <!--  Segment Control  -->
+            <Grid ColumnDefinitions="*,*" HorizontalOptions="Center">
+                <Button
+                    x:Name="RestaurantsButton"
+                    Grid.Column="0"
+                    BackgroundColor="{Binding RestaurantSegmentColor}"
+                    Clicked="OnRestaurantsButtonClicked"
+                    CornerRadius="5"
+                    Text="Restaurants"
+                    TextColor="{Binding RestaurantTextColor}" />
+
+                <Button
+                    x:Name="FoodsButton"
+                    Grid.Column="1"
+                    BackgroundColor="{Binding FoodSegmentColor}"
+                    Clicked="OnFoodsButtonClicked"
+                    CornerRadius="5"
+                    Text="Foods"
+                    TextColor="{Binding FoodTextColor}" />
+            </Grid>
+
+            <!--  Content Area  -->
+            <ScrollView>
+                <StackLayout x:Name="ContentArea" Spacing="15">
+                    <!--  Content will be populated based on selection  -->
+                </StackLayout>
+            </ScrollView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

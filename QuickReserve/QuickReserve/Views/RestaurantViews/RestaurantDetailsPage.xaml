@@ -16,285 +16,278 @@
 
     <ContentPage.Content>
         <RefreshView x:Name="myRefreshView" Refreshing="RefreshView_Refreshing">
-            <Grid RowSpacing="0">
-                <ScrollView
-                    x:Name="mainScrollView"
-                    Margin="0"
-                    Padding="0">
-                    <StackLayout Padding="0" Spacing="0">
-                        <Grid
-                            Margin="0"
+            <ScrollView
+                x:Name="mainScrollView"
+                Margin="0"
+                Padding="0">
+                <StackLayout Padding="0" Spacing="0">
+                    <!--  Felső rész (Location, Reservation gomb stb.)  -->
+                    <Grid
+                        Margin="0"
+                        Padding="0"
+                        BackgroundColor="Transparent"
+                        ColumnDefinitions="Auto"
+                        RowDefinitions="Auto">
+                        <StackLayout
                             Padding="0"
-                            BackgroundColor="Transparent"
-                            ColumnDefinitions="Auto"
-                            RowDefinitions="Auto">
-                            <StackLayout
-                                Padding="0"
-                                HorizontalOptions="FillAndExpand"
-                                Spacing="10"
-                                VerticalOptions="CenterAndExpand">
-                                <Frame
-                                    Margin="0"
-                                    Padding="10"
-                                    BackgroundColor="Transparent"
-                                    CornerRadius="10"
-                                    HasShadow="True"
-                                    HorizontalOptions="FillAndExpand">
-                                    <Grid
-                                        Margin="0"
-                                        RowDefinitions="Auto"
-                                        RowSpacing="0">
-                                        <Grid
-                                            Grid.Row="0"
-                                            Margin="0"
-                                            ColumnDefinitions="Auto, *"
-                                            HorizontalOptions="FillAndExpand"
-                                            RowDefinitions="Auto">
-                                            <ImageButton
-                                                BackgroundColor="Transparent"
-                                                Clicked="OnBackButtonClicked"
-                                                Source="back_icon.png"
-                                                WidthRequest="40" />
-                                            <Grid
-                                                Grid.Column="1"
-                                                Padding="10,0,0,10"
-                                                ColumnDefinitions="Auto, Auto, Auto, Auto"
-                                                HorizontalOptions="FillAndExpand"
-                                                RowDefinitions="Auto, Auto"
-                                                RowSpacing="0">
-                                                <Label
-                                                    Grid.Row="0"
-                                                    Grid.Column="0"
-                                                    Grid.ColumnSpan="4"
-                                                    Margin="0"
-                                                    Padding="0"
-                                                    FontAttributes="Bold"
-                                                    FontSize="16"
-                                                    HorizontalOptions="Start"
-                                                    Text="Location"
-                                                    TextColor="#E0E0E0"
-                                                    VerticalOptions="End" />
-                                                <Image
-                                                    Grid.Row="1"
-                                                    Grid.Column="0"
-                                                    Margin="0"
-                                                    HeightRequest="20"
-                                                    HorizontalOptions="End"
-                                                    Source="location_icon.png"
-                                                    VerticalOptions="Center" />
-                                                <Label
-                                                    Grid.Row="1"
-                                                    Grid.Column="1"
-                                                    Margin="0"
-                                                    Padding="0"
-                                                    FontAttributes="Bold"
-                                                    FontSize="18"
-                                                    HorizontalOptions="Start"
-                                                    Text="{Binding Address.Country, StringFormat='{0}, '}"
-                                                    TextColor="White"
-                                                    VerticalOptions="Center" />
-                                                <Label
-                                                    Grid.Row="1"
-                                                    Grid.Column="2"
-                                                    Margin="0"
-                                                    Padding="0"
-                                                    FontAttributes="Bold"
-                                                    FontSize="18"
-                                                    HorizontalOptions="Start"
-                                                    Text="{Binding Address.City}"
-                                                    TextColor="White"
-                                                    VerticalOptions="Center" />
-                                                <Button
-                                                    Grid.Row="1"
-                                                    Grid.Column="3"
-                                                    Margin="0"
-                                                    Padding="0"
-                                                    BackgroundColor="Transparent"
-                                                    Clicked="OnDatePickerClicked"
-                                                    FontSize="14"
-                                                    HeightRequest="20"
-                                                    HorizontalOptions="Start"
-                                                    Text="▼"
-                                                    TextColor="White"
-                                                    VerticalOptions="Center"
-                                                    WidthRequest="20" />
-                                            </Grid>
-                                        </Grid>
-                                        <Grid
-                                            Grid.Row="1"
-                                            Margin="0"
-                                            Padding="0"
-                                            ColumnDefinitions="Auto, *"
-                                            RowDefinitions="Auto">
-                                            <Button
-                                                x:Name="ReservationButton"
-                                                Grid.Column="1"
-                                                Margin="0"
-                                                Padding="10,5"
-                                                BackgroundColor="#5b5455"
-                                                Clicked="ReservationButton_Clicked"
-                                                CornerRadius="15"
-                                                FontSize="20"
-                                                HeightRequest="45"
-                                                HorizontalOptions="FillAndExpand"
-                                                Text="Make a reservation"
-                                                TextColor="White"
-                                                TextTransform="None"
-                                                VerticalOptions="Center" />
-                                        </Grid>
-                                    </Grid>
-                                </Frame>
-                            </StackLayout>
-                        </Grid>
-
-                        <Frame
-                            Margin="0,0,0,0"
-                            BackgroundColor="#0f1111"
-                            CornerRadius="20">
+                            HorizontalOptions="FillAndExpand"
+                            Spacing="10"
+                            VerticalOptions="CenterAndExpand">
                             <Frame
-                                Margin="0,0,0,0"
-                                Padding="0"
+                                Margin="0"
+                                Padding="10"
                                 BackgroundColor="Transparent"
-                                CornerRadius="20"
+                                CornerRadius="10"
                                 HasShadow="True"
                                 HorizontalOptions="FillAndExpand">
-                                <StackLayout Padding="0" Spacing="0">
-                                    <Frame
-                                        Padding="0"
-                                        BackgroundColor="Transparent"
-                                        CornerRadius="20">
-                                        <CarouselView
-                                            x:Name="ImageCarousel"
-                                            Margin="0"
-                                            HeightRequest="200"
-                                            HorizontalOptions="FillAndExpand"
-                                            ItemsSource="{Binding ImageSourceList}"
-                                            VerticalOptions="FillAndExpand">
-                                            <CarouselView.ItemTemplate>
-                                                <DataTemplate>
-                                                    <Image
-                                                        Margin="0"
-                                                        Aspect="AspectFill"
-                                                        HorizontalOptions="FillAndExpand"
-                                                        Source="{Binding .}"
-                                                        VerticalOptions="FillAndExpand" />
-                                                </DataTemplate>
-                                            </CarouselView.ItemTemplate>
-                                        </CarouselView>
-                                    </Frame>
-                                    <StackLayout
-                                        Padding="0"
-                                        BackgroundColor="Transparent"
-                                        Spacing="30">
-                                        <Label
-                                            FontAttributes="Bold"
-                                            FontSize="34"
-                                            HorizontalOptions="Center"
-                                            Text="{Binding Name}"
-                                            TextColor="#FF9800" />
-                                        <Frame
-                                            Padding="10"
-                                            BackgroundColor="#6B5E5E"
-                                            CornerRadius="20"
-                                            HasShadow="True">
-                                            <Label
-                                                x:Name="DescriptionLabel"
-                                                Padding="5"
-                                                FontAttributes="None"
-                                                FontSize="16"
-                                                LineBreakMode="TailTruncation"
-                                                MaxLines="5"
-                                                Text="{Binding LongDescription}"
-                                                TextColor="White">
-                                                <Label.GestureRecognizers>
-                                                    <TapGestureRecognizer Tapped="OnLabelTapped" />
-                                                </Label.GestureRecognizers>
-                                            </Label>
-                                        </Frame>
-
-                                        <Frame
-                                            Margin="0"
-                                            Padding="10"
+                                <Grid
+                                    Margin="0"
+                                    RowDefinitions="Auto"
+                                    RowSpacing="0">
+                                    <Grid
+                                        Grid.Row="0"
+                                        Margin="0"
+                                        ColumnDefinitions="Auto, *"
+                                        HorizontalOptions="FillAndExpand"
+                                        RowDefinitions="Auto">
+                                        <ImageButton
                                             BackgroundColor="Transparent"
-                                            CornerRadius="0"
-                                            HeightRequest="40"
-                                            VerticalOptions="Start">
-                                            <ScrollView
-                                                HorizontalOptions="FillAndExpand"
-                                                HorizontalScrollBarVisibility="Never"
-                                                Orientation="Horizontal"
-                                                VerticalOptions="Center">
-                                                <CollectionView
-                                                    x:Name="categoriesCollectionView"
-                                                    x:FieldModifier="public"
-                                                    HeightRequest="40"
-                                                    HorizontalOptions="FillAndExpand"
-                                                    ItemsSource="{Binding Categories}"
-                                                    SelectionChanged="OnCategorySelectionChanged"
-                                                    SelectionMode="Single"
-                                                    VerticalOptions="Start">
+                                            Clicked="OnBackButtonClicked"
+                                            Source="back_icon.png"
+                                            WidthRequest="40" />
+                                        <Grid
+                                            Grid.Column="1"
+                                            Padding="10,0,0,10"
+                                            ColumnDefinitions="Auto, Auto, Auto, Auto"
+                                            HorizontalOptions="FillAndExpand"
+                                            RowDefinitions="Auto, Auto"
+                                            RowSpacing="0">
+                                            <Label
+                                                Grid.Row="0"
+                                                Grid.Column="0"
+                                                Grid.ColumnSpan="4"
+                                                Margin="0"
+                                                Padding="0"
+                                                FontAttributes="Bold"
+                                                FontSize="16"
+                                                HorizontalOptions="Start"
+                                                Text="Location"
+                                                TextColor="#E0E0E0"
+                                                VerticalOptions="End" />
+                                            <Image
+                                                Grid.Row="1"
+                                                Grid.Column="0"
+                                                Margin="0"
+                                                HeightRequest="20"
+                                                HorizontalOptions="End"
+                                                Source="location_icon.png"
+                                                VerticalOptions="Center" />
+                                            <Label
+                                                Grid.Row="1"
+                                                Grid.Column="1"
+                                                Margin="0"
+                                                Padding="0"
+                                                FontAttributes="Bold"
+                                                FontSize="18"
+                                                HorizontalOptions="Start"
+                                                Text="{Binding Address.Country, StringFormat='{0}, '}"
+                                                TextColor="White"
+                                                VerticalOptions="Center" />
+                                            <Label
+                                                Grid.Row="1"
+                                                Grid.Column="2"
+                                                Margin="0"
+                                                Padding="0"
+                                                FontAttributes="Bold"
+                                                FontSize="18"
+                                                HorizontalOptions="Start"
+                                                Text="{Binding Address.City}"
+                                                TextColor="White"
+                                                VerticalOptions="Center" />
+                                            <Button
+                                                Grid.Row="1"
+                                                Grid.Column="3"
+                                                Margin="0"
+                                                Padding="0"
+                                                BackgroundColor="Transparent"
+                                                Clicked="OnDatePickerClicked"
+                                                FontSize="14"
+                                                HeightRequest="20"
+                                                HorizontalOptions="Start"
+                                                Text="▼"
+                                                TextColor="White"
+                                                VerticalOptions="Center"
+                                                WidthRequest="20" />
+                                        </Grid>
+                                    </Grid>
+                                    <Grid
+                                        Grid.Row="1"
+                                        Margin="0"
+                                        Padding="0"
+                                        ColumnDefinitions="Auto, *"
+                                        RowDefinitions="Auto">
+                                        <Button
+                                            x:Name="ReservationButton"
+                                            Grid.Column="1"
+                                            Margin="0"
+                                            Padding="10,5"
+                                            BackgroundColor="#5b5455"
+                                            Clicked="ReservationButton_Clicked"
+                                            CornerRadius="15"
+                                            FontSize="20"
+                                            HeightRequest="45"
+                                            HorizontalOptions="FillAndExpand"
+                                            Text="Make a reservation"
+                                            TextColor="White"
+                                            TextTransform="None"
+                                            VerticalOptions="Center" />
+                                    </Grid>
+                                </Grid>
+                            </Frame>
+                        </StackLayout>
+                    </Grid>
 
-                                                    <CollectionView.ItemsLayout>
-                                                        <LinearItemsLayout ItemSpacing="15" Orientation="Horizontal" />
-                                                    </CollectionView.ItemsLayout>
-
-                                                    <CollectionView.ItemTemplate>
-                                                        <DataTemplate>
-                                                            <Frame
-                                                                Padding="8,4"
-                                                                BackgroundColor="Transparent"
-                                                                CornerRadius="12">
-                                                                <Label
-                                                                    FontSize="20"
-                                                                    Text="{Binding .}"
-                                                                    TextColor="White"
-                                                                    VerticalOptions="Center">
-
-                                                                    <Label.Triggers>
-                                                                        <DataTrigger
-                                                                            Binding="{Binding Path=SelectedItem, Source={x:Reference categoriesCollectionView}}"
-                                                                            TargetType="Label"
-                                                                            Value="{Binding .}">
-                                                                            <Setter Property="TextDecorations" Value="Underline" />
-                                                                            <Setter Property="FontAttributes" Value="Bold" />
-                                                                            <Setter Property="TextColor" Value="#FF9800" />
-                                                                            <!--  Narancssárga szöveg  -->
-                                                                        </DataTrigger>
-                                                                    </Label.Triggers>
-                                                                </Label>
-
-                                                                <!--  Expliciten állítsuk be a keret hátterét minden állapotban  -->
-                                                                <VisualStateManager.VisualStateGroups>
-                                                                    <VisualStateGroupList>
-                                                                        <VisualStateGroup x:Name="CommonStates">
-                                                                            <VisualState x:Name="Normal" />
-                                                                            <VisualState x:Name="Selected">
-                                                                                <VisualState.Setters>
-                                                                                    <Setter Property="BackgroundColor" Value="Transparent" />
-                                                                                </VisualState.Setters>
-                                                                            </VisualState>
-                                                                        </VisualStateGroup>
-                                                                    </VisualStateGroupList>
-                                                                </VisualStateManager.VisualStateGroups>
-                                                            </Frame>
-                                                        </DataTemplate>
-                                                    </CollectionView.ItemTemplate>
-                                                </CollectionView>
-                                            </ScrollView>
-                                        </Frame>
-                                    </StackLayout>
-
-                                    <!--  Ételek  -->
-                                    <ListView
-                                        x:Name="MenuListView"
-                                        GroupDisplayBinding="{Binding Key, StringFormat='{0}s'}"
-                                        HasUnevenRows="True"
-                                        IsGroupingEnabled="True"
-                                        ItemTapped="OnItemTapped"
-                                        ItemsSource="{Binding GroupedFoods}">
-                                        <ListView.GroupHeaderTemplate>
+                    <!--  Alsó rész (CarouselView, leírás, kategóriák, ételek)  -->
+                    <Frame
+                        Margin="0,0,0,0"
+                        BackgroundColor="#0f1111"
+                        CornerRadius="20">
+                        <Frame
+                            Margin="0,0,0,0"
+                            Padding="0"
+                            BackgroundColor="Transparent"
+                            CornerRadius="20"
+                            HasShadow="True"
+                            HorizontalOptions="FillAndExpand">
+                            <StackLayout Padding="0" Spacing="0">
+                                <!--  CarouselView  -->
+                                <Frame
+                                    Padding="0"
+                                    BackgroundColor="Transparent"
+                                    CornerRadius="20">
+                                    <CarouselView
+                                        x:Name="ImageCarousel"
+                                        Margin="0"
+                                        HeightRequest="200"
+                                        HorizontalOptions="FillAndExpand"
+                                        ItemsSource="{Binding ImageSourceList}"
+                                        VerticalOptions="FillAndExpand">
+                                        <CarouselView.ItemTemplate>
                                             <DataTemplate>
-                                                <ViewCell>
+                                                <Image
+                                                    Margin="0"
+                                                    Aspect="AspectFill"
+                                                    HorizontalOptions="FillAndExpand"
+                                                    Source="{Binding .}"
+                                                    VerticalOptions="FillAndExpand" />
+                                            </DataTemplate>
+                                        </CarouselView.ItemTemplate>
+                                    </CarouselView>
+                                </Frame>
+
+                                <!--  Név, leírás, kategóriák  -->
+                                <StackLayout
+                                    Padding="0"
+                                    BackgroundColor="Transparent"
+                                    Spacing="30">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="34"
+                                        HorizontalOptions="Center"
+                                        Text="{Binding Name}"
+                                        TextColor="#FF9800" />
+                                    <Frame
+                                        Padding="10"
+                                        BackgroundColor="#6B5E5E"
+                                        CornerRadius="20"
+                                        HasShadow="True">
+                                        <Label
+                                            x:Name="DescriptionLabel"
+                                            Padding="5"
+                                            FontAttributes="None"
+                                            FontSize="16"
+                                            LineBreakMode="TailTruncation"
+                                            MaxLines="5"
+                                            Text="{Binding LongDescription}"
+                                            TextColor="White">
+                                            <Label.GestureRecognizers>
+                                                <TapGestureRecognizer Tapped="OnLabelTapped" />
+                                            </Label.GestureRecognizers>
+                                        </Label>
+                                    </Frame>
+
+                                    <!--  Kategóriák  -->
+                                    <Frame
+                                        Margin="0"
+                                        Padding="10"
+                                        BackgroundColor="Transparent"
+                                        CornerRadius="0"
+                                        HeightRequest="40"
+                                        VerticalOptions="Start">
+                                        <ScrollView
+                                            HorizontalOptions="FillAndExpand"
+                                            HorizontalScrollBarVisibility="Never"
+                                            Orientation="Horizontal"
+                                            VerticalOptions="Center">
+                                            <CollectionView
+                                                x:Name="categoriesCollectionView"
+                                                x:FieldModifier="public"
+                                                HeightRequest="40"
+                                                HorizontalOptions="FillAndExpand"
+                                                ItemsSource="{Binding Categories}"
+                                                SelectionChanged="OnCategorySelectionChanged"
+                                                SelectionMode="Single"
+                                                VerticalOptions="Start">
+                                                <CollectionView.ItemsLayout>
+                                                    <LinearItemsLayout ItemSpacing="15" Orientation="Horizontal" />
+                                                </CollectionView.ItemsLayout>
+                                                <CollectionView.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Frame
+                                                            Padding="8,4"
+                                                            BackgroundColor="Transparent"
+                                                            CornerRadius="12">
+                                                            <Label
+                                                                FontSize="20"
+                                                                Text="{Binding .}"
+                                                                TextColor="White"
+                                                                VerticalOptions="Center">
+                                                                <Label.Triggers>
+                                                                    <DataTrigger
+                                                                        Binding="{Binding Path=SelectedItem, Source={x:Reference categoriesCollectionView}}"
+                                                                        TargetType="Label"
+                                                                        Value="{Binding .}">
+                                                                        <Setter Property="TextDecorations" Value="Underline" />
+                                                                        <Setter Property="FontAttributes" Value="Bold" />
+                                                                        <Setter Property="TextColor" Value="#FF9800" />
+                                                                    </DataTrigger>
+                                                                </Label.Triggers>
+                                                            </Label>
+                                                            <VisualStateManager.VisualStateGroups>
+                                                                <VisualStateGroupList>
+                                                                    <VisualStateGroup x:Name="CommonStates">
+                                                                        <VisualState x:Name="Normal" />
+                                                                        <VisualState x:Name="Selected">
+                                                                            <VisualState.Setters>
+                                                                                <Setter Property="BackgroundColor" Value="Transparent" />
+                                                                            </VisualState.Setters>
+                                                                        </VisualState>
+                                                                    </VisualStateGroup>
+                                                                </VisualStateGroupList>
+                                                            </VisualStateManager.VisualStateGroups>
+                                                        </Frame>
+                                                    </DataTemplate>
+                                                </CollectionView.ItemTemplate>
+                                            </CollectionView>
+                                        </ScrollView>
+                                    </Frame>
+
+                                    <!--  Ételek BindableLayout-tal elválasztóvonalakkal  -->
+                                    <StackLayout BindableLayout.ItemsSource="{Binding GroupedFoods}">
+                                        <BindableLayout.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackLayout Spacing="10">
+                                                    <!--  Csoport fejléce  -->
                                                     <Frame
                                                         Margin="0,10,0,0"
                                                         Padding="5"
@@ -304,102 +297,115 @@
                                                             FontAttributes="Bold"
                                                             FontSize="24"
                                                             Text="{Binding Key, StringFormat='{0}s'}"
-                                                            TextColor="#FFFFFF" />
+                                                            TextColor="#FFFFFF"
+                                                            TextDecorations="Underline" />
                                                     </Frame>
-                                                </ViewCell>
-                                            </DataTemplate>
-                                        </ListView.GroupHeaderTemplate>
-                                        <ListView.ItemTemplate>
-                                            <DataTemplate>
-                                                <ViewCell>
-                                                    <Frame
-                                                        Margin="0,5"
-                                                        Padding="0"
-                                                        BackgroundColor="#1A1A1A"
-                                                        CornerRadius="20"
-                                                        HasShadow="True"
-                                                        HeightRequest="120">
-                                                        <Frame.Background>
-                                                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                                                <GradientStop Offset="0.0" Color="#1A1A1A" />
-                                                                <GradientStop Offset="1.0" Color="#2D2D2D" />
-                                                            </LinearGradientBrush>
-                                                        </Frame.Background>
-                                                        <Grid Padding="0" ColumnSpacing="8">
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="130" />
-                                                                <ColumnDefinition Width="*" />
-                                                            </Grid.ColumnDefinitions>
-
-                                                            <!--  Kép rész (bal oldalon)  -->
-                                                            <Grid Grid.Column="0">
-                                                                <Image
-                                                                    Aspect="AspectFill"
-                                                                    HeightRequest="120"
-                                                                    HorizontalOptions="FillAndExpand"
-                                                                    Source="{Binding ImageSource}"
-                                                                    VerticalOptions="Center" />
-                                                            </Grid>
-
-                                                            <!--  Szöveges rész (jobb oldalon)  -->
-                                                            <StackLayout
-                                                                Grid.Column="1"
-                                                                Padding="5"
-                                                                Spacing="4"
-                                                                VerticalOptions="Center">
-                                                                <StackLayout Orientation="Horizontal" Spacing="5">
-                                                                    <Label
-                                                                        FontAttributes="Bold"
-                                                                        FontSize="12"
-                                                                        Text="{Binding Name}"
-                                                                        TextColor="#FFFFFF" />
-                                                                    <Label
-                                                                        FontSize="10"
-                                                                        Text="{Binding Quantity, StringFormat='({0})'}"
-                                                                        TextColor="#B0B0B0"
-                                                                        VerticalOptions="Center" />
+                                                    <!--  Csoport elemei elválasztóvonalakkal  -->
+                                                    <StackLayout BindableLayout.ItemsSource="{Binding .}" Spacing="0">
+                                                        <BindableLayout.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <StackLayout Spacing="0">
+                                                                    <Frame
+                                                                        Margin="0,5"
+                                                                        Padding="0"
+                                                                        BackgroundColor="#1A1A1A"
+                                                                        CornerRadius="20"
+                                                                        HasShadow="True"
+                                                                        HeightRequest="120">
+                                                                        <Frame.Background>
+                                                                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                                                                <GradientStop Offset="0.0" Color="#1A1A1A" />
+                                                                                <GradientStop Offset="1.0" Color="#2D2D2D" />
+                                                                            </LinearGradientBrush>
+                                                                        </Frame.Background>
+                                                                        <!--  TapGestureRecognizer  -->
+                                                                        <Frame.GestureRecognizers>
+                                                                            <TapGestureRecognizer Tapped="OnItemTapped" />
+                                                                        </Frame.GestureRecognizers>
+                                                                        <Grid Padding="0" ColumnSpacing="8">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="130" />
+                                                                                <ColumnDefinition Width="*" />
+                                                                            </Grid.ColumnDefinitions>
+                                                                            <!--  Kép rész  -->
+                                                                            <Grid Grid.Column="0">
+                                                                                <Image
+                                                                                    Aspect="AspectFill"
+                                                                                    HeightRequest="120"
+                                                                                    HorizontalOptions="FillAndExpand"
+                                                                                    Source="{Binding ImageSource}"
+                                                                                    VerticalOptions="Center" />
+                                                                            </Grid>
+                                                                            <!--  Szöveges rész  -->
+                                                                            <StackLayout
+                                                                                Grid.Column="1"
+                                                                                Padding="5"
+                                                                                Spacing="4"
+                                                                                VerticalOptions="Center">
+                                                                                <StackLayout Orientation="Horizontal" Spacing="5">
+                                                                                    <Label
+                                                                                        FontAttributes="Bold"
+                                                                                        FontSize="12"
+                                                                                        Text="{Binding Name}"
+                                                                                        TextColor="#FFFFFF" />
+                                                                                    <Label
+                                                                                        FontSize="10"
+                                                                                        Text="{Binding Quantity, StringFormat='({0})'}"
+                                                                                        TextColor="#B0B0B0"
+                                                                                        VerticalOptions="Center" />
+                                                                                </StackLayout>
+                                                                                <Label
+                                                                                    FontSize="10"
+                                                                                    LineBreakMode="TailTruncation"
+                                                                                    MaxLines="2"
+                                                                                    Text="{Binding Description}"
+                                                                                    TextColor="#B0B0B0" />
+                                                                                <StackLayout Orientation="Horizontal" Spacing="5">
+                                                                                    <Label
+                                                                                        FontAttributes="Bold"
+                                                                                        FontSize="10"
+                                                                                        Text="{Binding Price, StringFormat='{0} €'}"
+                                                                                        TextColor="#4CAF50" />
+                                                                                    <StackLayout
+                                                                                        Orientation="Horizontal"
+                                                                                        Spacing="2"
+                                                                                        VerticalOptions="Center">
+                                                                                        <Image
+                                                                                            HeightRequest="12"
+                                                                                            Source="star_filled.png"
+                                                                                            VerticalOptions="Center"
+                                                                                            WidthRequest="12" />
+                                                                                        <Label
+                                                                                            FontSize="10"
+                                                                                            Text="{Binding Rating}"
+                                                                                            TextColor="#FFD700"
+                                                                                            VerticalOptions="Center" />
+                                                                                    </StackLayout>
+                                                                                </StackLayout>
+                                                                            </StackLayout>
+                                                                        </Grid>
+                                                                    </Frame>
+                                                                    <!--  Elválasztóvonal  -->
+                                                                    <BoxView
+                                                                        Margin="10,5,10,0"
+                                                                        BackgroundColor="#B0B0B0"
+                                                                        HeightRequest="1"
+                                                                        HorizontalOptions="FillAndExpand"
+                                                                        Opacity="0.3" />
                                                                 </StackLayout>
-                                                                <Label
-                                                                    FontSize="10"
-                                                                    LineBreakMode="TailTruncation"
-                                                                    MaxLines="2"
-                                                                    Text="{Binding Description}"
-                                                                    TextColor="#B0B0B0" />
-                                                                <StackLayout Orientation="Horizontal" Spacing="5">
-                                                                    <Label
-                                                                        FontAttributes="Bold"
-                                                                        FontSize="10"
-                                                                        Text="{Binding Price, StringFormat='{0} €'}"
-                                                                        TextColor="#4CAF50" />
-                                                                    <StackLayout
-                                                                        Orientation="Horizontal"
-                                                                        Spacing="2"
-                                                                        VerticalOptions="Center">
-                                                                        <Image
-                                                                            HeightRequest="12"
-                                                                            Source="star_filled.png"
-                                                                            VerticalOptions="Center"
-                                                                            WidthRequest="12" />
-                                                                        <Label
-                                                                            FontSize="10"
-                                                                            Text="{Binding Rating}"
-                                                                            TextColor="#FFD700"
-                                                                            VerticalOptions="Center" />
-                                                                    </StackLayout>
-                                                                </StackLayout>
-                                                            </StackLayout>
-                                                        </Grid>
-                                                    </Frame>
-                                                </ViewCell>
+                                                            </DataTemplate>
+                                                        </BindableLayout.ItemTemplate>
+                                                    </StackLayout>
+                                                </StackLayout>
                                             </DataTemplate>
-                                        </ListView.ItemTemplate>
-                                    </ListView>
+                                        </BindableLayout.ItemTemplate>
+                                    </StackLayout>
                                 </StackLayout>
-                            </Frame>
+                            </StackLayout>
                         </Frame>
-                    </StackLayout>
-                </ScrollView>
-            </Grid>
+                    </Frame>
+                </StackLayout>
+            </ScrollView>
         </RefreshView>
     </ContentPage.Content>
 </ContentPage>

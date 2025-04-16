@@ -9,7 +9,6 @@
     <ContentPage.Resources>
         <local:BoolToAvailabilityConverter x:Key="BoolToAvailabilityConverter" />
         <local:ListToStringConverter x:Key="ListToStringConverter" />
-        <local:DictToStringConverter x:Key="DictToStringConverter" />
         <local:PriceConverter x:Key="PriceConverter" />
         <local:PreparationTimeConverter x:Key="PreparationTimeConverter" />
         <local:RatingConverter x:Key="RatingConverter" />
@@ -169,7 +168,7 @@
                                 TranslationY="1" />
                             <Label
                                 HorizontalOptions="Center"
-                                Text="{Binding NutritionalInfo, Converter={StaticResource DictToStringConverter}}"
+                                Text="{Binding Calories}"
                                 TranslationY="1"
                                 VerticalOptions="Center" />
                             <Label
@@ -317,10 +316,7 @@
                                 Text="Add Rating"
                                 TextColor="White" />
                         </StackLayout>
-
                     </StackLayout>
-
-
                 </Frame>
             </Grid>
         </ScrollView>

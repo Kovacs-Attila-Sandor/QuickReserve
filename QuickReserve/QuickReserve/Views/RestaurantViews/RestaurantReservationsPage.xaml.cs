@@ -17,7 +17,20 @@ namespace QuickReserve.Views
         private string _restaurantId;
         private readonly string _userId;
 
-        public bool _isDoneVisible = false;  // Flag to determine if the Done reservations are visible     
+        private bool _isBusy;
+        public bool IsBusy
+        {
+            get => _isBusy;
+            set
+            {
+                _isBusy = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsNotBusy));
+            }
+        }
+
+        public bool IsNotBusy => !IsBusy;
+        public bool _isDoneVisible = false;
 
         List<Reservation> InProgressReservations = new List<Reservation>();
         List<Reservation> DoneReservations = new List<Reservation>();
@@ -28,43 +41,60 @@ namespace QuickReserve.Views
 
             _reservationService = ReservationService.Instance;
             _restaurantService = RestaurantService.Instance;
-
             _userId = App.Current.Properties["userId"].ToString();
-            InitializeRestaurantId();
+            BindingContext = this;
 
-            // Load the data when the page is displayed
-            LoadReservations();
+            // Start initialization in constructor
+            Task.Run(async () => await InitializePage());
         }
-        private async void InitializeRestaurantId()
+
+        private async Task InitializePage()
         {
             try
             {
-                // Fetch the restaurant ID by the user ID
+                IsBusy = true;
+
+                // Initialize restaurant ID
                 _restaurantId = await _restaurantService.GetRestaurantIdByUserId(_userId);
+
+                // Load reservations
+                await LoadReservations();
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Error", "Failed to get the restaurant ID. Please try again.", "OK");
-                Console.WriteLine($"Error getting the restaurant ID: {ex.Message}");
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    await DisplayAlert("Error", $"Failed to initialize: {ex.Message}", "OK");
+                });
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
-        private async void LoadReservations()
+
+        private async Task LoadReservations()
         {
             try
             {
-                // Load reservations from the database
+                if (string.IsNullOrEmpty(_restaurantId))
+                    throw new InvalidOperationException("Restaurant ID not initialized");
+
                 List<Reservation> reservations = await _reservationService.GetReservationsByRestaurantId(_restaurantId);
 
-                InProgressReservations = reservations.Where(r => r.Status == "In progress").ToList();
-                DoneReservations = reservations.Where(r => r.Status == "DONE").ToList();
-
-                // Display the reservations in the ListView           
-                ReservationsListView.ItemsSource = InProgressReservations;
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    InProgressReservations = reservations.Where(r => r.Status == "In progress").ToList();
+                    DoneReservations = reservations.Where(r => r.Status == "DONE").ToList();
+                    ReservationsListView.ItemsSource = InProgressReservations;
+                });
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Error", "Failed to load reservations. Please try again.", "OK");
-                Console.WriteLine($"Error loading reservations: {ex.Message}");
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    await DisplayAlert("Error", $"Failed to load reservations: {ex.Message}", "OK");
+                });
             }
         }
 
@@ -146,5 +176,11 @@ namespace QuickReserve.Views
             }
             _isDoneVisible = !_isDoneVisible;
         }
+
+        private async void OnViewReservationClicked(object sender, EventArgs e)
+        {
+            
+        }
     }
+     
 }

@@ -88,74 +88,21 @@ namespace QuickReserve.Views
                     App.Current.Properties["ReloadRestaurantProfilePage"] = "no";
                 }
             } 
-        }
-
-        // Delete food logic (for handling delete button click event)
-        private async void OnDeleteFoodClicked(object sender, EventArgs e)
+        }     
+         
+        private async void OnHoursButtonClicked(object sender, EventArgs e)
         {
-            // Get the FoodId from the CommandParameter
-            var button = (Button)sender;
-            var foodId = button.CommandParameter.ToString();
-
-            // Display confirmation alert
-            bool isConfirmed = await DisplayAlert("Confirm Deletion", "Are you sure you want to delete this food item?", "Yes", "No");
-
-            if (isConfirmed)
-            {
-                // If confirmed, proceed with the deletion
-                await DeleteFood(foodId);
-            }
-            else
-            {
-                // If not confirmed, do nothing
-                await DisplayAlert("Cancelled", "Food deletion was cancelled.", "OK");
-            }
-        }
-
-        private async Task DeleteFood(string foodId)
-        {
-            try
-            {
-                bool result = await _restaurantService.DeleteFoodFromRestaurant(_restaurant.RestaurantId, foodId);
-                if (result)
-                {
-                    await DisplayAlert("Success", "Food deleted successfully!", "OK");
-                    // Refresh restaurant data after deletion
-                    LoadRestaurantData();  // Refresh using the updated restaurant data
-                }
-                else
-                {
-                    await DisplayAlert("Error", "Failed to delete food.", "OK");
-                }
-            }
-            catch (Exception ex)
-            {
-                await DisplayAlert("Error", $"An error occurred: {ex.Message}", "OK");
-            }
-        }
-
-
-        // Edit food logic
-        private async void OnEditMenuClicked(object sender, EventArgs e)
-        {
-            var button = (Button)sender;
-            var foodId = button.CommandParameter.ToString();
-
-            // Navigáljunk az EditFoodPage-re a FoodId paraméterrel
-            await Navigation.PushAsync(new EditFoodPage(_restaurant.RestaurantId, foodId));
-        }
-
-
-        private async void OnEditHoursClicked(object sender, EventArgs e)
-        {
-            // Navigáljunk az EditFoodPage-re a FoodId paraméterrel
             await Navigation.PushAsync(new RestaurantEditHoursPage(_restaurant));
+        }
+
+        private async void OnMenuButtonClicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new RestaurantViewMenuPage(_restaurant));
         }
 
         private void OnLogoutClicked(object sender, EventArgs e)
         {
-            Preferences.Remove("userId");
-            Preferences.Remove("userEmail");
+            Preferences.Clear();
             App.Current.MainPage = new LoginPage();
         }
 
@@ -163,6 +110,5 @@ namespace QuickReserve.Views
         {
             await Navigation.PushAsync(new RestaurantEditInformationsPage(_restaurant));
         }
-    
     }
 }

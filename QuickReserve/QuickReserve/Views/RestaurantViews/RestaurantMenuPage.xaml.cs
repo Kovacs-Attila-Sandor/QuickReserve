@@ -65,7 +65,7 @@ namespace QuickReserve.Views
 
         private async void OnNoPreOrderClicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new ReservationSummaryPage(new List<Food>(), ReservationDateTime, TableId, GuestCount));
+            await Navigation.PushAsync(new ReservationSummaryPage(new Dictionary<Food, int>(), ReservationDateTime, TableId, GuestCount));
         }     
         private void OnCategorySelected(object sender, EventArgs e)
         {

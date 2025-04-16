@@ -3,160 +3,220 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Title="Reservation Summary"
-    BackgroundColor="#1E1E1E">
+    BackgroundColor="#1E1E1E"
+    NavigationPage.HasNavigationBar="False">
 
     <!--  Grid elrendezés, két sorral  -->
-    <Grid
-        Padding="20"
-        ColumnSpacing="10"
-        RowSpacing="15">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+    <StackLayout>
+        <Grid
+            Margin="20"
+            ColumnDefinitions="Auto,*,Auto"
+            RowDefinitions="Auto">
+            <!--  Back Button (Left)  -->
+            <ImageButton
+                Grid.Row="0"
+                Grid.Column="0"
+                BackgroundColor="Transparent"
+                Clicked="OnCancelClicked"
+                HorizontalOptions="Center"
+                Source="back_icon.png"
+                TranslationY="3"
+                VerticalOptions="Center"
+                WidthRequest="40" />
 
-        <!--  Töltőképernyő (ActivityIndicator)  -->
-        <ActivityIndicator
-            x:Name="loadingIndicator"
-            HorizontalOptions="Center"
-            IsRunning="True"
-            IsVisible="True"
-            VerticalOptions="CenterAndExpand" />
-
-        <!--  Töröljük az egész tartalmat, és csak betöltés után jelenítjük meg  -->
-        <StackLayout
-            x:Name="contentStack"
-            Grid.Row="0"
-            IsVisible="False">
-
-            <!--  Header  -->
+            <!--  Centered Title  -->
             <Label
+                Grid.Column="0"
+                Grid.ColumnSpan="3"
                 FontAttributes="Bold"
                 FontSize="28"
                 HorizontalOptions="Center"
-                Text="Reservation Summary"
-                TextColor="#FFD700" />
+                HorizontalTextAlignment="Center"
+                Text="Summary"
+                TextColor="White"
+                VerticalOptions="Center" />
+        </Grid>
 
-            <!--  Reservation Details Section  -->
-            <Frame
-                Padding="15"
-                BackgroundColor="#2C2C2C"
-                CornerRadius="10"
-                HasShadow="True">
-                <StackLayout Spacing="10">
-                    <Label
-                        FontAttributes="Bold"
-                        FontSize="20"
-                        Text="Reservation Details"
-                        TextColor="#FFFFFF" />
-                    <StackLayout Spacing="5">
-                        <Label
-                            FontSize="16"
-                            Text="Date and Time:"
-                            TextColor="#A9A9A9" />
-                        <Label
-                            FontSize="18"
-                            Text="{Binding ReservationDateTime}"
-                            TextColor="#FFFFFF" />
+        <Grid
+            Padding="20"
+            ColumnSpacing="10"
+            RowSpacing="15">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-                        <Label
-                            FontSize="16"
-                            Text="Table Number:"
-                            TextColor="#A9A9A9" />
-                        <Label
-                            FontSize="18"
-                            Text="{Binding TableNumber}"
-                            TextColor="#FFFFFF" />
 
+            <!--  Töltőképernyő (ActivityIndicator)  -->
+            <ActivityIndicator
+                x:Name="loadingIndicator"
+                HorizontalOptions="Center"
+                IsRunning="True"
+                IsVisible="True"
+                VerticalOptions="CenterAndExpand" />
+
+            <!--  Töröljük az egész tartalmat, és csak betöltés után jelenítjük meg  -->
+            <StackLayout
+                x:Name="contentStack"
+                Grid.Row="0"
+                IsVisible="False">
+
+
+
+                <!--  Reservation Details Section  -->
+                <Frame
+                    Padding="15"
+                    BackgroundColor="#2C2C2C"
+                    CornerRadius="10"
+                    HasShadow="True">
+                    <StackLayout Spacing="10">
                         <Label
-                            FontSize="16"
-                            Text="Guests:"
-                            TextColor="#A9A9A9" />
-                        <Label
-                            FontSize="18"
-                            Text="{Binding GuestCount}"
+                            FontAttributes="Bold"
+                            FontSize="20"
+                            Text="Reservation Details"
                             TextColor="#FFFFFF" />
+                        <StackLayout Spacing="5">
+                            <Label
+                                FontSize="16"
+                                Text="Date and Time:"
+                                TextColor="#A9A9A9" />
+                            <Label
+                                FontSize="18"
+                                Text="{Binding ReservationDateTime}"
+                                TextColor="#FFFFFF" />
+
+                            <Label
+                                FontSize="16"
+                                Text="Table Number:"
+                                TextColor="#A9A9A9" />
+                            <Label
+                                FontSize="18"
+                                Text="{Binding TableNumber}"
+                                TextColor="#FFFFFF" />
+
+                            <Label
+                                FontSize="16"
+                                Text="Guests:"
+                                TextColor="#A9A9A9" />
+                            <Label
+                                FontSize="18"
+                                Text="{Binding GuestCount}"
+                                TextColor="#FFFFFF" />
+                        </StackLayout>
                     </StackLayout>
-                </StackLayout>
-            </Frame>
+                </Frame>
 
-            <!--  Pre-ordered Items Section  -->
-            <Frame
-                Padding="15"
-                BackgroundColor="#2C2C2C"
-                CornerRadius="10"
-                HasShadow="True"
-                IsVisible="{Binding IsItemsVisible}">
-                <StackLayout Spacing="10">
-                    <Label
-                        FontAttributes="Bold"
-                        FontSize="20"
-                        Text="Pre-ordered Items"
-                        TextColor="#FFFFFF" />
-                    <ListView
-                        x:Name="OrderItemsListView"
-                        BackgroundColor="#3C3C3C"
-                        HasUnevenRows="True"
-                        ItemsSource="{Binding OrderItemsForSummaryPage}"
-                        SeparatorColor="#444444">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <ViewCell>
-                                    <StackLayout Orientation="Horizontal" Spacing="10">
-                                        <Label
-                                            Margin="10,10,0,5"
-                                            FontSize="18"
-                                            Text="{Binding Name}"
-                                            TextColor="#FFFFFF" />
-                                        <Label
-                                            Margin="0,10,10,5"
-                                            FontSize="16"
-                                            HorizontalOptions="EndAndExpand"
-                                            Text="{Binding Price, StringFormat='{0} €'}"
-                                            TextColor="#FFD700" />
-                                    </StackLayout>
-                                </ViewCell>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </StackLayout>
-            </Frame>
+                <!--  Pre-ordered Items Section  -->
+                <Frame
+                    Padding="15"
+                    BackgroundColor="#2C2C2C"
+                    CornerRadius="10"
+                    HasShadow="True"
+                    IsVisible="{Binding IsItemsVisible}">
+                    <StackLayout Spacing="10">
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="20"
+                            Text="Pre-ordered Items"
+                            TextColor="#FFFFFF" />
+                        <ListView
+                            x:Name="OrderItemsListView"
+                            BackgroundColor="#3C3C3C"
+                            HasUnevenRows="True"
+                            ItemsSource="{Binding OrderItemsForSummaryPage}"
+                            SeparatorColor="#444444">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <Frame
+                                            Margin="5,2"
+                                            Padding="12"
+                                            BackgroundColor="#3A3A3A"
+                                            BorderColor="#575757"
+                                            CornerRadius="10"
+                                            HasShadow="True">
 
-        </StackLayout>
+                                            <Grid ColumnDefinitions="*,Auto,Auto" RowDefinitions="Auto">
+                                                <!--  Food Name  -->
+                                                <Label
+                                                    Grid.Column="0"
+                                                    FontAttributes="Bold"
+                                                    FontSize="18"
+                                                    Text="{Binding Key.Name}"
+                                                    TextColor="#FFFFFF"
+                                                    VerticalOptions="Center" />
 
-        <!--  Gomb és végösszeg az alján (Grid.Row="1")  -->
-        <StackLayout
-            x:Name="finalContentStack"
-            Grid.Row="1"
-            HorizontalOptions="FillAndExpand"
-            IsVisible="False"
-            Spacing="10"
-            VerticalOptions="End">
-            <!--  Hozzáadott név, hogy később elérhető legyen  -->
-            <Label
-                FontAttributes="Bold"
-                FontSize="20"
-                HorizontalOptions="Center"
-                IsVisible="{Binding IsItemsVisible}"
-                Text="Total Amount"
-                TextColor="#FFD700" />
-            <Label
-                FontSize="18"
-                HorizontalOptions="Center"
-                IsVisible="{Binding IsItemsVisible}"
-                Text="{Binding TotalAmount, StringFormat='{0} €'}"
-                TextColor="#FFFFFF" />
+                                                <!--  Quantity  -->
+                                                <Label
+                                                    Grid.Column="1"
+                                                    Margin="0,0,15,0"
+                                                    FontSize="16"
+                                                    HorizontalOptions="End"
+                                                    Text="{Binding Value}"
+                                                    TextColor="#FFD700"
+                                                    VerticalOptions="Center">
+                                                    <Label.FormattedText>
+                                                        <FormattedString>
+                                                            <Span FontAttributes="Italic" Text="×" />
+                                                            <Span Text="{Binding Value}" />
+                                                        </FormattedString>
+                                                    </Label.FormattedText>
+                                                </Label>
 
-            <!--  Finalize Reservation Button  -->
-            <Button
-                Padding="15"
-                BackgroundColor="#FFD700"
-                Clicked="OnFinalizeReservation"
-                CornerRadius="25"
-                FontSize="18"
+                                                <!--  Price  -->
+                                                <Label
+                                                    Grid.Column="2"
+                                                    FontSize="16"
+                                                    HorizontalOptions="End"
+                                                    Text="{Binding Key.Price, StringFormat='{0} €'}"
+                                                    TextColor="#FFD700"
+                                                    VerticalOptions="Center" />
+                                            </Grid>
+                                        </Frame>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </StackLayout>
+                </Frame>
+
+            </StackLayout>
+
+            <!--  Gomb és végösszeg az alján (Grid.Row="1")  -->
+            <StackLayout
+                x:Name="finalContentStack"
+                Grid.Row="1"
                 HorizontalOptions="FillAndExpand"
-                Text="Finalize Reservation"
-                TextColor="#1E1E1E" />
-        </StackLayout>
-    </Grid>
+                IsVisible="False"
+                Spacing="10"
+                VerticalOptions="End">
+                <!--  Hozzáadott név, hogy később elérhető legyen  -->
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="20"
+                    HorizontalOptions="Center"
+                    IsVisible="{Binding IsItemsVisible}"
+                    Text="Total Amount"
+                    TextColor="#FFD700" />
+                <Label
+                    FontSize="18"
+                    HorizontalOptions="Center"
+                    IsVisible="{Binding IsItemsVisible}"
+                    Text="{Binding TotalAmount, StringFormat='{0} €'}"
+                    TextColor="#FFFFFF" />
+
+                <!--  Finalize Reservation Button  -->
+                <Button
+                    Padding="15"
+                    BackgroundColor="#FFD700"
+                    Clicked="OnFinalizeReservation"
+                    CornerRadius="25"
+                    FontSize="18"
+                    HorizontalOptions="FillAndExpand"
+                    Text="Finalize Reservation"
+                    TextColor="#1E1E1E" />
+            </StackLayout>
+        </Grid>
+    </StackLayout>
+
 </ContentPage>

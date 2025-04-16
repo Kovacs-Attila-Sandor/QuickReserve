@@ -1,6 +1,7 @@
 ﻿using QuickReserve.Services;
 using QuickReserve.Views;
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -14,7 +15,6 @@ namespace QuickReserve
         public App()
         {
             InitializeComponent();
-            Sharpnado.CollectionView.Initializer.Initialize(true, false);
             MainPage = new SplashPage();
 
             // Aszinkron inicializáció indítása

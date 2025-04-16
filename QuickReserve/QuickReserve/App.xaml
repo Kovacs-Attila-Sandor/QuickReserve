@@ -3,10 +3,14 @@
     x:Class="QuickReserve.App"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:converter="clr-namespace:QuickReserve.Converter">
+    xmlns:converters="clr-namespace:QuickReserve.Converter"
+    xmlns:local="clr-namespace:QuickReserve">
     <Application.Resources>
         <ResourceDictionary>
+            <converters:DateTimeStringFormatter x:Key="DateTimeFormatter" />
+
             <Color x:Key="Primary">#2196F3</Color>
+
             <Style TargetType="Button">
                 <Setter Property="TextColor" Value="White" />
                 <Setter Property="VisualStateManager.VisualStateGroups">

@@ -16,7 +16,7 @@ namespace QuickReserve.Views
         private Restaurant _restaurant;
         private RestaurantService restaurantService;
         private string _restaurantId;
-        private TimeSpan minTime = new TimeSpan(9, 0, 0);  
+        private TimeSpan minTime = new TimeSpan(9, 0, 0);
         private TimeSpan maxTime = new TimeSpan(22, 0, 0);
 
         public RestaurantLayoutPage(string restaurantId)
@@ -51,11 +51,11 @@ namespace QuickReserve.Views
                 }
 
                 SetupGrid();
-                await SetupTablesAsync(); // Átneveztem és await-et adtam hozzá
+                await SetupTablesAsync();
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Hiba", $"Nem sikerült betölteni az éttermet: {ex.Message}", "OK");
+                await DisplayAlert("Error", $"Failed to load restaurant: {ex.Message}", "OK");
             }
             finally
             {
@@ -78,7 +78,7 @@ namespace QuickReserve.Views
             }
         }
 
-        private Task SetupTablesAsync() // Átneveztem és Task-ra módosítottam
+        private Task SetupTablesAsync()
         {
             if (_restaurant?.Tables == null) return Task.CompletedTask;
 
@@ -105,7 +105,7 @@ namespace QuickReserve.Views
                     DynamicGrid.Children.Add(button, col, row);
                 }
             }
-            return Task.CompletedTask; // Visszatérünk egy befejezett Task-kal
+            return Task.CompletedTask;
         }
 
         private Button CreateTableButton()
@@ -138,25 +138,46 @@ namespace QuickReserve.Views
         {
             var button = sender as Button;
 
+            // Get the table position
+            var row = Grid.GetRow(button);
+            var col = Grid.GetColumn(button);
+
+            // Find the corresponding table
+            var table = _restaurant.Tables.FirstOrDefault(t =>
+                t.Location.Row == row && t.Location.Column == col);
+
+            if (table == null)
+            {
+                await DisplayAlert("Error", "Table not found!", "OK");
+                return;
+            }
+
             if (string.IsNullOrEmpty(button.Text))
             {
                 if (_selectedTableButton != null && _selectedTableButton != button)
                 {
-                    await DisplayAlert("Hiba", "Egyszerre csak egy asztalt választhatsz!", "OK");
+                    await DisplayAlert("Error", "You can only select one table at a time!", "OK");
                     return;
                 }
 
+                // Show the prompt with table capacity information
                 string result = await DisplayPromptAsync(
-                    "Helyek száma:",
-                    "Add meg a létszámot:",
-                    placeholder: "Létszám",
+                    $"Select Table (max {table.Capacity} people)",
+                    $"Enter number of guests:",
+                    placeholder: "Guest count",
                     maxLength: 3,
                     keyboard: Keyboard.Numeric
                 );
 
-                if (!string.IsNullOrEmpty(result) && int.TryParse(result, out _))
+                if (!string.IsNullOrEmpty(result) && int.TryParse(result, out int guestCount))
                 {
-                    button.Text = result;
+                    if (guestCount > table.Capacity)
+                    {
+                        await DisplayAlert("Error", $"This table can only accommodate {table.Capacity} people!", "OK");
+                        return;
+                    }
+
+                    button.Text = $"{guestCount}/{table.Capacity}";
                     button.BorderColor = Color.Black;
                     _selectedTableButton = button;
                 }
@@ -177,7 +198,7 @@ namespace QuickReserve.Views
 
                 if (selectedTime < minTime || selectedTime > maxTime)
                 {
-                    await DisplayAlert("Érvénytelen idő", "Kérlek, válassz időpontot 9:00 és 22:00 között!", "OK");
+                    await DisplayAlert("Invalid time", "Please select a time between 9:00 and 22:00!", "OK");
                     reservationTimePicker.Time = minTime;
                 }
             }
@@ -189,20 +210,20 @@ namespace QuickReserve.Views
             {
                 if (_selectedTableButton == null)
                 {
-                    await DisplayAlert("Hiba", "Kérlek, válassz asztalt a megerősítés előtt!", "OK");
+                    await DisplayAlert("Error", "Please select a table before confirming!", "OK");
                     return;
                 }
 
                 var selectedTime = reservationTimePicker.Time;
                 if (selectedTime < minTime || selectedTime > maxTime)
                 {
-                    await DisplayAlert("Hiba", "Kérlek, válassz időpontot 9:00 és 22:00 között!", "OK");
+                    await DisplayAlert("Error", "Please select a time between 9:00 and 22:00!", "OK");
                     return;
                 }
 
-                if (!int.TryParse(_selectedTableButton.Text, out int guestCount))
+                if (!int.TryParse(_selectedTableButton.Text.Split('/')[0], out int guestCount))
                 {
-                    await DisplayAlert("Hiba", "Érvénytelen létszám!", "OK");
+                    await DisplayAlert("Error", "Invalid guest count!", "OK");
                     return;
                 }
 
@@ -213,13 +234,13 @@ namespace QuickReserve.Views
 
                 if (table == null)
                 {
-                    await DisplayAlert("Hiba", "A kiválasztott asztal nem található!", "OK");
+                    await DisplayAlert("Error", "Selected table not found!", "OK");
                     return;
                 }
 
                 if (table.Capacity < guestCount || table.AvailabilityStatus != "Available")
                 {
-                    await DisplayAlert("Hiba", "Az asztal kapacitása nem elegendő vagy nem elérhető!", "OK");
+                    await DisplayAlert("Error", "Table capacity is insufficient or not available!", "OK");
                     return;
                 }
 
@@ -242,7 +263,7 @@ namespace QuickReserve.Views
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Hiba", $"A megerősítés sikertelen: {ex.Message}", "OK");
+                await DisplayAlert("Error", $"Confirmation failed: {ex.Message}", "OK");
             }
         }
 

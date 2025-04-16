@@ -3,81 +3,142 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Edit Profile"
-    BackgroundColor="#2c3e50">
+    BackgroundColor="#2c3e50"
+    NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Offset="0.0" Color="#1A1A1A" />
+            <GradientStop Offset="1.0" Color="#2D2D2D" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
 
     <ContentPage.Content>
-        <StackLayout
-            Padding="20"
-            HorizontalOptions="FillAndExpand"
-            Spacing="20"
-            VerticalOptions="FillAndExpand">
-
-            <!--  Profile Picture  -->
-            <Frame
-                Padding="0"
-                CornerRadius="60"
-                HasShadow="True"
-                HeightRequest="160"
-                HorizontalOptions="Center"
-                VerticalOptions="Start">
-                <Image
-                    Aspect="AspectFill"
-                    HeightRequest="160"
-                    Source="{Binding ProfileImageSource}"
-                    WidthRequest="160" />
-            </Frame>
-
-            <!--  user Information Edit Form  -->
-            <Frame
+        <ScrollView>
+            <StackLayout
                 Padding="20"
-                BackgroundColor="#34495e"
-                CornerRadius="20"
-                HasShadow="True"
-                HorizontalOptions="FillAndExpand"
-                VerticalOptions="Center">
-                <StackLayout Spacing="15">
+                Spacing="20"
+                VerticalOptions="Start">
+                <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto">
+                    <!--  Back Button (Left)  -->
+                    <ImageButton
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        BackgroundColor="Transparent"
+                        Clicked="OnCancelClicked"
+                        HorizontalOptions="Start"
+                        Source="back_icon.png"
+                        WidthRequest="40" />
 
-                    <!--  Name  -->
-                    <Entry
-                        x:Name="NameEntry"
-                        FontSize="20"
-                        Placeholder="Enter your name"
-                        PlaceholderColor="#bdc3c7"
-                        Text="{Binding Name}"
-                        TextColor="White" />
+                    <!--  Centered Title  -->
+                    <Label
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        FontAttributes="Bold"
+                        FontSize="28"
+                        HorizontalOptions="Center"
+                        HorizontalTextAlignment="Center"
+                        Text="Edit Profile"
+                        TextColor="White"
+                        VerticalOptions="Center" />
+                </Grid>
 
-                    <!--  Email  -->
-                    <Entry
-                        x:Name="EmailEntry"
-                        FontSize="20"
-                        Placeholder="Enter your email"
-                        PlaceholderColor="#bdc3c7"
-                        Text="{Binding Email}"
-                        TextColor="White" />
 
-                    <!--  Phone Number  -->
-                    <Entry
-                        x:Name="PhoneNumberEntry"
-                        FontSize="20"
-                        Placeholder="Enter your phone number"
-                        PlaceholderColor="#bdc3c7"
-                        Text="{Binding PhoneNumber}"
-                        TextColor="White" />
+                <!--  Profile Picture with Edit Icon  -->
+                <Grid
+                    HeightRequest="120"
+                    HorizontalOptions="Center"
+                    WidthRequest="120">
+                    <Frame
+                        Padding="0"
+                        BackgroundColor="#34495e"
+                        CornerRadius="60"
+                        HasShadow="True"
+                        HeightRequest="120"
+                        WidthRequest="120">
+                        <Image
+                            x:Name="ProfileImage"
+                            Aspect="AspectFill"
+                            HeightRequest="120"
+                            Source="{Binding ProfileImageSource}"
+                            WidthRequest="120" />
+                    </Frame>
+                    <!--  Edit Icon  -->
+                    <Image
+                        HeightRequest="40"
+                        HorizontalOptions="End"
+                        Source="edit_icon.png"
+                        TranslationX="20"
+                        VerticalOptions="End"
+                        WidthRequest="40">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnEditProfileImageClicked" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                </Grid>
 
-                    <!--  Save Button  -->
+                <!--  Edit Form Card (matching profile card style)  -->
+                <Frame
+                    Padding="20"
+                    BackgroundColor="#1E1E1E"
+                    CornerRadius="10"
+                    HasShadow="True">
+
+                    <StackLayout Spacing="15">
+                        <!--  Name Field  -->
+                        <StackLayout Spacing="5">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="12"
+                                Text="FULL NAME"
+                                TextColor="#BB86FC" />
+                            <Entry
+                                x:Name="NameEntry"
+                                BackgroundColor="Transparent"
+                                Placeholder="Enter your name"
+                                PlaceholderColor="#bdc3c7"
+                                Text="{Binding Name}"
+                                TextColor="White" />
+                        </StackLayout>
+                        
+                        <!--  Divider  -->                    
+                        <BoxView
+                            Margin="0,5"
+                            BackgroundColor="#383838"
+                            HeightRequest="1" />
+
+                        <!--  Phone Field  -->
+                        <StackLayout Spacing="5">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="12"
+                                Text="PHONE NUMBER"
+                                TextColor="#BB86FC" />
+                            <Entry
+                                x:Name="PhoneNumberEntry"
+                                BackgroundColor="Transparent"
+                                Keyboard="Telephone"
+                                Placeholder="Enter your phone"
+                                PlaceholderColor="#bdc3c7"
+                                Text="{Binding PhoneNumber}"
+                                TextColor="White" />
+                        </StackLayout>
+                    </StackLayout>
+                </Frame>
+
+                <!--  Action Buttons (using profile page's button style)  -->
+                <StackLayout Padding="0,20" Spacing="10">
+                    <!--  Save Button (matching edit profile button)  -->
                     <Button
-                        Padding="10"
                         BackgroundColor="#2980b9"
                         Clicked="OnSaveChangesClicked"
-                        CornerRadius="30"
+                        CornerRadius="5"
                         FontSize="20"
-                        HorizontalOptions="Center"
-                        Text="Save Changes"
-                        TextColor="White"
-                        WidthRequest="250" />
-
+                        HeightRequest="50"
+                        Text="SAVE CHANGES"
+                        TextColor="White" />
                 </StackLayout>
-            </Frame>
-        </StackLayout>
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

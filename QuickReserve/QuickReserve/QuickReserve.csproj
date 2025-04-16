@@ -8,13 +8,14 @@
 
   <ItemGroup>
     <PackageReference Include="FirebaseAuthentication.net" Version="4.1.0" />
-    <PackageReference Include="FirebaseDatabase.net" Version="4.2.0" />
+    <PackageReference Include="FirebaseDatabase.net" Version="5.0.0" />
     <PackageReference Include="Rg.Plugins.Popup" Version="2.1.0" />
     <PackageReference Include="Sharpnado.CollectionView" Version="2.1.0" />
     <PackageReference Include="SkiaSharp.Views.Forms" Version="2.88.9" />
     <PackageReference Include="Xam.Plugin.Media" Version="6.0.2" />
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2662" />  
-    <PackageReference Include="Xamarin.Essentials" Version="1.8.1" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.8.1" />  
+    <PackageReference Include="Xamarin.Forms.Visual.Material" Version="5.0.0.2662" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,6 +27,9 @@
     </Compile>
     <Compile Update="Views\PopUps\ViewFoodInformations.xaml.cs">
       <DependentUpon>ViewFoodInformations.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\RestaurantViews\RestaurantEditHoursPage.xaml.cs">
+      <DependentUpon>RestaurantEditHoursPage.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\SplashScreen\SplashPage.xaml.cs">
       <DependentUpon>SplashPage.xaml</DependentUpon>
@@ -39,13 +43,22 @@
     <EmbeddedResource Update="MainPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Views\ApplicationViews\AddEditFoodPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\ApplicationViews\AddMenuPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\ApplicationViews\CreateLayoutPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Views\ApplicationViews\FavoritesPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\ApplicationViews\FoodPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\RestaurantViews\RestaurantViewMenuPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\UserViews\EditUserProfilePage.xaml">

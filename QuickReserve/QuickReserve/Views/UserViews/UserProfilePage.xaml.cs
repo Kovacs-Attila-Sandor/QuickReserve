@@ -1,17 +1,19 @@
 ﻿using System;
 using Xamarin.Forms;
 using QuickReserve.Services;
-using QuickReserve.Models;
-using QuickReserve.Converter;
+using Plugin.Media.Abstractions;
+using Plugin.Media;
 using System.IO;
 using System.Reflection;
 using Xamarin.Essentials;
+using QuickReserve.Views.ApplicationViews;
+using Firebase.Auth;
 
 namespace QuickReserve.Views
 {
     public partial class UserProfilePage : ContentPage
     {
-        public User user { get; set; }
+        private User _user; // Privát mező a user objektum tárolására
 
         public UserProfilePage()
         {
@@ -19,27 +21,33 @@ namespace QuickReserve.Views
             LoadUserData();
         }
 
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            LoadUserData(); // Frissíti az adatokat PopAsync után
+        }
+
         private async void LoadUserData()
         {
             var userService = UserService.Instance;
             string userID = App.Current.Properties["userId"].ToString();
-            user = await userService.GetUserById(userID);
+            _user = await userService.GetUserById(userID);
 
-            if (user != null)
+            if (_user != null)
             {
-                // If the user doesn't have a profile image, use the placeholder image
-                if (string.IsNullOrEmpty(user.ProfileImage))
+                // Ha a felhasználónak nincs profilképe, használjuk a placeholder képet
+                if (string.IsNullOrEmpty(_user.ProfileImage))
                 {
-                    user.ProfileImageSource = ImageSource.FromFile("placeholder.jpg");
+                    _user.ProfileImage = Convert.ToBase64String(GetPlaceholderImageBytes());
                 }
                 else
                 {
-                    // If the user has a profile image, use it
-                    user.ProfileImageSource = ImageSource.FromStream(() =>
-                        new MemoryStream(Convert.FromBase64String(user.ProfileImage)));
+                    _user.ProfileImageSource = ImageSource.FromStream(() =>
+                        new MemoryStream(Convert.FromBase64String(_user.ProfileImage)));
                 }
 
-                BindingContext = this; // Set data binding
+                // A BindingContext-et közvetlenül a _user objektumra állítjuk
+                BindingContext = _user;
             }
             else
             {
@@ -47,20 +55,72 @@ namespace QuickReserve.Views
             }
         }
 
-        // Edit profile button click handler
+        // Placeholder kép beolvasása az erőforrásokból
+        private byte[] GetPlaceholderImageBytes()
+        {
+            var assembly = typeof(UserProfilePage).GetTypeInfo().Assembly;
+            using (var stream = assembly.GetManifestResourceStream("QuickReserve.Resources.placeholder.jpg"))
+            {
+                if (stream == null)
+                    return null;
+
+                using (var memoryStream = new MemoryStream())
+                {
+                    stream.CopyTo(memoryStream);
+                    return memoryStream.ToArray();
+                }
+            }
+        }
+
         private async void OnEditProfileClicked(object sender, EventArgs e)
         {
-            // Navigate to the edit profile page
-            await Navigation.PushAsync(new EditUserProfilePage(user));
+            await Navigation.PushAsync(new EditUserProfilePage(_user));
         }
 
-        private void OnLogoutClicked(object sender, EventArgs e)
+        private async void OnFavoriteFoodsClicked(object sender, EventArgs e)
         {
-            Preferences.Remove("userId");
-            Preferences.Remove("userEmail");
+            // Javítsd ki, hogy a FavoriteFoodsPage-re navigáljon, ne az EditUserProfilePage-re
+            await Navigation.PushAsync(new FavoritesPage(_user.UserId));
+        }
+
+        private async void OnLogoutClicked(object sender, EventArgs e)
+        {
+            Preferences.Clear();
             App.Current.MainPage = new NavigationPage(new LoginPage());
         }
-       
 
+        private async void OnEditProfileImageClicked(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!CrossMedia.Current.IsPickPhotoSupported)
+                {
+                    await DisplayAlert("Not Supported", "Photo picking is not supported on this device.", "OK");
+                    return;
+                }
+
+                var photo = await CrossMedia.Current.PickPhotoAsync(new PickMediaOptions
+                {
+                    PhotoSize = PhotoSize.Medium,
+                    CompressionQuality = 80
+                });
+
+                if (photo == null)
+                    return;
+
+                using (var stream = photo.GetStream())
+                using (var memoryStream = new MemoryStream())
+                {
+                    await stream.CopyToAsync(memoryStream);
+                    byte[] imageBytes = memoryStream.ToArray();
+                    string base64Image = Convert.ToBase64String(imageBytes);
+                    _user.ProfileImage = base64Image; // Frissíti a ProfileImage-t, ami automatikusan frissíti a ProfileImageSource-t
+                }
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", $"An error occurred while selecting the image: {ex.Message}", "OK");
+            }
+        }
     }
 }

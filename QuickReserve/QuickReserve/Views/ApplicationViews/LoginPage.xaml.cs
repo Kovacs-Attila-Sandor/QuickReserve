@@ -60,7 +60,6 @@ namespace QuickReserve.Views
                     txtEmail.Text.Trim(), txtPassword.Text.Trim());
 
                 var  (userId, userType) = await _userService.GetUserIdAndUserTypeByEmail(txtEmail.Text);
-                
 
                 if (!string.IsNullOrEmpty(userId))
                 {

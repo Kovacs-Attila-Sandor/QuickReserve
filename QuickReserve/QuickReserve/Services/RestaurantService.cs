@@ -77,22 +77,20 @@ namespace QuickReserve.Services
         {
             try
             {
-                // Lekérjük az étterem adatokat a "Restaurant" gyűjteményből a megadott RestaurantId alapján
-                var allRestaurant = await FirebaseService
+                // Query directly with the userId condition
+                var restaurants = await FirebaseService
                     .Client
-                    .Child("Restaurant")  // "Restaurant" gyűjtemény                  
-                    .OnceAsync<Restaurant>();  // Az adatokat Restaurant típusra deszerializáljuk
+                    .Child("Restaurant")
+                    .OrderBy("UserId")
+                    .EqualTo(userId)
+                    .OnceAsync<Restaurant>();
 
-                var restaurant = allRestaurant
-                    .Select(u => u.Object)
-                    .FirstOrDefault(u => u.UserId == userId);
-
-                return restaurant.RestaurantId;  // Az étterem adatainak visszaadása
+                return restaurants.FirstOrDefault()?.Object?.RestaurantId;
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error fetching restaurant: {ex.Message}");
-                return null;  // Hiba esetén null-t adunk vissza
+                return null;
             }
         }
 
@@ -300,13 +298,14 @@ namespace QuickReserve.Services
             target.Price = source.Price != 0 ? source.Price : target.Price;
             target.Category = source.Category ?? target.Category;
             target.Picture = source.Picture ?? target.Picture;
-            target.IsAvailable = source.IsAvailable; // Ez feltételezi, hogy false az alapértelmezett
+            target.IsAvailable = source.IsAvailable;
             target.PreparationTime = source.PreparationTime != 0 ? source.PreparationTime : target.PreparationTime;
             target.Ingredients = source.Ingredients ?? target.Ingredients;
             target.Allergens = source.Allergens ?? target.Allergens;
-            target.NutritionalInfo = source.NutritionalInfo ?? target.NutritionalInfo;
+            target.Calories = source.Calories != 0 ? source.Calories :target.Calories;
             target.Tags = source.Tags ?? target.Tags;
             target.Ratings = source.Ratings ?? target.Ratings;
+            target.Weight = source.Weight != 0 ? source.Weight : target.Weight;
         }
 
         public async Task<Table> GetTableById(string restaurantId, string tableId)
@@ -520,29 +519,85 @@ namespace QuickReserve.Services
             }
         }
 
-        public IDisposable ListenForRestaurantChanges(string restaurantId, Action<Restaurant> onRestaurantUpdated)
+        public async Task<List<Food>> GetFoodsByFoodsIds(List<string> foodIds)
         {
-            var firebaseClient = FirebaseService.Client;
-            Debug.WriteLine($"Restaurant ID: {restaurantId}");
+            try
+            {
+                // Lekérjük az összes étterem adatait
+                var restaurantData = await FirebaseService
+                    .Client
+                    .Child("Restaurant")
+                    .OnceAsync<Restaurant>();
 
-            var subscription = firebaseClient
-                .Child("Restaurant")
-                .Child(restaurantId)
-                .AsObservable<Restaurant>()
-                .Subscribe(d =>
+                var foundFoods = new List<Food>();
+
+                // Végigmegyünk az éttermeken
+                foreach (var item in restaurantData)
                 {
-                    Debug.WriteLine($"🔥 Firebase adat érkezett: {JsonConvert.SerializeObject(d.Object)}");
+                    var restaurant = item.Object;
+                    // Keresünk minden olyan ételt, amelynek FoodId-je szerepel a foodIds listában
+                    var matchingFoods = restaurant.Foods.Where(f => foodIds.Contains(f.FoodId)).ToList();
+                    foundFoods.AddRange(matchingFoods);
+                }
 
-                    var restaurant = JsonConvert.DeserializeObject<Restaurant>(JsonConvert.SerializeObject(d.Object));
-                    if (restaurant != null)
-                    {
-                        Device.BeginInvokeOnMainThread(() =>
-                        {
-                            onRestaurantUpdated?.Invoke(restaurant);
-                        });
-                    }
-                });
-            return subscription;
+                return foundFoods; // Visszaadjuk a megtalált ételek listáját
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching foods by IDs: {ex.Message}");
+                return new List<Food>(); // Hiba esetén üres listát adunk vissza
+            }
         }
+
+        public async Task<bool> UpdateFoodOrderCount(Dictionary<string, int> FoodIdsAndOrderCounts)
+        {
+            try
+            {
+                // Lekérjük az összes étterem adatait
+                var restaurantData = await FirebaseService
+                    .Client
+                    .Child("Restaurant")
+                    .OnceAsync<Restaurant>();
+
+                bool anyUpdated = false;
+
+                // Végigmegyünk az éttermeken
+                foreach (var item in restaurantData)
+                {
+                    var restaurant = item.Object;
+                    bool restaurantUpdated = false;
+
+                    // Végigmegyünk az étterem ételein
+                    foreach (var food in restaurant.Foods)
+                    {
+                        if (FoodIdsAndOrderCounts.TryGetValue(food.FoodId, out int additionalOrders))
+                        {
+                            // Frissítjük az OrderCount értékét
+                            food.OrderCount += additionalOrders;
+                            restaurantUpdated = true;
+                        }
+                    }
+
+                    // Ha az étterem ételei frissültek, frissítjük az étterem adatait a Firebase-ban
+                    if (restaurantUpdated)
+                    {
+                        await FirebaseService
+                            .Client
+                            .Child("Restaurant")
+                            .Child(restaurant.RestaurantId)
+                            .PutAsync(JsonConvert.SerializeObject(restaurant));
+                        anyUpdated = true;
+                    }
+                }
+
+                return anyUpdated; // Igaz, ha legalább egy étel frissült
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error updating food order counts: {ex.Message}");
+                return false; // Hiba esetén false
+            }
+        }
+
     }
 }

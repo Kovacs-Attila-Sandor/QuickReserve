@@ -3,114 +3,159 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Profile"
-    BackgroundColor="#2c3e50">
+    Visual="Material">
 
-    <!--  White text for navbar  -->
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Offset="0.0" Color="#1A1A1A" />
+            <GradientStop Offset="1.0" Color="#2D2D2D" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <!--  Dark background  -->
+            <Color x:Key="PrimaryColor">#BB86FC</Color>
+            <Color x:Key="PrimaryButtonColor">#636363</Color>
+            <!--  Purple 200  -->
+            <Color x:Key="PrimaryDarkColor">#3700B3</Color>
+            <Color x:Key="SecondaryColor">#03DAC6</Color>
+            <!--  Teal 200  -->
+            <Color x:Key="ErrorColor">#CF6679</Color>
+            <!--  Error 200  -->
+            <Color x:Key="OnPrimaryColor">#000000</Color>
+            <Color x:Key="OnSecondaryColor">#000000</Color>
+            <Color x:Key="OnSurfaceColor">#FFFFFF</Color>
+            <!--  White text on dark surfaces  -->
+            <Color x:Key="SurfaceColor">#1E1E1E</Color>
+            <!--  Dark card backgrounds  -->
+            <Color x:Key="DividerColor">#383838</Color>
+            <!--  Darker divider  -->
+            <Color x:Key="TertiaryColor">#FFA000</Color>
+            <!--  Amber 600 for favorite foods button  -->
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <ContentPage.Content>
-        <Grid>
+        <ScrollView>
             <StackLayout
-                Padding="20"
-                HorizontalOptions="FillAndExpand"
-                Spacing="20"
-                VerticalOptions="FillAndExpand">
+                Padding="16"
+                Spacing="24"
+                VerticalOptions="Start">
 
-                <!--  Profile Picture  -->
+                <!--  Profile Header  -->
+                <StackLayout HorizontalOptions="Center" Spacing="16">
+
+                    <!--  Profile Picture  -->
+                    <Frame
+                        Padding="0"
+                        BackgroundColor="{DynamicResource SurfaceColor}"
+                        CornerRadius="60"
+                        HasShadow="True"
+                        HeightRequest="120"
+                        HorizontalOptions="Center"
+                        WidthRequest="120">
+                        <Image
+                            Aspect="AspectFill"
+                            HeightRequest="120"
+                            Source="{Binding ProfileImageSource}"
+                            WidthRequest="120" />
+                    </Frame>
+
+                    <!--  Name  -->
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="24"
+                        HorizontalOptions="Center"
+                        Text="{Binding Name}"
+                        TextColor="{DynamicResource OnSurfaceColor}" />
+                </StackLayout>
+
+                <!--  User Details Card  -->
                 <Frame
-                    Padding="0"
-                    CornerRadius="60"
-                    HasShadow="True"
-                    HeightRequest="160"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Start">
-                    <Image
-                        Aspect="AspectFill"
-                        HeightRequest="160"
-                        Source="{Binding user.ProfileImageSource}"
-                        WidthRequest="160" />
-                </Frame>
+                    Padding="16"
+                    BackgroundColor="{DynamicResource SurfaceColor}"
+                    CornerRadius="8"
+                    HasShadow="True">
 
-                <!--  User Information Card  -->
-                <Frame
-                    Padding="20"
-                    BackgroundColor="#34495e"
-                    CornerRadius="20"
-                    HasShadow="True"
-                    HorizontalOptions="FillAndExpand"
-                    VerticalOptions="Center">
-                    <StackLayout Spacing="15">
-                        <!--  Name  -->
-                        <Label
-                            FontAttributes="Bold"
-                            FontSize="28"
-                            HorizontalOptions="Center"
-                            Text="{Binding user.Name}"
-                            TextColor="White" />
-
+                    <StackLayout Spacing="16">
                         <!--  Email  -->
-                        <StackLayout Orientation="Horizontal" Spacing="10">
+                        <StackLayout Spacing="4">
                             <Label
                                 FontAttributes="Bold"
-                                FontSize="20"
-                                Text="Email:"
-                                TextColor="#bdc3c7" />
+                                FontSize="12"
+                                Text="EMAIL"
+                                TextColor="{DynamicResource PrimaryColor}" />
                             <Label
-                                FontSize="20"
-                                Text="{Binding user.Email}"
-                                TextColor="White" />
-                            <!--  White text for details  -->
+                                FontSize="16"
+                                Text="{Binding Email}"
+                                TextColor="{DynamicResource OnSurfaceColor}" />
                         </StackLayout>
 
-                        <!--  Phone Number  -->
-                        <StackLayout Orientation="Horizontal" Spacing="10">
+                        <BoxView BackgroundColor="{DynamicResource DividerColor}" HeightRequest="1" />
+
+                        <!--  Phone  -->
+                        <StackLayout Spacing="4">
                             <Label
                                 FontAttributes="Bold"
-                                FontSize="20"
-                                Text="Phone:"
-                                TextColor="#bdc3c7" />
+                                FontSize="12"
+                                Text="PHONE NUMBER"
+                                TextColor="{DynamicResource PrimaryColor}" />
                             <Label
-                                FontSize="20"
-                                Text="{Binding user.PhoneNumber}"
-                                TextColor="White" />
+                                FontSize="16"
+                                Text="{Binding PhoneNumber}"
+                                TextColor="{DynamicResource OnSurfaceColor}" />
                         </StackLayout>
 
-                        <!--  Created At  -->
-                        <StackLayout Orientation="Horizontal" Spacing="10">
+                        <BoxView BackgroundColor="{DynamicResource DividerColor}" HeightRequest="1" />
+
+                        <!--  Member Since  -->
+                        <StackLayout Spacing="4">
                             <Label
                                 FontAttributes="Bold"
-                                FontSize="20"
-                                Text="Member Since:"
-                                TextColor="#bdc3c7" />
+                                FontSize="12"
+                                Text="MEMBER SINCE"
+                                TextColor="{DynamicResource PrimaryColor}" />
                             <Label
-                                FontSize="20"
-                                Text="{Binding user.CreatedAt}"
-                                TextColor="White" />
+                                FontSize="16"
+                                Text="{Binding CreatedAt, Converter={StaticResource DateTimeFormatter}}"
+                                TextColor="{DynamicResource OnSurfaceColor}" />
                         </StackLayout>
-
-                        <!--  Edit Profile Button  -->
-                        <Button
-                            Padding="10"
-                            BackgroundColor="#2980b9"
-                            Clicked="OnEditProfileClicked"
-                            CornerRadius="30"
-                            FontSize="20"
-                            HorizontalOptions="Center"
-                            Text="Edit Profile"
-                            TextColor="White"
-                            WidthRequest="250" />
-                        <Button
-                            Padding="10"
-                            BackgroundColor="red"
-                            Clicked="OnLogoutClicked"
-                            CornerRadius="30"
-                            FontSize="20"
-                            HorizontalOptions="Center"
-                            Text="Logout"
-                            TextColor="White"
-                            WidthRequest="250" />
                     </StackLayout>
                 </Frame>
+
+                <!--  Action Buttons  -->
+                <StackLayout Spacing="8">
+                    <Button
+                        BackgroundColor="{DynamicResource PrimaryButtonColor}"
+                        Clicked="OnEditProfileClicked"
+                        CornerRadius="5"
+                        HeightRequest="48"
+                        Text="EDIT PROFILE"
+                        TextColor="{DynamicResource OnPrimaryColor}"
+                        Visual="Material" />
+
+                    <Button
+                        BackgroundColor="{DynamicResource PrimaryButtonColor}"
+                        Clicked="OnFavoriteFoodsClicked"
+                        CornerRadius="5"
+                        HeightRequest="48"
+                        Text="FAVORITES"
+                        TextColor="{DynamicResource OnPrimaryColor}"
+                        Visual="Material" />
+
+                    <Button
+                        BackgroundColor="Transparent"
+                        BorderColor="{DynamicResource ErrorColor}"
+                        BorderWidth="1"
+                        Clicked="OnLogoutClicked"
+                        CornerRadius="5"
+                        HeightRequest="48"
+                        Text="LOGOUT"
+                        TextColor="{DynamicResource ErrorColor}"
+                        Visual="Material" />
+                </StackLayout>
             </StackLayout>
-        </Grid>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

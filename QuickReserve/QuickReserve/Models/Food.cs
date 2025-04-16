@@ -18,13 +18,13 @@ namespace QuickReserve.Models
         public int PreparationTime { get; set; }
         public List<string> Ingredients { get; set; }
         public List<string> Allergens { get; set; }
-        public Dictionary<string, double> NutritionalInfo { get; set; }
+        public double Calories { get; set; }
         public List<string> Tags { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime LastUpdated { get; set; }
         public int OrderCount { get; set; }
         public List<Rating> Ratings { get; set; } = new List<Rating>();
-        public string Weight { get; set; }
+        public double Weight { get; set; }
 
         [JsonIgnore]
         public ImageSource ImageSource { get; set; }

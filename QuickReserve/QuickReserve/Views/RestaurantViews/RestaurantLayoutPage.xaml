@@ -50,7 +50,7 @@
                     Spacing="25"
                     VerticalOptions="CenterAndExpand">
                     <StackLayout x:Name="Buttons">
-                        <Grid ColumnDefinitions="Auto" RowDefinitions="Auto">
+                        <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto">
                             <ImageButton
                                 Grid.Row="0"
                                 Grid.Column="0"
@@ -60,7 +60,7 @@
                                 WidthRequest="40" />
                             <Label
                                 Grid.Row="0"
-                                Grid.Column="1"
+                                Grid.ColumnSpan="3"
                                 FontAttributes="Bold"
                                 FontSize="28"
                                 HorizontalOptions="Center"
@@ -80,7 +80,10 @@
                                     HorizontalOptions="Center"
                                     Text="Please select a date and time"
                                     TextColor="White" />
-                                <StackLayout Orientation="Horizontal" Spacing="15" HorizontalOptions="Center">
+                                <StackLayout
+                                    HorizontalOptions="Center"
+                                    Orientation="Horizontal"
+                                    Spacing="15">
                                     <Frame Style="{StaticResource PickerStyle}">
                                         <DatePicker
                                             x:Name="reservationDatePicker"

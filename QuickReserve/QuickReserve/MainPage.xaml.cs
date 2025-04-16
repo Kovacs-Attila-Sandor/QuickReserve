@@ -28,7 +28,7 @@ namespace QuickReserve
             else if (userType == "RESTAURANT")
             {
                 Children.Add(new RestaurantReservationsPage { Title = "Reservations", IconImageSource = "reservation_icon.png" });
-                Children.Add(new RestaurantProfilePage { Title = "Restaurant Profile", IconImageSource = "profile_icon.png" });
+                Children.Add(new RestaurantProfilePage { Title = "Profile", IconImageSource = "profile_icon.png" });
             }
         }
     }

@@ -1,7 +1,10 @@
 ﻿using Firebase.Database.Query;
 using Newtonsoft.Json;
+using QuickReserve.Converter;
+using QuickReserve.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -260,6 +263,102 @@ namespace QuickReserve.Services
             {
                 Console.WriteLine($"Error removing favorite food: {ex.Message}");
                 return false;
+            }
+        }
+
+        public async Task<List<Food>> GetFavoriteFoods(string userId)
+        {
+            try
+            {
+                // 1. Lépés: Felhasználó lekérdezése a LikedFoods lista megszerzéséhez
+                var user = await GetUserById(userId);
+                if (user == null || user.LikedFoods == null || !user.LikedFoods.Any())
+                {
+                    Console.WriteLine($"No favorite foods found for user {userId}.");
+                    return new List<Food>(); // Üres lista, ha nincs kedvenc étel
+                }
+                // 2. Lépés: Összes étterem lekérdezése a Firebase-ból
+                var restaurantsResponse = await FirebaseService
+                    .Client
+                    .Child("Restaurant")
+                    .OnceAsync<Restaurant>();
+
+                if (restaurantsResponse == null || !restaurantsResponse.Any())
+                {
+                    Console.WriteLine("No restaurants found in the database.");
+                    return new List<Food>(); // Üres lista, ha nincs étterem
+                }
+
+                // 3. Lépés: Összes étel összegyűjtése az éttermekből
+                var allFoods = new List<Food>();
+                foreach (var restaurant in restaurantsResponse)
+                {
+                    var restaurantData = restaurant.Object;
+                    if (restaurantData.Foods != null && restaurantData.Foods.Any())
+                    {
+                        allFoods.AddRange(restaurantData.Foods);
+                    }
+                }
+
+                // 4. Lépés: Kedvenc ételek kiválogatása a LikedFoods alapján
+                var favoriteFoods = allFoods
+                    .Where(food => user.LikedFoods.Contains(food.FoodId))
+                    .ToList();
+
+                return favoriteFoods;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error getting favorite foods: {ex.Message}");
+                return new List<Food>(); // Hiba esetén üres lista
+            }
+        }
+
+        public async Task<List<Restaurant>> GetFavoriteRestaurants(string userId)
+        {
+            try
+            {
+                // 1. Lépés: Felhasználó lekérdezése a LikedRestaurants lista megszerzéséhez
+                var user = await GetUserById(userId);
+                if (user == null || user.LikedRestaurants == null || !user.LikedRestaurants.Any())
+                {
+                    Console.WriteLine($"No favorite restaurants found for user {userId}.");
+                    return new List<Restaurant>(); // Üres lista, ha nincs kedvenc étterem
+                }
+
+                // 2. Lépés: Összes étterem lekérdezése a Firebase-ból
+                var restaurantsResponse = await FirebaseService
+                    .Client
+                    .Child("Restaurant")
+                    .OnceAsync<Restaurant>();
+
+                if (restaurantsResponse == null || !restaurantsResponse.Any())
+                {
+                    Console.WriteLine("No restaurants found in the database.");
+                    return new List<Restaurant>(); // Üres lista, ha nincs étterem
+                }
+
+                // 3. Lépés: Kedvenc éttermek kiválogatása a LikedRestaurants alapján
+                var favoriteRestaurants = restaurantsResponse
+                    .Select(r => r.Object)
+                    .Where(restaurant => user.LikedRestaurants.Contains(restaurant.RestaurantId))
+                    .ToList();
+
+                // 4. Lépés: ImageSourceUri beállítása minden étteremhez (opcionális, ha képeket használsz)
+                foreach (var restaurant in favoriteRestaurants)
+                {
+                    if (!string.IsNullOrEmpty(restaurant.FirstImageBase64))
+                    {
+                        restaurant.ImageSourceUri = ImageConverter.ConvertBase64ToImageSource(restaurant.FirstImageBase64);
+                    }
+                }
+
+                return favoriteRestaurants;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error getting favorite restaurants: {ex.Message}");
+                return new List<Restaurant>(); // Hiba esetén üres lista
             }
         }
     }

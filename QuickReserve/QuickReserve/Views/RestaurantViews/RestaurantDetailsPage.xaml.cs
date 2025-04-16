@@ -173,17 +173,19 @@ namespace QuickReserve.Views
             }
         }
 
-        private async void OnItemTapped(object sender, ItemTappedEventArgs e)
+        private async void OnItemTapped(object sender, EventArgs e)
         {
-            if (e.Item != null)
+            // A sender a Frame, amelyre a TapGestureRecognizer vonatkozik
+            var frame = sender as Frame;
+            if (frame != null)
             {
-                var food = e.Item as Food;
+                // A BindingContext-ből kinyerjük a Food objektumot
+                var food = frame.BindingContext as Food;
                 if (food != null)
                 {
+                    // Navigáció a FoodPage-re a food és restaurant.RestaurantId paraméterekkel
                     await Navigation.PushAsync(new FoodPage(food, restaurant.RestaurantId));
                 }
-
-                ((ListView)sender).SelectedItem = null;
             }
         }
     }

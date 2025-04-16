@@ -257,23 +257,6 @@ namespace QuickReserve.Views.ApplicationViews
         }
     }
 
-    public class DictToStringConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            if (value is Dictionary<string, double> dict && dict != null && dict.Any())
-            {
-                return string.Join(", ", dict.Select(kv => $"{kv.Value}"));
-            }
-            return "N/A";
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
     public class PriceConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
