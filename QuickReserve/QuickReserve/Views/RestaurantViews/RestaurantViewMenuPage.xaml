@@ -3,6 +3,7 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:QuickReserve.Views.RestaurantViews"
+    xmlns:converters="clr-namespace:QuickReserve.Converter"
     Title="Menu"
     BackgroundColor="#1C1C1C"
     NavigationPage.HasNavigationBar="False">
@@ -16,6 +17,8 @@
             <Color x:Key="SurfaceLightColor">#383838</Color>
             <Color x:Key="OnSurfaceColor">#FFFFFF</Color>
             <Color x:Key="SecondaryTextColor">#B0B0B0</Color>
+
+            <converters:IsPositiveConverter x:Key="IsPositiveConverter" />
 
             <!--  Card Title Style  -->
             <Style x:Key="CardTitleStyle" TargetType="Label">
@@ -98,9 +101,8 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout Padding="15" Spacing="10">
-                <!--  Header with Back Button and Title  -->
+                <!-- Header with Back Button and Title -->
                 <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto">
-                    <!--  Back Button (Left)  -->
                     <ImageButton
                         Grid.Row="0"
                         Grid.Column="0"
@@ -109,8 +111,6 @@
                         HorizontalOptions="Start"
                         Source="back_icon.png"
                         WidthRequest="40" />
-
-                    <!--  Centered Title  -->
                     <Label
                         Grid.Column="0"
                         Grid.ColumnSpan="3"
@@ -123,7 +123,7 @@
                         VerticalOptions="Center" />
                 </Grid>
 
-                <!--  Search Bar  -->
+                <!-- Search Bar -->
                 <Frame
                     Margin="10"
                     Padding="0"
@@ -138,13 +138,13 @@
                         TextChanged="OnSearchTextChanged" />
                 </Frame>
 
-                <!--  Add New Food Button  -->
+                <!-- Add New Food Button -->
                 <Button
                     Clicked="OnAddNewFoodClicked"
                     Style="{StaticResource PrimaryButtonStyle}"
                     Text="Add New Item" />
 
-                <!--  Menu Items  -->
+                <!-- Menu Items -->
                 <CollectionView x:Name="FoodCollectionView" ItemsSource="{Binding .}">
                     <CollectionView.Header>
                         <Label
@@ -166,7 +166,7 @@
                                 HasShadow="True">
 
                                 <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto">
-                                    <!--  Food Card  -->
+                                    <!-- Food Card -->
                                     <Frame
                                         Grid.Column="0"
                                         Grid.ColumnSpan="2"
@@ -175,7 +175,7 @@
                                         CornerRadius="12"
                                         HasShadow="False">
                                         <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto,Auto,Auto">
-                                            <!--  Food Image  -->
+                                            <!-- Food Image -->
                                             <Image
                                                 Grid.RowSpan="4"
                                                 Grid.Column="0"
@@ -185,7 +185,7 @@
                                                 Source="{Binding ImageSource, FallbackValue='default_food.png'}"
                                                 WidthRequest="70" />
 
-                                            <!--  Food Name  -->
+                                            <!-- Food Name -->
                                             <Label
                                                 Grid.Row="0"
                                                 Grid.Column="1"
@@ -195,7 +195,7 @@
                                                 TextColor="{DynamicResource OnSurfaceColor}"
                                                 VerticalOptions="Center" />
 
-                                            <!--  Food Description  -->
+                                            <!-- Food Description -->
                                             <Label
                                                 Grid.Row="1"
                                                 Grid.Column="1"
@@ -205,7 +205,7 @@
                                                 Text="{Binding Description}"
                                                 TextColor="{DynamicResource SecondaryTextColor}" />
 
-                                            <!--  Food Category  -->
+                                            <!-- Food Category -->
                                             <Label
                                                 Grid.Row="2"
                                                 Grid.Column="1"
@@ -214,19 +214,42 @@
                                                 Text="{Binding Category}"
                                                 TextColor="{DynamicResource PrimaryLightColor}" />
 
-                                            <!--  Food Price  -->
-                                            <Label
+                                            <!-- Food Price and Discounted Price -->
+                                            <Grid
                                                 Grid.Row="3"
                                                 Grid.Column="1"
-                                                FontAttributes="Bold"
-                                                FontSize="16"
-                                                Text="{Binding Price, StringFormat='{0} €'}"
-                                                TextColor="{DynamicResource PrimaryColor}"
-                                                VerticalOptions="Center" />
+                                                ColumnDefinitions="Auto,Auto"
+                                                HorizontalOptions="Start"
+                                                VerticalOptions="Center">
+                                                <!-- Price Label (always shown, strikethrough if DiscountedPrice exists) -->
+                                                <Label
+                                                    Grid.Column="0"
+                                                    FontAttributes="Bold"
+                                                    FontSize="16"
+                                                    Text="{Binding Price, StringFormat='{0:F2} €'}"
+                                                    TextColor="{DynamicResource PrimaryColor}">
+                                                    <Label.Triggers>
+                                                        <DataTrigger TargetType="Label" Binding="{Binding DiscountedPrice, Converter={StaticResource IsPositiveConverter}}" Value="True">
+                                                            <Setter Property="TextDecorations" Value="Strikethrough" />
+                                                            <Setter Property="TextColor" Value="{DynamicResource SecondaryTextColor}" />
+                                                        </DataTrigger>
+                                                    </Label.Triggers>
+                                                </Label>
+
+                                                <!-- Discounted Price Label (shown only if DiscountedPrice exists and > 0) -->
+                                                <Label
+                                                    Grid.Column="1"
+                                                    Margin="5,0,0,0"
+                                                    FontAttributes="Bold"
+                                                    FontSize="16"
+                                                    Text="{Binding DiscountedPrice, StringFormat='{0:F2} €'}"
+                                                    TextColor="#FFCA28"
+                                                    IsVisible="{Binding DiscountedPrice, Converter={StaticResource IsPositiveConverter}}" />
+                                            </Grid>
                                         </Grid>
                                     </Frame>
 
-                                    <!--  Action Buttons  -->
+                                    <!-- Action Buttons -->
                                     <StackLayout
                                         Grid.Column="1"
                                         Margin="10,0,10,10"

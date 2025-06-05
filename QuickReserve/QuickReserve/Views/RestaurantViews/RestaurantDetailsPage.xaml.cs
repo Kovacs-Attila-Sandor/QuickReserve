@@ -7,6 +7,7 @@ using QuickReserve.Services;
 using System.Diagnostics;
 using System.Linq;
 using QuickReserve.Views.ApplicationViews;
+using Xamarin.Essentials;
 
 namespace QuickReserve.Views
 {
@@ -113,11 +114,35 @@ namespace QuickReserve.Views
                     {
                         food.ImageSource = ImageConverter.ConvertBase64ToImageSource(food.Picture);
                     }
+                    else food.ImageSource = ImageSource.FromFile("image_placeholder.png");
                 }
             }
         }
 
-        private async void OnDatePickerClicked(object sender, EventArgs e) { }
+        private async void OnSeeLocationOnMapClicked(object sender, EventArgs e)
+        {
+            try
+            {
+                if (restaurant?.Address == null || restaurant.Address.Latitude == 0 || restaurant.Address.Longitude == 0)
+                {
+                    await DisplayAlert("Hiba", "A helyszín koordinátái nem elérhetők.", "OK");
+                    return;
+                }
+
+                var location = new Xamarin.Essentials.Location(restaurant.Address.Latitude, restaurant.Address.Longitude);
+                var options = new MapLaunchOptions
+                {
+                    Name = restaurant.Name ?? "Étterem helye",
+                    NavigationMode = NavigationMode.None
+                };
+
+                await Map.OpenAsync(location, options);
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Hiba", $"Hiba történt a térkép megnyitása közben: {ex.Message}", "OK");
+            }
+        }
 
         private void OnHeartClicked(object sender, EventArgs e)
         {
@@ -184,7 +209,7 @@ namespace QuickReserve.Views
                 if (food != null)
                 {
                     // Navigáció a FoodPage-re a food és restaurant.RestaurantId paraméterekkel
-                    await Navigation.PushAsync(new FoodPage(food, restaurant.RestaurantId));
+                    await Navigation.PushAsync(new FoodPage(food, restaurant.RestaurantId, false));
                 }
             }
         }

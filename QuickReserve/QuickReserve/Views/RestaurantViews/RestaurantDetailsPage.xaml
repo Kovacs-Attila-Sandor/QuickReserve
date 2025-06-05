@@ -3,7 +3,7 @@
     x:Class="QuickReserve.Views.RestaurantDetailsPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:converter="clr-namespace:QuickReserve.Converter"
+    xmlns:converters="clr-namespace:QuickReserve.Converter"
     x:Name="this"
     NavigationPage.HasNavigationBar="False">
 
@@ -14,6 +14,14 @@
         </LinearGradientBrush>
     </ContentPage.Background>
 
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:IsPositiveConverter x:Key="IsPositiveConverter" />
+            <Color x:Key="PrimaryColor">#BB86FC</Color>
+            <Color x:Key="SecondaryTextColor">#B0B0B0</Color>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <ContentPage.Content>
         <RefreshView x:Name="myRefreshView" Refreshing="RefreshView_Refreshing">
             <ScrollView
@@ -21,7 +29,6 @@
                 Margin="0"
                 Padding="0">
                 <StackLayout Padding="0" Spacing="0">
-                    <!--  Felső rész (Location, Reservation gomb stb.)  -->
                     <Grid
                         Margin="0"
                         Padding="0"
@@ -110,7 +117,7 @@
                                                 Margin="0"
                                                 Padding="0"
                                                 BackgroundColor="Transparent"
-                                                Clicked="OnDatePickerClicked"
+                                                Clicked="OnSeeLocationOnMapClicked"
                                                 FontSize="14"
                                                 HeightRequest="20"
                                                 HorizontalOptions="Start"
@@ -147,7 +154,6 @@
                         </StackLayout>
                     </Grid>
 
-                    <!--  Alsó rész (CarouselView, leírás, kategóriák, ételek)  -->
                     <Frame
                         Margin="0,0,0,0"
                         BackgroundColor="#0f1111"
@@ -160,7 +166,6 @@
                             HasShadow="True"
                             HorizontalOptions="FillAndExpand">
                             <StackLayout Padding="0" Spacing="0">
-                                <!--  CarouselView  -->
                                 <Frame
                                     Padding="0"
                                     BackgroundColor="Transparent"
@@ -185,7 +190,6 @@
                                     </CarouselView>
                                 </Frame>
 
-                                <!--  Név, leírás, kategóriák  -->
                                 <StackLayout
                                     Padding="0"
                                     BackgroundColor="Transparent"
@@ -216,7 +220,6 @@
                                         </Label>
                                     </Frame>
 
-                                    <!--  Kategóriák  -->
                                     <Frame
                                         Margin="0"
                                         Padding="10"
@@ -282,12 +285,10 @@
                                         </ScrollView>
                                     </Frame>
 
-                                    <!--  Ételek BindableLayout-tal elválasztóvonalakkal  -->
                                     <StackLayout BindableLayout.ItemsSource="{Binding GroupedFoods}">
                                         <BindableLayout.ItemTemplate>
                                             <DataTemplate>
                                                 <StackLayout Spacing="10">
-                                                    <!--  Csoport fejléce  -->
                                                     <Frame
                                                         Margin="0,10,0,0"
                                                         Padding="5"
@@ -300,25 +301,23 @@
                                                             TextColor="#FFFFFF"
                                                             TextDecorations="Underline" />
                                                     </Frame>
-                                                    <!--  Csoport elemei elválasztóvonalakkal  -->
                                                     <StackLayout BindableLayout.ItemsSource="{Binding .}" Spacing="0">
                                                         <BindableLayout.ItemTemplate>
                                                             <DataTemplate>
                                                                 <StackLayout Spacing="0">
                                                                     <Frame
                                                                         Margin="0,5"
-                                                                        Padding="0"
-                                                                        BackgroundColor="#1A1A1A"
-                                                                        CornerRadius="20"
+                                                                        Padding="8"
+                                                                        BackgroundColor="#1A1A2C"
+                                                                        CornerRadius="8"
                                                                         HasShadow="True"
                                                                         HeightRequest="120">
                                                                         <Frame.Background>
                                                                             <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                                                                <GradientStop Offset="0.0" Color="#1A1A1A" />
-                                                                                <GradientStop Offset="1.0" Color="#2D2D2D" />
+                                                                                <GradientStop Offset="0.0" Color="#1A1A2C" />
+                                                                                <GradientStop Offset="1.0" Color="#2D2D3D" />
                                                                             </LinearGradientBrush>
                                                                         </Frame.Background>
-                                                                        <!--  TapGestureRecognizer  -->
                                                                         <Frame.GestureRecognizers>
                                                                             <TapGestureRecognizer Tapped="OnItemTapped" />
                                                                         </Frame.GestureRecognizers>
@@ -327,16 +326,14 @@
                                                                                 <ColumnDefinition Width="130" />
                                                                                 <ColumnDefinition Width="*" />
                                                                             </Grid.ColumnDefinitions>
-                                                                            <!--  Kép rész  -->
                                                                             <Grid Grid.Column="0">
                                                                                 <Image
                                                                                     Aspect="AspectFill"
                                                                                     HeightRequest="120"
                                                                                     HorizontalOptions="FillAndExpand"
-                                                                                    Source="{Binding ImageSource}"
+                                                                                    Source="{Binding ImageSource, FallbackValue='default_food.png'}"
                                                                                     VerticalOptions="Center" />
                                                                             </Grid>
-                                                                            <!--  Szöveges rész  -->
                                                                             <StackLayout
                                                                                 Grid.Column="1"
                                                                                 Padding="5"
@@ -361,11 +358,35 @@
                                                                                     Text="{Binding Description}"
                                                                                     TextColor="#B0B0B0" />
                                                                                 <StackLayout Orientation="Horizontal" Spacing="5">
-                                                                                    <Label
-                                                                                        FontAttributes="Bold"
-                                                                                        FontSize="10"
-                                                                                        Text="{Binding Price, StringFormat='{0} €'}"
-                                                                                        TextColor="#4CAF50" />
+                                                                                    <Grid
+                                                                                        ColumnDefinitions="Auto,Auto"
+                                                                                        HorizontalOptions="Start"
+                                                                                        VerticalOptions="Center">
+                                                                                        <Label
+                                                                                            Grid.Column="0"
+                                                                                            FontAttributes="Bold"
+                                                                                            FontSize="16"
+                                                                                            Text="{Binding Price, StringFormat='{0:F2} €', FallbackValue='0.00 €'}"
+                                                                                            TextColor="{DynamicResource PrimaryColor}">
+                                                                                            <Label.Triggers>
+                                                                                                <DataTrigger
+                                                                                                    Binding="{Binding DiscountedPrice, Converter={StaticResource IsPositiveConverter}, FallbackValue=False}"
+                                                                                                    TargetType="Label"
+                                                                                                    Value="True">
+                                                                                                    <Setter Property="TextDecorations" Value="Strikethrough" />
+                                                                                                    <Setter Property="TextColor" Value="{DynamicResource SecondaryTextColor}" />
+                                                                                                </DataTrigger>
+                                                                                            </Label.Triggers>
+                                                                                        </Label>
+                                                                                        <Label
+                                                                                            Grid.Column="1"
+                                                                                            Margin="5,0,0,0"
+                                                                                            FontAttributes="Bold"
+                                                                                            FontSize="14"
+                                                                                            IsVisible="{Binding DiscountedPrice, Converter={StaticResource IsPositiveConverter}, FallbackValue=False}"
+                                                                                            Text="{Binding DiscountedPrice, StringFormat='{0:F2} €', FallbackValue='0.00 €'}"
+                                                                                            TextColor="#FFCA28" />
+                                                                                    </Grid>
                                                                                     <StackLayout
                                                                                         Orientation="Horizontal"
                                                                                         Spacing="2"
@@ -385,7 +406,6 @@
                                                                             </StackLayout>
                                                                         </Grid>
                                                                     </Frame>
-                                                                    <!--  Elválasztóvonal  -->
                                                                     <BoxView
                                                                         Margin="10,5,10,0"
                                                                         BackgroundColor="#B0B0B0"

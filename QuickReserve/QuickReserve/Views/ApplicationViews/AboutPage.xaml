@@ -14,123 +14,211 @@
     </ContentPage.Background>
 
     <ContentPage.Content>
-        <Grid RowSpacing="0">
-
-            <StackLayout
-                Grid.Row="0"
-                Padding="20,40,20,20"
-                Spacing="20">
-
-                <!--  Keresőmező  -->
-                <Frame
-                    Padding="0"
-                    BackgroundColor="Transparent"
-                    CornerRadius="10">
-                    <SearchBar
-                        x:Name="SearchBar"
-                        BackgroundColor="#2C2C2C"
-                        CancelButtonColor="#FF9800"
-                        HorizontalOptions="FillAndExpand"
-                        Placeholder="Search restaurants..."
-                        PlaceholderColor="#808080"
-                        TextChanged="OnSearchTextChanged"
-                        TextColor="#E0E0E0"
-                        VerticalOptions="Start" />
-                </Frame>
-
-                <!--  Betöltési állapot  -->
+        <ScrollView>
+            <Grid RowSpacing="0">
                 <StackLayout
-                    x:Name="LoadingContainer"
-                    HorizontalOptions="CenterAndExpand"
-                    IsVisible="True"
-                    Spacing="15"
-                    VerticalOptions="CenterAndExpand">
-                    <ActivityIndicator
-                        x:Name="loadingIndicator"
-                        HeightRequest="50"
-                        HorizontalOptions="Center"
-                        IsRunning="True"
-                        WidthRequest="50"
-                        Color="#00D4FF" />
-                    <Label
-                        x:Name="LoadingLabel"
-                        FontAttributes="Bold"
-                        FontSize="20"
-                        HorizontalOptions="Center"
-                        Opacity="0.9"
-                        Text="Restaurants Loading..."
-                        TextColor="#E0E0E0" />
-                </StackLayout>
+                    Grid.Row="0"
+                    Padding="20,40,20,20"
+                    Spacing="20">
 
-                <!--  Tartalom  -->
-                <StackLayout
-                    x:Name="Content"
-                    IsVisible="False"
-                    Orientation="Vertical"
-                    Spacing="15"
-                    VerticalOptions="FillAndExpand">
-                    <ListView
-                        x:Name="lstmoments"
+                    <!--  Keresőmező  -->
+                    <Frame
+                        Padding="0"
                         BackgroundColor="Transparent"
-                        HasUnevenRows="True"
-                        ItemTapped="OnItemTapped"
-                        SeparatorVisibility="None"
-                        VerticalOptions="FillAndExpand">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <ViewCell>
+                        CornerRadius="10">
+                        <SearchBar
+                            x:Name="SearchBar"
+                            BackgroundColor="#2C2C2C"
+                            CancelButtonColor="#FF9800"
+                            HorizontalOptions="FillAndExpand"
+                            Placeholder="Search restaurants or foods..."
+                            PlaceholderColor="#808080"
+                            TextChanged="OnSearchTextChanged"
+                            TextColor="#E0E0E0"
+                            VerticalOptions="Start" />
+                    </Frame>
+
+                    <!--  Kedvezményes ételek  -->
+                    <StackLayout
+                        x:Name="DiscountedFoodsContainer"
+                        Padding="15,10,15,10"
+                        BackgroundColor="#212121"
+                        HorizontalOptions="FillAndExpand"
+                        IsVisible="False"
+                        Orientation="Vertical"
+                        Spacing="12">
+                        <Label
+                            Margin="5,0,0,5"
+                            FontAttributes="Bold"
+                            FontSize="24"
+                            HorizontalOptions="Start"
+                            Text="Discounted Foods"
+                            TextColor="#FFCA28" />
+                        <CollectionView
+                            x:Name="discountedFoodsCollectionView"
+                            HeightRequest="190"
+                            HorizontalScrollBarVisibility="Never"
+                            SelectionChanged="OnFoodItemTapped"
+                            SelectionMode="Single">
+                            <CollectionView.ItemsLayout>
+                                <LinearItemsLayout ItemSpacing="10" Orientation="Horizontal" />
+                            </CollectionView.ItemsLayout>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
                                     <Frame
-                                        Margin="0,10,0,10"
+                                        Margin="6,0,6,0"
                                         Padding="0"
-                                        BackgroundColor="#2C2C2C"
-                                        CornerRadius="15"
+                                        BackgroundColor="#303030"
+                                        BorderColor="#424242"
+                                        CornerRadius="18"
                                         HasShadow="True"
-                                        HeightRequest="250">
+                                        HeightRequest="180"
+                                        WidthRequest="135">
                                         <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
                                             <Image
-                                                Grid.ColumnSpan="1"
                                                 Aspect="AspectFill"
                                                 HorizontalOptions="FillAndExpand"
-                                                Source="{Binding ImageSourceUri}"
+                                                Opacity="0.9"
+                                                Source="{Binding ImageSource}"
                                                 VerticalOptions="FillAndExpand" />
-
                                             <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                                                 <BoxView.Background>
                                                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                                                         <GradientStop Offset="0.0" Color="Transparent" />
-                                                        <GradientStop Offset="1.0" Color="#80000000" />
+                                                        <GradientStop Offset="0.6" Color="#1A000000" />
+                                                        <GradientStop Offset="1.0" Color="#CC000000" />
                                                     </LinearGradientBrush>
                                                 </BoxView.Background>
                                             </BoxView>
                                             <StackLayout
-                                                Padding="15"
+                                                Padding="10"
                                                 HorizontalOptions="FillAndExpand"
-                                                Spacing="8"
+                                                Spacing="4"
                                                 VerticalOptions="End">
                                                 <Label
                                                     FontAttributes="Bold"
-                                                    FontSize="18"
-                                                    HorizontalOptions="Start"
-                                                    Text="{Binding Name}"
-                                                    TextColor="#FF9800" />
-                                                <Label
                                                     FontSize="14"
                                                     LineBreakMode="WordWrap"
                                                     MaxLines="2"
-                                                    Text="{Binding ShortDescription}"
-                                                    TextColor="#E0E0E0" />
+                                                    Text="{Binding Name}"
+                                                    TextColor="#FFF176" />
+                                                <Label
+                                                    FontAttributes="Bold"
+                                                    FontSize="13"
+                                                    Text="{Binding DiscountedPrice, StringFormat='Now: {0} €'}"
+                                                    TextColor="#66BB6A" />
+                                                <Label
+                                                    FontSize="11"
+                                                    Text="{Binding Price, StringFormat='Was: {0} €'}"
+                                                    TextColor="#B0BEC5"
+                                                    TextDecorations="Strikethrough" />
                                             </StackLayout>
                                         </Grid>
                                     </Frame>
-                                </ViewCell>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </StackLayout>
+
+                    <!--  Betöltési állapot  -->
+                    <StackLayout
+                        x:Name="LoadingContainer"
+                        HorizontalOptions="CenterAndExpand"
+                        IsVisible="True"
+                        Spacing="15"
+                        VerticalOptions="CenterAndExpand">
+                        <ActivityIndicator
+                            x:Name="loadingIndicator"
+                            HeightRequest="50"
+                            HorizontalOptions="Center"
+                            IsRunning="True"
+                            WidthRequest="50"
+                            Color="#00D4FF" />
+                        <Label
+                            x:Name="LoadingLabel"
+                            FontAttributes="Bold"
+                            FontSize="20"
+                            HorizontalOptions="Center"
+                            Opacity="0.9"
+                            Text="Restaurants Loading..."
+                            TextColor="#E0E0E0" />
+                    </StackLayout>
+
+                    <!--  Tartalom  -->
+                    <StackLayout
+                        x:Name="Content"
+                        IsVisible="False"
+                        Orientation="Vertical"
+                        Spacing="15">
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="20"
+                            HorizontalOptions="Start"
+                            Text="Restaurants"
+                            TextColor="#FF9800" />
+                        <ListView
+                            x:Name="lstmoments"
+                            BackgroundColor="Transparent"
+                            HasUnevenRows="True"
+                            ItemTapped="OnItemTapped"
+                            SeparatorVisibility="None"
+                            VerticalOptions="Start"
+                            VerticalScrollBarVisibility="Never">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <Frame
+                                            Margin="0,10,0,10"
+                                            Padding="0"
+                                            BackgroundColor="#2C2C2C"
+                                            CornerRadius="15"
+                                            HasShadow="True"
+                                            HeightRequest="250">
+                                            <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Image
+                                                    Grid.ColumnSpan="1"
+                                                    Aspect="AspectFill"
+                                                    HorizontalOptions="FillAndExpand"
+                                                    Source="{Binding ImageSourceUri}"
+                                                    VerticalOptions="FillAndExpand" />
+                                                <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                                    <BoxView.Background>
+                                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                                            <GradientStop Offset="0.0" Color="Transparent" />
+                                                            <GradientStop Offset="1.0" Color="#80000000" />
+                                                        </LinearGradientBrush>
+                                                    </BoxView.Background>
+                                                </BoxView>
+                                                <StackLayout
+                                                    Padding="15"
+                                                    HorizontalOptions="FillAndExpand"
+                                                    Spacing="8"
+                                                    VerticalOptions="End">
+                                                    <Label
+                                                        FontAttributes="Bold"
+                                                        FontSize="18"
+                                                        HorizontalOptions="Start"
+                                                        Text="{Binding Name}"
+                                                        TextColor="#FF9800" />
+                                                    <Label
+                                                        FontSize="14"
+                                                        LineBreakMode="WordWrap"
+                                                        MaxLines="2"
+                                                        Text="{Binding ShortDescription}"
+                                                        TextColor="#E0E0E0" />
+                                                </StackLayout>
+                                            </Grid>
+                                        </Frame>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </StackLayout>
                 </StackLayout>
-            </StackLayout>
-        </Grid>
+            </Grid>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

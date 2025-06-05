@@ -5,6 +5,7 @@ using Xamarin.Forms;
 using QuickReserve.Services;
 using QuickReserve.Models;
 using QuickReserve.Converter;
+using QuickReserve.Views.ApplicationViews;
 
 namespace QuickReserve.Views
 {
@@ -12,7 +13,8 @@ namespace QuickReserve.Views
     {
         private UserService _userService;
         private RestaurantService _restaurantService;
-        private List<Restaurant> originalItems; // Az összes étterem listája
+        private List<Restaurant> originalItems;
+        private List<Food> DiscountedFoods;
 
         public AboutPage()
         {
@@ -21,51 +23,93 @@ namespace QuickReserve.Views
             // A Content és ListView kezdetben nem láthatóak
             Content.IsVisible = false;
             lstmoments.IsVisible = false;
+            DiscountedFoodsContainer.IsVisible = false;
             loadingIndicator.IsVisible = true;
             LoadingLabel.IsVisible = true;
 
             _userService = UserService.Instance;
             _restaurantService = RestaurantService.Instance;
 
-            // Éttermek betöltése
+            // Éttermek és kedvezményes ételek betöltése
             DisplayRestaurants();
         }
 
-        // Éttermek betöltése Firebase-ból és megjelenítése ListView-ban
+        // Éttermek és kedvezményes ételek betöltése Firebase-ból és megjelenítése
         public async void DisplayRestaurants()
         {
-            var allRestaurants = await _restaurantService.GetAllRestaurants();
-
-            if (allRestaurants != null)
+            try
             {
-                // Éttermek képeinek dekódolása
-                foreach (var restaurant in allRestaurants)
+                var allRestaurants = await _restaurantService.GetAllRestaurants();
+
+                if (allRestaurants != null)
                 {
-                    if (!string.IsNullOrEmpty(restaurant.FirstImageBase64))
+                    // Éttermek képeinek dekódolása
+                    foreach (var restaurant in allRestaurants)
                     {
-                        restaurant.ImageSourceUri = ImageConverter.ConvertBase64ToImageSource(restaurant.FirstImageBase64);
+                        if (!string.IsNullOrEmpty(restaurant.FirstImageBase64))
+                        {
+                            restaurant.ImageSourceUri = ImageConverter.ConvertBase64ToImageSource(restaurant.FirstImageBase64);
+                        }
                     }
+
+                    // Az eredeti lista frissítése
+                    originalItems = allRestaurants;
+
+                    // Kedvezményes ételek betöltése és képek dekódolása
+                    DiscountedFoods = await _restaurantService.GetAllFoodsWithDicount();
+                    if (DiscountedFoods != null && DiscountedFoods.Any())
+                    {
+                        foreach (var food in DiscountedFoods)
+                        {
+                            if (!string.IsNullOrEmpty(food.Picture))
+                            {
+                                try
+                                {
+                                    food.ImageSource = ImageConverter.ConvertBase64ToImageSource(food.Picture);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine($"Failed to convert image for food {food.Name}: {ex.Message}");
+                                    food.ImageSource = ImageSource.FromFile("image_placeholder.png");
+                                }
+                            }
+                            else
+                            {
+                                food.ImageSource = ImageSource.FromFile("image_placeholder.png");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("No discounted foods found.");
+                        DiscountedFoods = new List<Food>(); // Initialize empty list to avoid null issues
+                    }
+
+                    // A ListView és CollectionView adatainak beállítása
+                    lstmoments.ItemsSource = originalItems;
+                    discountedFoodsCollectionView.ItemsSource = DiscountedFoods;
+
+                    // A tartalom megjelenítése
+                    Content.IsVisible = true;
+                    lstmoments.IsVisible = true;
+                    DiscountedFoodsContainer.IsVisible = DiscountedFoods.Any(); // Only show if there are discounted foods
+                    loadingIndicator.IsVisible = false;
+                    LoadingLabel.IsVisible = false;
                 }
-
-                // Az eredeti lista frissítése
-                originalItems = allRestaurants;
-
-                // A ListView adatainak beállítása
-                lstmoments.ItemsSource = originalItems;
-
-                // A tartalom megjelenítése
-                Content.IsVisible = true;
-                lstmoments.IsVisible = true;
-                loadingIndicator.IsVisible = false;
-                LoadingLabel.IsVisible = false;
+                else
+                {
+                    Console.WriteLine("No restaurants found.");
+                    loadingIndicator.IsVisible = false;
+                    LoadingLabel.IsVisible = false;
+                    await DisplayAlert("Error", "No restaurants found.", "OK");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                Console.WriteLine("No restaurants found.");
-                // Ha nincs étterem, elrejtheted a betöltést és megjelenítheted a hibaüzenetet
+                Console.WriteLine($"Error loading data: {ex.Message}");
                 loadingIndicator.IsVisible = false;
                 LoadingLabel.IsVisible = false;
-                await DisplayAlert("Error", "No restaurants found.", "OK");
+                await DisplayAlert("Error", "Failed to load data.", "OK");
             }
         }
 
@@ -73,12 +117,22 @@ namespace QuickReserve.Views
         {
             if (e.Item is Restaurant selectedRestaurant)
             {
-                // Navigálás a RestaurantDetailsPage-re
                 Navigation.PushAsync(new RestaurantDetailsPage(selectedRestaurant));
             }
 
-            // A ListView automatikus kijelölésének eltávolítása
             ((ListView)sender).SelectedItem = null;
+        }
+
+        private void OnFoodItemTapped(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.CurrentSelection.FirstOrDefault() is Food selectedFood)
+            {
+                // Navigálás a FoodDetailsPage-re
+                Navigation.PushAsync(new FoodPage(selectedFood, selectedFood.RestaurantId, true));
+                Console.WriteLine($"Selected food: {selectedFood.Name}");
+            }
+
+            ((CollectionView)sender).SelectedItem = null;
         }
 
         // Keresési szöveg változásakor futó eseménykezelő
@@ -87,14 +141,16 @@ namespace QuickReserve.Views
             var searchText = e.NewTextValue;
             if (string.IsNullOrWhiteSpace(searchText))
             {
-                // Ha nincs keresési szöveg, visszaállítjuk az eredeti listát
                 lstmoments.ItemsSource = originalItems;
+                discountedFoodsCollectionView.ItemsSource = DiscountedFoods;
             }
             else
             {
-                // Szűrés a keresési szöveg alapján (kis- és nagybetűk figyelmen kívül hagyása)
                 lstmoments.ItemsSource = originalItems
                     .Where(item => item.Name.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0)
+                    .ToList();
+                discountedFoodsCollectionView.ItemsSource = DiscountedFoods
+                    .Where(food => food.Name.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0)
                     .ToList();
             }
         }

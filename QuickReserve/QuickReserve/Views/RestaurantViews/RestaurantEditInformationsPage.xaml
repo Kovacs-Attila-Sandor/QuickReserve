@@ -6,11 +6,11 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout Padding="10" Spacing="15">
-                <!-- Name -->
+                <!--  Name  -->
                 <Label Text="Name" />
                 <Entry x:Name="NameEntry" Placeholder="Enter restaurant name" />
 
-                <!-- Address -->
+                <!--  Address  -->
                 <Label Text="Country" />
                 <Entry x:Name="AddressCountry" Placeholder="Enter restaurant country" />
 
@@ -23,43 +23,47 @@
                 <Label Text="Number" />
                 <Entry x:Name="AddressNumber" Placeholder="Enter restaurant number" />
 
-                <!-- Phone Number -->
+                <Label Text="Number" />
+                <Entry x:Name="Longitude" Placeholder="Enter restaurant Longitude" />
+
+                <Label Text="Number" />
+                <Entry x:Name="Latitude" Placeholder="Enter restaurant Latitude" />
+
+                <!--  Phone Number  -->
                 <Label Text="Phone Number" />
                 <Entry
                     x:Name="PhoneNumberEntry"
                     Keyboard="Telephone"
                     Placeholder="Enter phone number" />
 
-                <!-- Email -->
+                <!--  Email  -->
                 <Label Text="Email" />
                 <Entry
                     x:Name="EmailEntry"
                     Keyboard="Email"
                     Placeholder="Enter email" />
 
-                <!-- Short Description -->
+                <!--  Short Description  -->
                 <Label Text="Short Description" />
                 <Editor x:Name="ShortDescriptionEditor" Placeholder="Enter short description" />
 
-                <!-- Long Description -->
+                <!--  Long Description  -->
                 <Label Text="Long Description" />
                 <Editor
                     x:Name="LongDescriptionEditor"
                     HeightRequest="100"
                     Placeholder="Enter long description" />
 
-                <!-- Images Section -->
+                <!--  Images Section  -->
                 <Label
                     FontAttributes="Bold"
                     FontSize="Medium"
                     Text="Images" />
 
-                <!-- Scrollable area for images -->
-                <ScrollView Orientation="Vertical" HeightRequest="300">
-                    <StackLayout
-                        x:Name="ImageList"
-                        Spacing="10">
-                        <!-- Images with delete buttons will be dynamically added here -->
+                <!--  Scrollable area for images  -->
+                <ScrollView HeightRequest="300" Orientation="Vertical">
+                    <StackLayout x:Name="ImageList" Spacing="10">
+                        <!--  Images with delete buttons will be dynamically added here  -->
                     </StackLayout>
                 </ScrollView>
 
@@ -70,7 +74,7 @@
                     Text="Add Image"
                     TextColor="White" />
 
-                <!-- Save Button -->
+                <!--  Save Button  -->
                 <Button
                     BackgroundColor="Green"
                     Clicked="OnSaveChangesClicked"

@@ -88,6 +88,7 @@ namespace QuickReserve.Views
             var newFood = new Food
             {
                 FoodId = Guid.NewGuid().ToString(),
+                RestaurantId = _restaurantId,
                 Name = txtMenuItemName.Text.Trim(),
                 Description = txtMenuItemDescription.Text.Trim(),
                 Price = price,
