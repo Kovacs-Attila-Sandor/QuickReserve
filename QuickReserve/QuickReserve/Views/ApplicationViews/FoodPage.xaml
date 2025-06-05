@@ -41,6 +41,7 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
@@ -55,11 +56,30 @@
                             Source="back_icon_arrow.png"
                             VerticalOptions="Start" />
 
+                        <!--  Étterem gomb (középen)  -->
+                        <Button
+                            x:Name="seeRestaurantButton"
+                            Grid.Column="1"
+                            Margin="0,25,0,0"
+                            Padding="15,10"
+                            BackgroundColor="#2D2D2D"
+                            Clicked="OnRestaurantButtonClicked"
+                            CornerRadius="12"
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            HeightRequest="50"
+                            HorizontalOptions="Center"
+                            MinimumWidthRequest="150"
+                            Text="Go To Restaurant"
+                            TextColor="#FFFFFF"
+                            VerticalOptions="Start" />
+
                         <!--  Szív gomb (jobb felső sarok)  -->
                         <ImageButton
                             x:Name="heartButton"
-                            Grid.Column="1"
+                            Grid.Column="2"
                             Margin="0,25,25,0"
+                            BackgroundColor="Transparent"
                             Clicked="OnHeartButtonClicked"
                             HeightRequest="45"
                             HorizontalOptions="End"

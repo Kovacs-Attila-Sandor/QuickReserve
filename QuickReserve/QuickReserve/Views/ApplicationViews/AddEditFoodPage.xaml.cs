@@ -1,5 +1,4 @@
-﻿using Firebase.Auth;
-using Plugin.Media.Abstractions;
+﻿using Plugin.Media.Abstractions;
 using Plugin.Media;
 using QuickReserve.Models;
 using QuickReserve.Services;
@@ -9,9 +8,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using System.Globalization;
 
 namespace QuickReserve.Views.ApplicationViews
 {
@@ -42,7 +41,7 @@ namespace QuickReserve.Views.ApplicationViews
             BindingContext = new FoodViewModel
             {
                 Food = _food,
-                Title = _isEditMode ? "Edit Food" : "Add Food",
+                Title = _isEditMode ? "Étel szerkesztése" : "Étel hozzáadása",
                 IsEditMode = _isEditMode,
                 IngredientsText = _food.Ingredients?.Any() == true ? string.Join(", ", _food.Ingredients) : "",
                 AllergensText = _food.Allergens?.Any() == true ? string.Join(", ", _food.Allergens) : ""
@@ -57,16 +56,69 @@ namespace QuickReserve.Views.ApplicationViews
             {
                 NameEntry.Text = _food.Name;
                 DescriptionEditor.Text = _food.Description;
-                PriceEntry.Text = _food.Price.ToString();
+                PriceEntry.Text = _food.Price.ToString("0.##", CultureInfo.InvariantCulture).Replace('.', ',');
+                DiscountedPriceEntry.Text = _food.DiscountedPrice?.ToString("0.##", CultureInfo.InvariantCulture).Replace('.', ',') ?? string.Empty;
                 CategoryPicker.SelectedItem = _food.Category;
                 FoodImage.Source = _food.ImageSource;
                 IngredientsEntry.Text = _food.Ingredients?.Any() == true ? string.Join(", ", _food.Ingredients) : "";
                 AllergensEntry.Text = _food.Allergens?.Any() == true ? string.Join(", ", _food.Allergens) : "";
-                CaloriesEntry.Text = _food.Calories.ToString("F0");
-                WeightEntry.Text = _food.Weight.ToString();
-                PreparationTimeEntry.Text = _food.PreparationTime.ToString();
+                CaloriesEntry.Text = _food.Calories.ToString("F0", CultureInfo.InvariantCulture);
+                WeightEntry.Text = _food.Weight.ToString("0.##", CultureInfo.InvariantCulture).Replace('.', ',');
+                PreparationTimeEntry.Text = _food.PreparationTime.ToString(CultureInfo.InvariantCulture);
                 swIsAvailable.IsToggled = _food.IsAvailable;
                 CategoryPicker.ItemsSource = _restaurant.Categories;
+            }
+            else
+            {
+                CategoryPicker.ItemsSource = _restaurant.Categories;
+                CaloriesEntry.Text = string.Empty;
+                WeightEntry.Text = string.Empty;
+                PreparationTimeEntry.Text = string.Empty;
+                PriceEntry.Text = string.Empty;
+            }
+        }
+
+        private async void OnAddCategoryClicked(object sender, EventArgs e)
+        {
+            // Show dialog to input a new category
+            string newCategory = await DisplayPromptAsync("Új kategória", "Adja meg a kategória nevét:");
+            if (!string.IsNullOrWhiteSpace(newCategory))
+            {
+                try
+                {
+                    // Normalize and validate the new category
+                    newCategory = newCategory.Trim();
+                    if (_restaurant.Categories == null)
+                    {
+                        _restaurant.Categories = new List<string>();
+                    }
+
+                    // Check if category already exists (case-insensitive)
+                    if (_restaurant.Categories.Any(c => c.Equals(newCategory, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        await PopupNavigation.Instance.PushAsync(new CustomAlert("Hiba", "Ez a kategória már létezik."));
+                        return;
+                    }
+
+                    // Add to restaurant categories
+                    _restaurant.Categories.Add(newCategory);
+
+                    // Update restaurant in backend
+                    await _restaurantService.UpdateRestaurantAsync(_restaurant);
+
+                    // Refresh CategoryPicker
+                    CategoryPicker.ItemsSource = null;
+                    CategoryPicker.ItemsSource = _restaurant.Categories;
+
+                    // Optionally select the new category
+                    CategoryPicker.SelectedItem = newCategory;
+
+                    await PopupNavigation.Instance.PushAsync(new CustomAlert("Siker", $"A '{newCategory}' kategória sikeresen hozzáadva."));
+                }
+                catch (Exception ex)
+                {
+                    await PopupNavigation.Instance.PushAsync(new CustomAlert("Hiba", $"Nem sikerült hozzáadni a kategóriát: {ex.Message}"));
+                }
             }
         }
 
@@ -77,16 +129,18 @@ namespace QuickReserve.Views.ApplicationViews
 
             try
             {
-                if (!ValidateInput(out double price, out int preparationTime, out double calories, out double weight))
+                if (!ValidateInput(out double price, out double? discountedPrice, out int preparationTime, out double calories, out double weight))
                 {
-                    await PopupNavigation.Instance.PushAsync(new CustomAlert("Error", "Please fill all required fields correctly."));
+                    await PopupNavigation.Instance.PushAsync(new CustomAlert("Hiba", "Kérjük, töltse ki az összes szükséges mezőt helyesen."));
                     return;
                 }
 
-                // Update food properties
+                // Update food properties from Entry fields
+                food.RestaurantId = _restaurant.RestaurantId;
                 food.Name = NameEntry.Text;
                 food.Description = DescriptionEditor.Text;
                 food.Price = price;
+                food.DiscountedPrice = discountedPrice;
                 food.Category = CategoryPicker.SelectedItem?.ToString() ?? "Main Course";
                 food.Ingredients = IngredientsEntry.Text?.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
                     .Select(i => i.Trim()).ToList() ?? new List<string>();
@@ -105,16 +159,17 @@ namespace QuickReserve.Views.ApplicationViews
                 {
                     // Update existing food
                     await _restaurantService.UpdateFoodDetails(_restaurant.RestaurantId, _food.FoodId, food);
-                    await PopupNavigation.Instance.PushAsync(new CustomAlert("Success", "Food updated successfully."));
+                    await PopupNavigation.Instance.PushAsync(new CustomAlert("Siker", "Étel sikeresen frissítve."));
                 }
                 else
                 {
                     // Add new food
                     food.FoodId = Guid.NewGuid().ToString();
                     food.CreatedDate = DateTime.UtcNow;
+                    food.RestaurantId = _restaurant.RestaurantId;
                     _restaurant.Foods.Add(food);
                     await _restaurantService.AddFoodToRestaurant(_restaurant.RestaurantId, food);
-                    await PopupNavigation.Instance.PushAsync(new CustomAlert("Success", "Food added successfully."));
+                    await PopupNavigation.Instance.PushAsync(new CustomAlert("Siker", "Étel sikeresen hozzáadva."));
                 }
 
                 // Navigate back
@@ -122,7 +177,7 @@ namespace QuickReserve.Views.ApplicationViews
             }
             catch (Exception ex)
             {
-                await PopupNavigation.Instance.PushAsync(new CustomAlert("Error", $"Failed to save food: {ex.Message}"));
+                await PopupNavigation.Instance.PushAsync(new CustomAlert("Hiba", $"Nem sikerült menteni az ételt: {ex.Message}"));
             }
             finally
             {
@@ -131,20 +186,39 @@ namespace QuickReserve.Views.ApplicationViews
             }
         }
 
-        private bool ValidateInput(out double price, out int preparationTime, out double calories, out double weight)
+        private bool ValidateInput(out double price, out double? discountedPrice, out int preparationTime, out double calories, out double weight)
         {
             price = 0;
             preparationTime = 0;
             calories = 0;
             weight = 0;
+            discountedPrice = null;
+
+            // Replace ',' with '.' for decimal separator to ensure correct parsing
+            string priceText = PriceEntry.Text?.Replace(',', '.');
+            string discountedPriceText = DiscountedPriceEntry.Text?.Replace(',', '.');
+            string caloriesText = CaloriesEntry.Text?.Replace(',', '.');
+            string weightText = WeightEntry.Text?.Replace(',', '.');
+
+            bool isPriceValid = double.TryParse(priceText, NumberStyles.Any, CultureInfo.InvariantCulture, out price) && price >= 0;
+            bool isDiscountedPriceValid = true;
+            double tempDiscountedPrice = 0;
+
+            if (!string.IsNullOrWhiteSpace(discountedPriceText))
+            {
+                isDiscountedPriceValid = double.TryParse(discountedPriceText, NumberStyles.Any, CultureInfo.InvariantCulture, out tempDiscountedPrice) && tempDiscountedPrice >= 0;
+                if (isDiscountedPriceValid)
+                    discountedPrice = tempDiscountedPrice;
+            }
 
             return !string.IsNullOrWhiteSpace(NameEntry.Text) &&
                    !string.IsNullOrWhiteSpace(DescriptionEditor.Text) &&
-                   double.TryParse(PriceEntry.Text, out price) && price >= 0 &&
-                   CategoryPicker.SelectedIndex != -1 &&
-                   int.TryParse(PreparationTimeEntry.Text, out preparationTime) && preparationTime >= 0 &&
-                   double.TryParse(CaloriesEntry.Text, out calories) && calories >= 0 &&
-                   double.TryParse(WeightEntry.Text, out weight) && weight >= 0;
+                   isPriceValid &&
+                   isDiscountedPriceValid &&
+                   CategoryPicker.SelectedItem != null &&
+                   int.TryParse(PreparationTimeEntry.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out preparationTime) && preparationTime >= 0 &&
+                   double.TryParse(caloriesText, NumberStyles.Any, CultureInfo.InvariantCulture, out calories) && calories >= 0 &&
+                   double.TryParse(weightText, NumberStyles.Any, CultureInfo.InvariantCulture, out weight) && weight >= 0;
         }
 
         private async void OnDeleteClicked(object sender, EventArgs e)
@@ -152,9 +226,9 @@ namespace QuickReserve.Views.ApplicationViews
             var viewModel = (FoodViewModel)BindingContext;
             var food = viewModel.Food;
 
-            bool confirm = await DisplayAlert("Confirm Delete",
-                $"Are you sure you want to delete {food.Name}?",
-                "Delete", "Cancel");
+            bool confirm = await DisplayAlert("Törlés megerősítése",
+                $"Biztosan törölni szeretné a(z) {food.Name} ételt?",
+                "Törlés", "Mégse");
 
             if (confirm)
             {
@@ -165,12 +239,12 @@ namespace QuickReserve.Views.ApplicationViews
 
                     _restaurant.Foods.Remove(food);
                     await _restaurantService.DeleteFoodFromRestaurant(_restaurant.RestaurantId, food.FoodId);
-                    await PopupNavigation.Instance.PushAsync(new CustomAlert("Success", $"{food.Name} has been deleted."));
+                    await PopupNavigation.Instance.PushAsync(new CustomAlert("Siker", $"{food.Name} sikeresen törölve."));
                     await Navigation.PopAsync();
                 }
                 catch (Exception ex)
                 {
-                    await PopupNavigation.Instance.PushAsync(new CustomAlert("Error", $"Failed to delete food: {ex.Message}"));
+                    await PopupNavigation.Instance.PushAsync(new CustomAlert("Hiba", $"Nem sikerült törölni az ételt: {ex.Message}"));
                 }
                 finally
                 {
@@ -191,7 +265,7 @@ namespace QuickReserve.Views.ApplicationViews
             {
                 if (!CrossMedia.Current.IsPickPhotoSupported)
                 {
-                    await PopupNavigation.Instance.PushAsync(new CustomAlert("Error", "Photo picking is not supported on this device."));
+                    await PopupNavigation.Instance.PushAsync(new CustomAlert("Hiba", "A fénykép kiválasztása nem támogatott ezen az eszközön."));
                     return;
                 }
 
@@ -220,7 +294,7 @@ namespace QuickReserve.Views.ApplicationViews
             }
             catch (Exception ex)
             {
-                await PopupNavigation.Instance.PushAsync(new CustomAlert("Error", $"An error occurred while selecting the image: {ex.Message}"));
+                await PopupNavigation.Instance.PushAsync(new CustomAlert("Hiba", $"Hiba történt a kép kiválasztása során: {ex.Message}"));
             }
         }
     }

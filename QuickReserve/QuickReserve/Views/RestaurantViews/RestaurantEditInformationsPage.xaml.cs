@@ -30,6 +30,8 @@ namespace QuickReserve.Views.RestaurantViews
             AddressCity.Text = _restaurant.Address.City;
             AddressStreet.Text = _restaurant.Address.Street;
             AddressNumber.Text = _restaurant.Address.Number;
+            Longitude.Text = _restaurant.Address.Longitude.ToString();
+            Latitude.Text = _restaurant.Address.Latitude.ToString();
             PhoneNumberEntry.Text = _restaurant.PhoneNumber;
             EmailEntry.Text = _restaurant.Email;
             ShortDescriptionEditor.Text = _restaurant.ShortDescription;
@@ -123,11 +125,15 @@ namespace QuickReserve.Views.RestaurantViews
         {
             // Update restaurant details
             _restaurant.Name = NameEntry.Text.Trim();
-            _restaurant.Address = new RestaurantLocation { 
-                Country = AddressCountry.Text.Trim(), 
-                City = AddressCity.Text.Trim(), 
-                Street = AddressStreet.Text.Trim(), 
-                Number = AddressNumber.Text.Trim() };
+            _restaurant.Address = new RestaurantLocation
+            {
+                Country = AddressCountry.Text.Trim(),
+                City = AddressCity.Text.Trim(),
+                Street = AddressStreet.Text.Trim(),
+                Number = AddressNumber.Text.Trim(),
+                Latitude = Double.Parse(Latitude.Text.Trim()),
+                Longitude = Double.Parse(Longitude.Text.Trim())
+            };
             _restaurant.PhoneNumber = PhoneNumberEntry.Text.Trim();
             _restaurant.Email = EmailEntry.Text.Trim();
             _restaurant.ShortDescription = ShortDescriptionEditor.Text.Trim();

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -15,12 +16,14 @@ namespace QuickReserve.Views.ApplicationViews
         private Food _food;
         private string _currentUserId;
         private string _currentRestaurantId;
+        private Restaurant _restaurant;
         private int _selectedRating = 0;
         private RestaurantService _restaurantService;
-        private UserService _userService; // Hozzáadva a UserService
-        private bool _isFavorited; // Kedvenc állapot követése
+        private UserService _userService;
+        private bool _isFavorited;
+        private bool _seeRestaurantIsVisible; // Store the parameter for later use
 
-        public FoodPage(Food food, string currentRestaurantId)
+        public FoodPage(Food food, string currentRestaurantId, bool seeRestaurantIsVisible)
         {
             InitializeComponent();
 
@@ -28,7 +31,11 @@ namespace QuickReserve.Views.ApplicationViews
             _currentUserId = Application.Current.Properties["userId"].ToString();
             _currentRestaurantId = currentRestaurantId;
             _restaurantService = RestaurantService.Instance;
-            _userService = UserService.Instance; // Inicializálás
+            _userService = UserService.Instance;
+            _seeRestaurantIsVisible = seeRestaurantIsVisible; // Store the parameter
+
+            // Initially hide the button
+            seeRestaurantButton.IsVisible = false;
 
             // Ha van kép, konvertáljuk ImageSource-ra
             if (!string.IsNullOrEmpty(food.Picture))
@@ -43,12 +50,26 @@ namespace QuickReserve.Views.ApplicationViews
             InitializeRating();
 
             // Kedvenc állapot ellenőrzése és inicializálása
-            Task.Run(async () => await InitializeFavoriteStatus()).Wait(); // Szinkron várakozás az inicializálásra
+            Task.Run(async () => await InitializeFavoriteStatus()).Wait();
+
+            // Asynchronously initialize restaurant and update button visibility
+            _ = InitializeAsync();
+        }
+
+        private async Task InitializeAsync()
+        {
+            await InitializeRestaurant();
+            // Set button visibility after InitializeRestaurant completes
+            seeRestaurantButton.IsVisible = _seeRestaurantIsVisible && _restaurant != null;
+        }
+
+        private async Task InitializeRestaurant()
+        {
+            _restaurant = await _restaurantService.GetRestaurantById(_currentRestaurantId);
         }
 
         private async Task InitializeFavoriteStatus()
         {
-            // Lekérjük a felhasználó adatait, hogy ellenőrizzük a kedvenceket
             var user = await _userService.GetUserById(_currentUserId);
             if (user != null && user.LikedFoods != null)
             {
@@ -59,10 +80,12 @@ namespace QuickReserve.Views.ApplicationViews
                 _isFavorited = false;
             }
 
-            // Szív ikon beállítása az állapot alapján
-            heartButton.Source = _isFavorited
-                ? ImageSource.FromFile("heart_filled_icon.png")
-                : ImageSource.FromFile("heart_not_filled_icon.png");
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                heartButton.Source = _isFavorited
+                    ? ImageSource.FromFile("heart_filled_icon.png")
+                    : ImageSource.FromFile("heart_not_filled_icon.png");
+            });
         }
 
         private void InitializeRating()
@@ -112,6 +135,14 @@ namespace QuickReserve.Views.ApplicationViews
             fullDescriptionLabel.IsVisible = true;
         }
 
+        private async void OnRestaurantButtonClicked(object sender, EventArgs e)
+        {
+            if (_restaurant != null)
+            {
+                await Navigation.PushAsync(new RestaurantDetailsPage(_restaurant));
+            }
+        }
+
         private int GetLineCount(string text, double width, double fontSize)
         {
             if (string.IsNullOrEmpty(text) || width <= 0) return 0;
@@ -155,11 +186,9 @@ namespace QuickReserve.Views.ApplicationViews
             var button = sender as ImageButton;
             if (button != null)
             {
-                _isFavorited = !_isFavorited; // Állapot váltása
-
+                _isFavorited = !_isFavorited;
                 if (_isFavorited)
                 {
-                    // Hozzáadás a kedvencekhez
                     var success = await _userService.AddFavoriteFood(_currentUserId, _food.FoodId);
                     if (success)
                     {
@@ -167,13 +196,12 @@ namespace QuickReserve.Views.ApplicationViews
                     }
                     else
                     {
-                        _isFavorited = false; // Visszaállítás, ha sikertelen
+                        _isFavorited = false;
                         await DisplayAlert("Error", "Failed to add to favorites.", "OK");
                     }
                 }
                 else
                 {
-                    // Eltávolítás a kedvencekből
                     var success = await _userService.RemoveFavoriteFood(_currentUserId, _food.FoodId);
                     if (success)
                     {
@@ -181,7 +209,7 @@ namespace QuickReserve.Views.ApplicationViews
                     }
                     else
                     {
-                        _isFavorited = true; // Visszaállítás, ha sikertelen
+                        _isFavorited = true;
                         await DisplayAlert("Error", "Failed to remove from favorites.", "OK");
                     }
                 }
@@ -305,6 +333,6 @@ namespace QuickReserve.Views.ApplicationViews
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             throw new NotImplementedException();
-        }       
-    } 
+        }
+    }
 }

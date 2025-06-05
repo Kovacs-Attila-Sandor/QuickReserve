@@ -1,4 +1,6 @@
-﻿using Plugin.Media;
+﻿using Firebase.Auth;
+using Plugin.Media;
+using QuickReserve.Models;
 using QuickReserve.Services;
 using System;
 using System.Collections.Generic;
@@ -82,90 +84,91 @@ namespace QuickReserve.Views
         protected async void GoToAddMenuPage(object sender, EventArgs e)
         {
 
-            //LoadingOverlay.IsVisible = true;
-            //MainPage.IsEnabled = false;
+            LoadingOverlay.IsVisible = true;
+            MainPage.IsEnabled = false;
 
-            //string password = txtPassword.Text?.Trim();
-            //string confirmPassword = txtConfirmPassword.Text?.Trim();
-            //try
-            //{
-            //    if (!string.IsNullOrEmpty(txtUsername.Text) &&
-            //        !string.IsNullOrEmpty(password) &&
-            //        !string.IsNullOrEmpty(confirmPassword) &&
-            //        !string.IsNullOrEmpty(txtEmail.Text) &&
-            //        !string.IsNullOrEmpty(txtPhonenum.Text) &&
-            //        !string.IsNullOrEmpty(txtCity.Text) &&
-            //        !string.IsNullOrEmpty(txtStreet.Text) &&
-            //        !string.IsNullOrEmpty(txtCountry.Text) &&
-            //        !string.IsNullOrEmpty(txtNumber.Text) &&
-            //        !string.IsNullOrEmpty(txtShortDescription.Text) &&
-            //        !string.IsNullOrEmpty(txtLongDescription.Text) &&
-            //        ImageBase64List.Count > 0)
-            //    {
+            string password = txtPassword.Text?.Trim();
+            string confirmPassword = txtConfirmPassword.Text?.Trim();
+            try
+            {
+                if (!string.IsNullOrEmpty(txtUsername.Text) &&
+                    !string.IsNullOrEmpty(password) &&
+                    !string.IsNullOrEmpty(confirmPassword) &&
+                    !string.IsNullOrEmpty(txtEmail.Text) &&
+                    !string.IsNullOrEmpty(txtPhonenum.Text) &&
+                    !string.IsNullOrEmpty(txtCity.Text) &&
+                    !string.IsNullOrEmpty(txtStreet.Text) &&
+                    !string.IsNullOrEmpty(txtCountry.Text) &&
+                    !string.IsNullOrEmpty(txtNumber.Text) &&
+                    !string.IsNullOrEmpty(txtShortDescription.Text) &&
+                    !string.IsNullOrEmpty(txtLongDescription.Text) &&
+                    ImageBase64List.Count > 0)
+                {
 
-            //        if (password == confirmPassword)
-            //        {
-            //            User user = new User
-            //            {
-            //                Name = txtUsername.Text.Trim(),
-            //                Email = txtEmail.Text.Trim(),
-            //                PhoneNumber = txtPhonenum.Text.Trim(),
-            //                Role = "RESTAURANT"
-            //            };
-            //            var userId = await _userService.AddUserAndGetId(user);
+                    if (password == confirmPassword)
+                    {
+                        User user = new User
+                        {
+                            Name = txtUsername.Text.Trim(),
+                            Email = txtEmail.Text.Trim(),
+                            PhoneNumber = txtPhonenum.Text.Trim(),
+                            Role = "RESTAURANT"
+                        };
+                        var userId = await _userService.AddUserAndGetId(user);
 
-            //            Restaurant restaurant = new Restaurant
-            //            {
-            //                Name = txtUsername.Text.Trim(),
-            //                PhoneNumber = txtPhonenum.Text.Trim(),
-            //                Email = txtEmail.Text.Trim(),
-            //                ShortDescription = txtShortDescription.Text.Trim(),
-            //                LongDescription = txtLongDescription.Text.Trim(),
-            //                Address = new RestaurantLocation
-            //                {
-            //                    City = txtCity.Text.Trim(),
-            //                    Country = txtCountry.Text.Trim(),
-            //                    Street = txtStreet.Text.Trim(),
-            //                    Number = txtNumber.Text.Trim()
-            //                },
-            //                ImageBase64List = new List<string>(ImageBase64List),
-            //                UserId = userId
-            //            };
+                        Restaurant restaurant = new Restaurant
+                        {
+                            Name = txtUsername.Text.Trim(),
+                            PhoneNumber = txtPhonenum.Text.Trim(),
+                            Email = txtEmail.Text.Trim(),
+                            ShortDescription = txtShortDescription.Text.Trim(),
+                            LongDescription = txtLongDescription.Text.Trim(),
+                            Address = new RestaurantLocation
+                            {
+                                City = txtCity.Text.Trim(),
+                                Country = txtCountry.Text.Trim(),
+                                Street = txtStreet.Text.Trim(),
+                                Number = txtNumber.Text.Trim(),
+                                Longitude = string.IsNullOrEmpty(txtLongitude.Text) ? 0 : double.Parse(txtLongitude.Text.Trim()),
+                                Latitude = string.IsNullOrEmpty(txtLatitude.Text) ? 0 : double.Parse(txtLatitude.Text.Trim())
+                            },
+                            ImageBase64List = new List<string>(ImageBase64List),
+                            UserId = userId
+                        };
 
-            //            // Felhasználó létrehozása Firebase-ben
-            //            var userCredential = await _authService.AuthClient.CreateUserWithEmailAndPasswordAsync(txtEmail.Text.Trim(), txtPassword.Text.Trim());
+                        // Felhasználó létrehozása Firebase-ben
+                        var userCredential = await _authService.AuthClient.CreateUserWithEmailAndPasswordAsync(txtEmail.Text.Trim(), txtPassword.Text.Trim());
 
-            //            string restaurantId = await _restaurantService.AddRestaurantAndGetId(restaurant);
+                        string restaurantId = await _restaurantService.AddRestaurantAndGetId(restaurant);
 
-            //            if (!string.IsNullOrEmpty(restaurantId))
-            //            {
-            //                await Navigation.PushAsync(new AddMenuPage(restaurantId));
-            //            }
-            //            else
-            //            {
-            //                await DisplayAlert("Error", "Error saving restaurant.", "OK");
-            //            }
-            //        }
-            //        else
-            //        {
-            //            await DisplayAlert("Error", "Passwords do not match.", "OK");
-            //        }
-            //    }
-            //    else
-            //    {
-            //        await DisplayAlert("Error", "All fields are required.", "OK");
-            //    }
-            //}
-            //catch (FirebaseAuthException ex)
-            //{
-            //    await DisplayAlert("Registration Failed", $"Error: {ex.Reason}", "OK");
-            //}
-            //finally
-            //{
-            //    LoadingOverlay.IsVisible = false;
-            //    MainPage.IsEnabled = true;
-            //}
-            await Navigation.PushAsync(new AddMenuPage("700d36c6-81d9-4bab-aba1-d7fbefa413bc")); //Mamma Mia etterem Id-ja
+                        if (!string.IsNullOrEmpty(restaurantId))
+                        {
+                            await Navigation.PushAsync(new AddMenuPage(restaurantId));
+                        }
+                        else
+                        {
+                            await DisplayAlert("Error", "Error saving restaurant.", "OK");
+                        }
+                    }
+                    else
+                    {
+                        await DisplayAlert("Error", "Passwords do not match.", "OK");
+                    }
+                }
+                else
+                {
+                    await DisplayAlert("Error", "All fields are required.", "OK");
+                }
+            }
+            catch (FirebaseAuthException ex)
+            {
+                await DisplayAlert("Registration Failed", $"Error: {ex.Reason}", "OK");
+            }
+            finally
+            {
+                LoadingOverlay.IsVisible = false;
+                MainPage.IsEnabled = true;
+            }
         }
 
         // Törlés funkció
@@ -245,7 +248,9 @@ namespace QuickReserve.Views
                    entry == txtNumber ? lblStreetNumberPlaceholder :
                    entry == txtShortDescription ? lblShortDescriptionPlaceholder :
                    entry == txtLongDescription ? lblLongDescriptionPlaceholder :
-                   entry == txtPhonenum ? lblPhoneNumberPlaceholder : null;
+                   entry == txtPhonenum ? lblPhoneNumberPlaceholder :
+                   entry == txtLongitude ? lblLongitudePlaceholder :
+                   entry == txtLatitude ? lblLatitudePlaceholder : null;
         }
 
         private string GetPlaceholderText(Entry entry)
@@ -260,7 +265,9 @@ namespace QuickReserve.Views
                    entry == txtNumber ? "Street Number" :
                    entry == txtShortDescription ? "Short Description" :
                    entry == txtLongDescription ? "Long Description" :
-                   entry == txtPhonenum ? "Phone Number" : "";
+                   entry == txtPhonenum ? "Phone Number" :
+                   entry == txtLatitude ? "Latitude" :
+                   entry == txtLongitude ? "Longitude" : "";
         }
 
         private void TogglePasswordVisibility(object sender, EventArgs e)

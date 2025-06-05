@@ -213,7 +213,6 @@
                 </StackLayout>
             </Grid>
 
-            <!--  Betöltési overlay (AbsoluteLayout miatt külön kell kezelni)  -->
             <ContentView
                 x:Name="LoadingOverlay"
                 AbsoluteLayout.LayoutBounds="0,0,1,1"

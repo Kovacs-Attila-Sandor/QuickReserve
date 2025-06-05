@@ -51,7 +51,7 @@ namespace QuickReserve.Views
                     }
                     else
                     {
-                        Console.WriteLine($"No picture found for {food.Name}");
+                        food.ImageSource = ImageSource.FromFile("image_placeholder.png");
                     }
                 }
             }
@@ -147,7 +147,7 @@ namespace QuickReserve.Views
                 var food = e.Item as Food;
                 if (food != null)
                 {
-                    await Navigation.PushAsync(new FoodPage(food, CurrentRestaurant.RestaurantId));
+                    await Navigation.PushAsync(new FoodPage(food, CurrentRestaurant.RestaurantId, false));
                 }
 
                 ((ListView)sender).SelectedItem = null;

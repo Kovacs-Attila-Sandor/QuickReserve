@@ -132,11 +132,12 @@
     <AndroidResource Include="Resources\drawable\time_icon.png" />
     <AndroidResource Include="Resources\drawable\heart_not_filled_icon.png" />
     <AndroidResource Include="Resources\drawable\heart_filled_icon.png" />
+    <AndroidResource Include="Resources\drawable\image_placeholder.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties XamarinHotReloadGenericExceptionInfoBarQuickReserveAndroidHideInfoBar="True" XamarinHotReloadDebuggerTimeoutExceptionQuickReserveAndroidHideInfoBar="True" />
+      <UserProperties XamarinHotReloadDebuggerTimeoutExceptionQuickReserveAndroidHideInfoBar="True" XamarinHotReloadGenericExceptionInfoBarQuickReserveAndroidHideInfoBar="True" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

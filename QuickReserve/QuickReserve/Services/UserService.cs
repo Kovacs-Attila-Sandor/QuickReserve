@@ -361,5 +361,28 @@ namespace QuickReserve.Services
                 return new List<Restaurant>(); // Hiba esetén üres lista
             }
         }
+
+        public async Task<string> AddUserAndGetId(User user)
+        {
+            try
+            {
+                // Az új felhasználó ID-jának automatikus generálása
+                user.UserId = Guid.NewGuid().ToString();
+
+                // Felhasználó adatainak mentése a "Users" gyűjteménybe a felhasználói azonosítóval
+                await FirebaseService
+                    .Client
+                    .Child("Users")  // "Users" gyűjtemény
+                    .Child(user.UserId.ToString())  // Az int típusú UserId stringgé konvertálva
+                    .PutAsync(JsonConvert.SerializeObject(user));  // Az adatokat JSON formátumban mentjük
+
+                return user.UserId;  // Ha sikeres volt a mentés
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error adding user: {ex.Message}");
+                return "";  // Hiba esetén false
+            }
+        }
     }
 }

@@ -53,6 +53,10 @@ namespace QuickReserve.Views
                         {
                             food.ImageSource = ImageConverter.ConvertBase64ToImageSource(food.Picture);
                         }
+                        else
+                        {
+                            food.ImageSource = ImageSource.FromFile("image_placeholder.png");
+                        }
                     }
 
                     // Bind data to the page

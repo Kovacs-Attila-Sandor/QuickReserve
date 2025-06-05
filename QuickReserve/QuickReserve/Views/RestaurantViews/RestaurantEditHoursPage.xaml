@@ -3,33 +3,143 @@
     x:Class="QuickReserve.Views.RestaurantEditHoursPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converters="clr-namespace:QuickReserve.Converter"
     Title="Edit Restaurant Hours">
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Offset="0.0" Color="#1A1A2C" />
+            <GradientStop Offset="1.0" Color="#2D2D3D" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+            <Style x:Key="DayLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="VerticalTextAlignment" Value="Center" />
+            </Style>
+            <Style x:Key="TimePickerStyle" TargetType="TimePicker">
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="BackgroundColor" Value="#2D2D3D" />
+                <Setter Property="WidthRequest" Value="110" />
+                <Setter Property="FontSize" Value="14" />
+            </Style>
+            <Style x:Key="SaveButtonStyle" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="#BB86FC" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="CornerRadius" Value="12" />
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="Padding" Value="15,10" />
+                <Setter Property="Margin" Value="20,10" />
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter Property="Scale" Value="1" />
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="Pressed">
+                                <VisualState.Setters>
+                                    <Setter Property="Scale" Value="0.95" />
+                                    <Setter Property="BackgroundColor" Value="#9B56DC" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <ContentPage.Content>
-        <StackLayout Padding="10">
-            <Label
-                FontSize="Large"
-                HorizontalOptions="Center"
-                Text="Edit Restaurant Hours" />
+        <StackLayout Padding="15" Spacing="15">
+            <Frame
+                Padding="10"
+                BackgroundColor="#2D2D3D"
+                CornerRadius="10"
+                HasShadow="True">
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="24"
+                    HorizontalOptions="Center"
+                    Text="Edit Restaurant Hours"
+                    TextColor="#BB86FC" />
+            </Frame>
 
             <CollectionView ItemsSource="{Binding Hours}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <StackLayout Padding="5" Orientation="Horizontal">
-                            <Label
-                                Text="{Binding Day}"
-                                VerticalTextAlignment="Center"
-                                WidthRequest="80" />
-                            <TimePicker Time="{Binding OpenTime}" WidthRequest="100" />
-                            <TimePicker Time="{Binding CloseTime}" WidthRequest="100" />
-                        </StackLayout>
+                        <Frame
+                            Margin="0,8"
+                            Padding="15"
+                            BackgroundColor="#25253A"
+                            CornerRadius="12"
+                            HasShadow="True">
+                            <Frame.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                    <GradientStop Offset="0.0" Color="#25253A" />
+                                    <GradientStop Offset="1.0" Color="#2D2D3D" />
+                                </LinearGradientBrush>
+                            </Frame.Background>
+                            <Grid
+                                ColumnDefinitions="10,100,*,*,Auto,Auto"
+                                ColumnSpacing="10"
+                                RowDefinitions="Auto">
+                                <Image
+                                    HeightRequest="20"
+                                    HorizontalOptions="Center"
+                                    Source="calendar_icon.png"
+                                    VerticalOptions="Center" />
+                                <Label
+                                    Grid.Column="1"
+                                    Style="{StaticResource DayLabelStyle}"
+                                    Text="{Binding Day}"
+                                    WidthRequest="100" />
+                                <TimePicker
+                                    Grid.Column="2"
+                                    IsEnabled="{Binding IsClosed, Converter={StaticResource InverseBooleanConverter}}"
+                                    Style="{StaticResource TimePickerStyle}"
+                                    Time="{Binding OpenTime}" />
+                                <TimePicker
+                                    Grid.Column="3"
+                                    IsEnabled="{Binding IsClosed, Converter={StaticResource InverseBooleanConverter}}"
+                                    Style="{StaticResource TimePickerStyle}"
+                                    Time="{Binding CloseTime}" />
+                                <CheckBox
+                                    Grid.Column="4"
+                                    IsChecked="{Binding IsClosed}"
+                                    VerticalOptions="Center"
+                                    Color="#BB86FC" />
+                                <StackLayout
+                                    Grid.Column="5"
+                                    Orientation="Horizontal"
+                                    Spacing="5"
+                                    VerticalOptions="Center">
+                                    <Image
+                                        HeightRequest="16"
+                                        Source="lock_icon.png"
+                                        VerticalOptions="Center" />
+                                    <Label
+                                        FontSize="14"
+                                        Text="Closed"
+                                        TextColor="#B0B0B0"
+                                        VerticalTextAlignment="Center" />
+                                </StackLayout>
+                            </Grid>
+                        </Frame>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
             <Button
-                Margin="10"
+                x:Name="SaveButton"
                 Clicked="OnSaveButtonClicked"
-                CornerRadius="10"
+                Style="{StaticResource SaveButtonStyle}"
                 Text="Save" />
         </StackLayout>
     </ContentPage.Content>

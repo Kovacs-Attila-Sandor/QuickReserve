@@ -415,6 +415,68 @@
                                             Unfocused="OnUnfocused" />
                                     </Grid>
                                 </Frame>
+                                <Frame
+                                    Padding="5"
+                                    BackgroundColor="#292929"
+                                    CornerRadius="15"
+                                    HasShadow="False">
+                                    <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto">
+                                        <Label
+                                            x:Name="lblLongitudePlaceholder"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            FontSize="12"
+                                            IsVisible="False"
+                                            Opacity="0"
+                                            Text="Longitude"
+                                            TextColor="#A0A0A0"
+                                            TranslationX="2"
+                                            TranslationY="-7" />
+                                        <Entry
+                                            x:Name="txtLongitude"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            BackgroundColor="Transparent"
+                                            Focused="OnFocused"
+                                            Keyboard="Numeric"
+                                            Placeholder="Longitude"
+                                            PlaceholderColor="#A0A0A0"
+                                            TextChanged="OnTextChanged"
+                                            TextColor="#FFFFFF"
+                                            Unfocused="OnUnfocused" />
+                                    </Grid>
+                                </Frame>
+                                <Frame
+                                    Padding="5"
+                                    BackgroundColor="#292929"
+                                    CornerRadius="15"
+                                    HasShadow="False">
+                                    <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto">
+                                        <Label
+                                            x:Name="lblLatitudePlaceholder"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            FontSize="12"
+                                            IsVisible="False"
+                                            Opacity="0"
+                                            Text="Latitude"
+                                            TextColor="#A0A0A0"
+                                            TranslationX="2"
+                                            TranslationY="-7" />
+                                        <Entry
+                                            x:Name="txtLatitude"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            BackgroundColor="Transparent"
+                                            Focused="OnFocused"
+                                            Keyboard="Numeric"
+                                            Placeholder="Latitude"
+                                            PlaceholderColor="#A0A0A0"
+                                            TextChanged="OnTextChanged"
+                                            TextColor="#FFFFFF"
+                                            Unfocused="OnUnfocused" />
+                                    </Grid>
+                                </Frame>
 
                                 <!--  Restaurant Details  -->
                                 <Label

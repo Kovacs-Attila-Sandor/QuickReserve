@@ -1,4 +1,5 @@
-﻿using Firebase.Database.Query;
+﻿using Firebase.Auth;
+using Firebase.Database.Query;
 using Newtonsoft.Json;
 using QuickReserve.Models;
 using System;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -29,7 +31,6 @@ namespace QuickReserve.Services
             }
         }
 
-        // Étterem lekérése a Firebase-ből a RestaurantId alapján
         public async Task<Restaurant> GetRestaurantById(string restaurantId)
         {
             try
@@ -290,7 +291,6 @@ namespace QuickReserve.Services
             }
         }
 
-        // Segédfüggvény az étel tulajdonságainak frissítésére
         private void UpdateFoodProperties(Food target, Food source)
         {
             target.Name = source.Name ?? target.Name;
@@ -599,5 +599,60 @@ namespace QuickReserve.Services
             }
         }
 
+        public async Task<List<Food>> GetAllFoodsWithDicount()
+        {
+            try
+            {
+                // Fetch all restaurants from the "Restaurant" collection
+                var restaurantData = await FirebaseService
+                    .Client
+                    .Child("Restaurant")
+                    .OnceAsync<Restaurant>();
+
+                // Initialize a list to store discounted foods
+                List<Food> discountedFoods = new List<Food>();
+
+                // Iterate through each restaurant and collect their discounted foods
+                foreach (var item in restaurantData)
+                {
+                    var restaurant = item.Object;
+                    if (restaurant?.Foods != null)
+                    {
+                        // Filter foods where HasDiscount is true
+                        var foodsWithDiscount = restaurant.Foods.Where(food => food.DiscountedPrice != null).ToList();
+                        discountedFoods.AddRange(foodsWithDiscount);
+                    }
+                }
+
+                return discountedFoods; // Return the list of discounted foods
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching discounted foods: {ex.Message}");
+                return new List<Food>(); // Return an empty list in case of an error
+            }
+        }
+
+        internal async Task<string> AddRestaurantAndGetId(Restaurant restaurant)
+        {
+            try
+            {
+                restaurant.RestaurantId = Guid.NewGuid().ToString();
+
+
+                await FirebaseService
+                    .Client
+                    .Child("Restaurant")
+                .Child(restaurant.RestaurantId.ToString())
+                    .PutAsync(JsonConvert.SerializeObject(restaurant));
+
+                return restaurant.RestaurantId;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error adding user: {ex.Message}");
+                return "";
+            }
+        }
     }
 }
