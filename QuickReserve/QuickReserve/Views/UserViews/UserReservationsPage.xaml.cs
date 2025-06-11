@@ -1,60 +1,91 @@
-﻿using QuickReserve.Models;
+﻿using Rg.Plugins.Popup.Services;
+using QuickReserve.Models;
 using QuickReserve.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using QuickReserve.Views.PopUps;
 
 namespace QuickReserve.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class UserReservationsPage : ContentPage
     {
-
         private ReservationService _reservationService;
         private string _userId;
 
-        public bool _isDoneVisible = false;
+        private bool _isBusy;
+        public bool IsBusy
+        {
+            get => _isBusy;
+            set
+            {
+                _isBusy = value;
+                OnPropertyChanged();
+            }
+        }
 
-        List<Reservation> FinishedReservations = new List<Reservation>();
-        List<Reservation> ActiveReservation = new List<Reservation>();
+        private bool _isDoneVisible;
+        private List<Reservation> FinishedReservations = new List<Reservation>();
+        private List<Reservation> ActiveReservations = new List<Reservation>();
 
         public UserReservationsPage()
         {
             InitializeComponent();
-
             _reservationService = ReservationService.Instance;
             _userId = App.Current.Properties["userId"].ToString();
+            BindingContext = this;
 
-            LoadReservations();
+            // Start initialization
+            Task.Run(async () => await InitializePage());
         }
 
-
-        private async void LoadReservations()
+        private async Task InitializePage()
         {
             try
             {
-                // Foglalások betöltése az adatbázisból
-                List<Reservation> reservations = await _reservationService.GetReservationsByUserId(_userId);
-
-                FinishedReservations = reservations.Where(r => r.Status == "DONE").ToList();
-                ActiveReservation = reservations.Where(r => r.Status == "In progress").ToList();
-
-                // A foglalások megjelenítése a ListView-ban           
-                ReservationsListView.ItemsSource = ActiveReservation;
+                IsBusy = true;
+                await LoadReservations();
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Hiba", "Nem sikerült betölteni a foglalásokat. Kérlek, próbáld újra.", "OK");
-                Console.WriteLine($"Hiba a foglalások betöltésekor: {ex.Message}");
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    await DisplayAlert("Error", $"Failed to initialize: {ex.Message}", "OK");
+                });
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
 
-        private async void OnViewDoneReservationsClicked(object sender, EventArgs e)
+        private async Task LoadReservations()
+        {
+            try
+            {
+                List<Reservation> reservations = await _reservationService.GetReservationsByUserId(_userId);
+
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    ActiveReservations = reservations.Where(r => r.Status == "In progress").ToList();
+                    FinishedReservations = reservations.Where(r => r.Status == "DONE").ToList();
+                    ReservationsListView.ItemsSource = ActiveReservations;
+                });
+            }
+            catch (Exception ex)
+            {
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    await DisplayAlert("Error", $"Failed to load reservations: {ex.Message}", "OK");
+                });
+            }
+        }
+
+        private void OnViewDoneReservationsClicked(object sender, EventArgs e)
         {
             var button = (Button)sender;
 
@@ -65,10 +96,25 @@ namespace QuickReserve.Views
             }
             else
             {
-                button.Text = "View Reservations history";
-                ReservationsListView.ItemsSource = ActiveReservation;
+                button.Text = "View Done Reservations";
+                ReservationsListView.ItemsSource = ActiveReservations;
             }
             _isDoneVisible = !_isDoneVisible;
+        }
+
+        private async void OnViewReservationDetailsClicked(object sender, EventArgs e)
+        {
+            var button = (Button)sender;
+            var reservation = (Reservation)button.BindingContext;
+
+            if (reservation != null)
+            {
+                await PopupNavigation.Instance.PushAsync(new ReservationDetailsPopup(reservation), true);
+            }
+            else
+            {
+                await DisplayAlert("Error", "No reservation selected.", "OK");
+            }
         }
     }
 }

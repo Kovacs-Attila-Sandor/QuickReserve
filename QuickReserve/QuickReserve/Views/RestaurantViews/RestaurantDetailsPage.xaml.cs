@@ -16,6 +16,7 @@ namespace QuickReserve.Views
         private Restaurant restaurant;
         private readonly RestaurantService _restaurantService;
         private List<Food> allFoods;
+        private string userType;
 
         public RestaurantDetailsPage(Restaurant selectedRestaurant)
         {
@@ -28,6 +29,11 @@ namespace QuickReserve.Views
             ConvertImages(restaurant);
             SetGroupedFoods();
 
+            userType = App.Current.Properties["userType"].ToString();
+            if(userType == "RESTAURANT")
+            {
+                ReservationButton.IsVisible = false;
+            }
             BindingContext = restaurant;
             
         }
@@ -61,37 +67,6 @@ namespace QuickReserve.Views
             foreach (var group in restaurant.GroupedFoods)
             {
                 Debug.WriteLine($"Category: {group.Key}, Items: {group.Count()}");
-            }
-        }
-
-        private void OnCategorySelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (e.CurrentSelection.FirstOrDefault() is string selectedCategory)
-            {
-                var groupIndex = restaurant.GroupedFoods.ToList().FindIndex(g => g.Key == selectedCategory);
-                if (groupIndex >= 0)
-                {
-                    double scrollPosition = 0;
-                    for (int i = 0; i < groupIndex; i++)
-                    {
-                        var group = restaurant.GroupedFoods.ElementAt(i);
-
-                        scrollPosition += 10 + 5 + 24 + 5;
-
-                        scrollPosition += group.Count() * (220 + 5);
-                        scrollPosition += 15;
-                    }
-
-                    Debug.WriteLine($"Kiválasztott kategória: {selectedCategory}");
-                    Debug.WriteLine($"Számított görgetési pozíció: {scrollPosition}");
-
-                    // Görgetés a pontos pozícióhoz
-                    mainScrollView.ScrollToAsync(0, scrollPosition, true);
-                }
-                else
-                {
-                    Debug.WriteLine($"A kategória '{selectedCategory}' nem található a GroupedFoods-ban.");
-                }
             }
         }
 
@@ -200,15 +175,12 @@ namespace QuickReserve.Views
 
         private async void OnItemTapped(object sender, EventArgs e)
         {
-            // A sender a Frame, amelyre a TapGestureRecognizer vonatkozik
             var frame = sender as Frame;
             if (frame != null)
             {
-                // A BindingContext-ből kinyerjük a Food objektumot
                 var food = frame.BindingContext as Food;
                 if (food != null)
                 {
-                    // Navigáció a FoodPage-re a food és restaurant.RestaurantId paraméterekkel
                     await Navigation.PushAsync(new FoodPage(food, restaurant.RestaurantId, false));
                 }
             }

@@ -1,11 +1,13 @@
-﻿using System;
+﻿using Rg.Plugins.Popup.Services;
+using QuickReserve.Models;
+using QuickReserve.Services;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using QuickReserve.Models;
-using QuickReserve.Services;
 using System.Linq;
+using QuickReserve.Views.PopUps;
 
 namespace QuickReserve.Views
 {
@@ -98,7 +100,6 @@ namespace QuickReserve.Views
             }
         }
 
-
         private async void OnMarkAsDoneClicked(object sender, EventArgs e)
         {
             var button = (Button)sender;
@@ -144,8 +145,6 @@ namespace QuickReserve.Views
                 {
                     // If successful, update the reservations list
                     await DisplayAlert("Successful Update", "The reservation status has been successfully updated.", "OK");
-
-
                     LoadReservations(); // Reload the list
                 }
                 else
@@ -158,8 +157,8 @@ namespace QuickReserve.Views
                 await DisplayAlert("Error", "An error occurred while updating the status. Please try again.", "OK");
                 Console.WriteLine($"Error while updating the status: {ex.Message}");
             }
-
         }
+
         private void OnViewDoneReservationsClicked(object sender, EventArgs e)
         {
             var button = (Button)sender;
@@ -177,10 +176,19 @@ namespace QuickReserve.Views
             _isDoneVisible = !_isDoneVisible;
         }
 
-        private async void OnViewReservationClicked(object sender, EventArgs e)
+        private async void OnViewReservationDetailsClicked(object sender, EventArgs e)
         {
-            
+            var button = (Button)sender;
+            var reservation = (Reservation)button.BindingContext;
+
+            if (reservation != null)
+            {
+                await PopupNavigation.Instance.PushAsync(new ReservationDetailsPopup(reservation), true);
+            }
+            else
+            {
+                await DisplayAlert("Error", "No reservation selected.", "OK");
+            }
         }
     }
-     
 }

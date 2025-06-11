@@ -3,9 +3,18 @@
     x:Class="QuickReserve.Views.UserReservationsPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Title="Reservations">
-    <ContentPage.Content>
+    Title="Reservations"
+    BackgroundColor="#2d3436">
 
+    <!--  Background Gradient  -->
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Offset="0.0" Color="#1A1A1A" />
+            <GradientStop Offset="1.0" Color="#2D2D2D" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <Grid>
         <ScrollView Padding="15">
             <StackLayout Spacing="20">
 
@@ -17,6 +26,8 @@
                     HorizontalOptions="Center"
                     Text="Reservations"
                     TextColor="#ecf0f1" />
+
+                <!--  Toggle Button  -->
                 <Button
                     Padding="10"
                     BackgroundColor="#1abc9c"
@@ -43,84 +54,69 @@
                             <ViewCell>
                                 <Frame
                                     Margin="0,10"
-                                    Padding="15"
+                                    Padding="20"
                                     BackgroundColor="#34495e"
-                                    BorderColor="#7f8c8d"
-                                    CornerRadius="12"
+                                    CornerRadius="15"
                                     HasShadow="True"
-                                    HorizontalOptions="FillAndExpand"
-                                    Visual="Material">
+                                    HorizontalOptions="FillAndExpand">
 
-                                    <StackLayout Spacing="10" VerticalOptions="Start">
+                                    <StackLayout Spacing="15">
 
-                                        <!--  Reservation Details  -->
-                                        <StackLayout Orientation="Horizontal" Spacing="12">
-                                            <Label
-                                                FontAttributes="Bold"
-                                                FontSize="16"
-                                                Text="{Binding ReservationDateTime, StringFormat='Date: {0}'}"
-                                                TextColor="#ecf0f1" />
-                                            <Label
-                                                FontSize="14"
-                                                Text="{Binding GuestCount, StringFormat='| Guests: {0}'}"
-                                                TextColor="#1abc9c" />
+                                        <!--  Main Reservation Info  -->
+                                        <StackLayout Orientation="Horizontal" Spacing="10">
+                                            <!--  Date Column  -->
+                                            <StackLayout HorizontalOptions="StartAndExpand" Spacing="5">
+                                                <Label
+                                                    FontSize="12"
+                                                    Text="DATE"
+                                                    TextColor="#bdc3c7" />
+                                                <Label
+                                                    FontAttributes="Bold"
+                                                    FontSize="16"
+                                                    Text="{Binding ReservationDateTime, StringFormat='{0:dd MMM yyyy}'}"
+                                                    TextColor="#ecf0f1" />
+                                            </StackLayout>
+
+                                            <!--  Guests Column  -->
+                                            <StackLayout HorizontalOptions="CenterAndExpand" Spacing="5">
+                                                <Label
+                                                    FontSize="12"
+                                                    Text="GUESTS"
+                                                    TextColor="#bdc3c7" />
+                                                <Label
+                                                    FontAttributes="Bold"
+                                                    FontSize="16"
+                                                    HorizontalOptions="Center"
+                                                    Text="{Binding GuestCount}"
+                                                    TextColor="#ecf0f1" />
+                                            </StackLayout>
+
+                                            <!--  Table Column  -->
+                                            <StackLayout HorizontalOptions="EndAndExpand" Spacing="5">
+                                                <Label
+                                                    FontSize="12"
+                                                    Text="TABLE"
+                                                    TextColor="#bdc3c7" />
+                                                <Label
+                                                    FontAttributes="Bold"
+                                                    FontSize="16"
+                                                    HorizontalOptions="End"
+                                                    Text="{Binding TableNumber}"
+                                                    TextColor="#ecf0f1" />
+                                            </StackLayout>
                                         </StackLayout>
 
-                                        <!--  Table Information  -->
-                                        <Label
+                                        <!--  View Details Button  -->
+                                        <Button
+                                            Padding="10"
+                                            BackgroundColor="#1abc9c"
+                                            BorderWidth="0"
+                                            Clicked="OnViewReservationDetailsClicked"
+                                            CornerRadius="25"
                                             FontSize="14"
-                                            Text="{Binding TableNumber, StringFormat='Table Number: {0}'}"
-                                            TextColor="#bdc3c7" />
-
-                                        <!--  Show Food Items Only If Available  -->
-                                        <Frame
-                                            Margin="0,10"
-                                            Padding="15"
-                                            BackgroundColor="#36454F"
-                                            BorderColor="#1abc9c"
-                                            CornerRadius="10"
-                                            HorizontalOptions="Fill"
-                                            IsVisible="{Binding HasFoods}"
-                                            VerticalOptions="Start">
-
-                                            <StackLayout>
-                                                <Label
-                                                    FontSize="20"
-                                                    Text="Ordered foods:"
-                                                    TextColor="#bdc3c7" />
-                                                <BindableLayout.ItemsSource>
-                                                    <Binding Path="Foods" />
-                                                </BindableLayout.ItemsSource>
-                                                <BindableLayout.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <Frame
-                                                            Margin="0,5"
-                                                            Padding="15"
-                                                            BackgroundColor="#34495e"
-                                                            BorderColor="LightGray"
-                                                            CornerRadius="10"
-                                                            HorizontalOptions="Fill"
-                                                            VerticalOptions="Start">
-                                                            <StackLayout Orientation="Horizontal" Spacing="15">
-
-                                                                <StackLayout Spacing="5" VerticalOptions="Center">
-                                                                    <Label
-                                                                        FontAttributes="Bold"
-                                                                        FontSize="20"
-                                                                        Text="{Binding Name}"
-                                                                        TextColor="White" />
-                                                                    <Label
-                                                                        FontSize="16"
-                                                                        Text="{Binding Price, StringFormat='Price: {0} €'}"
-                                                                        TextColor="#1abc9c" />
-                                                                </StackLayout>
-
-                                                            </StackLayout>
-                                                        </Frame>
-                                                    </DataTemplate>
-                                                </BindableLayout.ItemTemplate>
-                                            </StackLayout>
-                                        </Frame>
+                                            HorizontalOptions="FillAndExpand"
+                                            Text="View Reservation Details"
+                                            TextColor="White" />
                                     </StackLayout>
                                 </Frame>
                             </ViewCell>
@@ -129,5 +125,15 @@
                 </ListView>
             </StackLayout>
         </ScrollView>
-    </ContentPage.Content>
+
+        <!--  Loading Indicator  -->
+        <ActivityIndicator
+            Grid.RowSpan="1"
+            BackgroundColor="Transparent"
+            HorizontalOptions="Center"
+            IsRunning="{Binding IsBusy}"
+            IsVisible="{Binding IsBusy}"
+            VerticalOptions="Center"
+            Color="#1abc9c" />
+    </Grid>
 </ContentPage>

@@ -41,7 +41,7 @@ namespace QuickReserve.Views.ApplicationViews
             BindingContext = new FoodViewModel
             {
                 Food = _food,
-                Title = _isEditMode ? "Étel szerkesztése" : "Étel hozzáadása",
+                Title = _isEditMode ? "Edit Food" : "Add Food",
                 IsEditMode = _isEditMode,
                 IngredientsText = _food.Ingredients?.Any() == true ? string.Join(", ", _food.Ingredients) : "",
                 AllergensText = _food.Allergens?.Any() == true ? string.Join(", ", _food.Allergens) : ""

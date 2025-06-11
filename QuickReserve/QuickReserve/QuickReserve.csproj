@@ -25,6 +25,9 @@
     <Compile Update="Views\PopUps\CustomAlert.xaml.cs">
       <DependentUpon>CustomAlert.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\PopUps\ViewFoodInformations.xaml.cs">
+      <DependentUpon>ViewFoodInformations.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\RestaurantViews\RestaurantEditHoursPage.xaml.cs">
       <DependentUpon>RestaurantEditHoursPage.xaml</DependentUpon>
     </Compile>
@@ -55,6 +58,9 @@
     <EmbeddedResource Update="Views\ApplicationViews\FoodPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Views\PopUps\ReservationDetailsPopup.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\RestaurantViews\RestaurantViewMenuPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
@@ -62,6 +68,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\PopUps\CustomAlert.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\PopUps\ViewFoodInformations.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\RestaurantViews\RestaurantDetailsPage.xaml">
