@@ -2,6 +2,7 @@
 <ContentPage
     x:Class="QuickReserve.Views.ApplicationViews.FavoritesPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:converters="clr-namespace:QuickReserve.Converter"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     NavigationPage.HasNavigationBar="False">
 
@@ -17,9 +18,9 @@
             Padding="20"
             Spacing="20"
             VerticalOptions="StartAndExpand">
-            <!--  Header with Back Button  -->
+            <!-- Header with Back Button -->
             <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto">
-                <!--  Back Button (Left)  -->
+                <!-- Back Button (Left) -->
                 <ImageButton
                     Grid.Row="0"
                     Grid.Column="0"
@@ -29,7 +30,7 @@
                     Source="back_icon.png"
                     WidthRequest="40" />
 
-                <!--  Centered Title  -->
+                <!-- Centered Title -->
                 <Label
                     Grid.Column="0"
                     Grid.ColumnSpan="3"
@@ -37,38 +38,67 @@
                     FontSize="28"
                     HorizontalOptions="Center"
                     HorizontalTextAlignment="Center"
-                    Text="Favorites"
+                    Text="Favorite Foods"
                     TextColor="White"
                     VerticalOptions="Center" />
             </Grid>
 
-            <!--  Segment Control  -->
-            <Grid ColumnDefinitions="*,*" HorizontalOptions="Center">
-                <Button
-                    x:Name="RestaurantsButton"
-                    Grid.Column="0"
-                    BackgroundColor="{Binding RestaurantSegmentColor}"
-                    Clicked="OnRestaurantsButtonClicked"
-                    CornerRadius="5"
-                    Text="Restaurants"
-                    TextColor="{Binding RestaurantTextColor}" />
+            <!-- Content Area -->
+            <Grid>
+                <!-- Activity Indicator -->
+                <ActivityIndicator
+                    IsRunning="{Binding IsLoading}"
+                    IsVisible="{Binding IsLoading}"
+                    Color="White"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center" />
 
-                <Button
-                    x:Name="FoodsButton"
-                    Grid.Column="1"
-                    BackgroundColor="{Binding FoodSegmentColor}"
-                    Clicked="OnFoodsButtonClicked"
-                    CornerRadius="5"
-                    Text="Foods"
-                    TextColor="{Binding FoodTextColor}" />
+                <!-- Food List -->
+                <ScrollView IsVisible="{Binding IsLoading, Converter={StaticResource InverseBooleanConverter}}">
+                    <StackLayout Spacing="15">
+                        <CollectionView ItemsSource="{Binding FavoriteFoods}" SelectionMode="None">
+                            <CollectionView.EmptyView>
+                                <Label
+                                    Text="No favorite foods yet"
+                                    TextColor="White"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center" />
+                            </CollectionView.EmptyView>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Frame
+                                        BackgroundColor="#333333"
+                                        CornerRadius="10"
+                                        Padding="15"
+                                        Margin="0,0,0,10">
+                                        <Frame.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="OnFoodTapped" />
+                                        </Frame.GestureRecognizers>
+                                        <StackLayout>
+                                            <Label
+                                                Text="{Binding Name, FallbackValue='Unknown'}"
+                                                FontSize="18"
+                                                FontAttributes="Bold"
+                                                TextColor="White" />
+                                            <Label
+                                                Text="{Binding Price, StringFormat='Price: {0}'}"
+                                                FontSize="14"
+                                                TextColor="LightGray"
+                                                Margin="0,5,0,0" />
+                                        </StackLayout>
+                                    </Frame>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </StackLayout>
+                </ScrollView>
             </Grid>
-
-            <!--  Content Area  -->
-            <ScrollView>
-                <StackLayout x:Name="ContentArea" Spacing="15">
-                    <!--  Content will be populated based on selection  -->
-                </StackLayout>
-            </ScrollView>
         </StackLayout>
     </ContentPage.Content>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
 </ContentPage>

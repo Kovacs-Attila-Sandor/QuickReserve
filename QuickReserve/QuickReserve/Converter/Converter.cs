@@ -69,4 +69,5 @@ namespace QuickReserve.Converter
             return false;
         }
     }
+
 }

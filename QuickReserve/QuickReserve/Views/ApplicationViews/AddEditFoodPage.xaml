@@ -161,14 +161,14 @@
                 <StackLayout Padding="20" Spacing="10">
                     <!--  Food Name  -->
                     <StackLayout Spacing="5">
-                        <Label Style="{StaticResource FieldLabelStyle}" Text="Név" />
+                        <Label Style="{StaticResource FieldLabelStyle}" Text="Name" />
                         <Frame
                             Padding="10"
                             BackgroundColor="{DynamicResource SurfaceColor}"
                             CornerRadius="10">
                             <Entry
                                 x:Name="NameEntry"
-                                Placeholder="Adja meg az étel nevét"
+                                Placeholder="Enter food name"
                                 Style="{StaticResource EntryStyle}"
                                 Text="{Binding Food.Name, Mode=OneWay}" />
                         </Frame>
@@ -176,14 +176,14 @@
 
                     <!--  Food Description  -->
                     <StackLayout Spacing="5">
-                        <Label Style="{StaticResource FieldLabelStyle}" Text="Leírás" />
+                        <Label Style="{StaticResource FieldLabelStyle}" Text="Description" />
                         <Frame
                             Padding="10"
                             BackgroundColor="{DynamicResource SurfaceColor}"
                             CornerRadius="10">
                             <Editor
                                 x:Name="DescriptionEditor"
-                                Placeholder="Adja meg az étel leírását"
+                                Placeholder="Enter food description"
                                 Style="{StaticResource EditorStyle}"
                                 Text="{Binding Food.Description, Mode=OneWay}" />
                         </Frame>
@@ -191,14 +191,14 @@
 
                     <!--  Food Ingredients  -->
                     <StackLayout Spacing="5">
-                        <Label Style="{StaticResource FieldLabelStyle}" Text="Hozzávalók" />
+                        <Label Style="{StaticResource FieldLabelStyle}" Text="Ingredients" />
                         <Frame
                             Padding="10"
                             BackgroundColor="{DynamicResource SurfaceColor}"
                             CornerRadius="10">
                             <Entry
                                 x:Name="IngredientsEntry"
-                                Placeholder="Hozzávalók (vesszővel elválasztva, pl. vaj, só)"
+                                Placeholder="Ingredients (comma separated, e.g. butter, salt)"
                                 Style="{StaticResource EntryStyle}"
                                 Text="{Binding IngredientsText, Mode=OneWay}" />
                         </Frame>
@@ -206,14 +206,14 @@
 
                     <!--  Food Allergens  -->
                     <StackLayout Spacing="5">
-                        <Label Style="{StaticResource FieldLabelStyle}" Text="Allergének" />
+                        <Label Style="{StaticResource FieldLabelStyle}" Text="Allergens" />
                         <Frame
                             Padding="10"
                             BackgroundColor="{DynamicResource SurfaceColor}"
                             CornerRadius="10">
                             <Entry
                                 x:Name="AllergensEntry"
-                                Placeholder="Allergének (vesszővel elválasztva, pl. glutén, tej)"
+                                Placeholder="Allergens (comma separated, e.g. gluten, milk)"
                                 Style="{StaticResource EntryStyle}"
                                 Text="{Binding AllergensText, Mode=OneWay}" />
                         </Frame>
@@ -221,7 +221,7 @@
 
                     <!--  Food Calories  -->
                     <StackLayout Spacing="5">
-                        <Label Style="{StaticResource FieldLabelStyle}" Text="Kalória" />
+                        <Label Style="{StaticResource FieldLabelStyle}" Text="Calories" />
                         <Frame
                             Padding="10"
                             BackgroundColor="{DynamicResource SurfaceColor}"
@@ -229,7 +229,7 @@
                             <Entry
                                 x:Name="CaloriesEntry"
                                 Keyboard="Numeric"
-                                Placeholder="Adja meg a kalóriát (pl. 500)"
+                                Placeholder="Enter calories (e.g. 500)"
                                 Style="{StaticResource EntryStyle}"
                                 Text="{Binding Food.Calories, StringFormat='{0:F0}', Mode=OneWay}" />
                         </Frame>
@@ -237,14 +237,14 @@
 
                     <!--  Food Weight  -->
                     <StackLayout Spacing="5">
-                        <Label Style="{StaticResource FieldLabelStyle}" Text="Súly" />
+                        <Label Style="{StaticResource FieldLabelStyle}" Text="Weight" />
                         <Frame
                             Padding="10"
                             BackgroundColor="{DynamicResource SurfaceColor}"
                             CornerRadius="10">
                             <Entry
                                 x:Name="WeightEntry"
-                                Placeholder="Adja meg a súlyt (pl. 200g)"
+                                Placeholder="Enter weight (e.g. 200g)"
                                 Style="{StaticResource EntryStyle}"
                                 Text="{Binding Food.Weight, Mode=OneWay}" />
                         </Frame>
@@ -252,7 +252,7 @@
 
                     <!--  Food Preparation Time  -->
                     <StackLayout Spacing="5">
-                        <Label Style="{StaticResource FieldLabelStyle}" Text="Elkészítési idő" />
+                        <Label Style="{StaticResource FieldLabelStyle}" Text="Preparation Time" />
                         <Frame
                             Padding="10"
                             BackgroundColor="{DynamicResource SurfaceColor}"
@@ -260,7 +260,7 @@
                             <Entry
                                 x:Name="PreparationTimeEntry"
                                 Keyboard="Numeric"
-                                Placeholder="Elkészítési idő (perc, pl. 15)"
+                                Placeholder="Preparation time (minutes, e.g. 15)"
                                 Style="{StaticResource EntryStyle}"
                                 Text="{Binding Food.PreparationTime, Mode=OneWay}" />
                         </Frame>
@@ -268,7 +268,7 @@
 
                     <!--  Food Category  -->
                     <StackLayout Spacing="5">
-                        <Label Style="{StaticResource FieldLabelStyle}" Text="Kategória" />
+                        <Label Style="{StaticResource FieldLabelStyle}" Text="Category" />
                         <Frame
                             Padding="10"
                             BackgroundColor="{DynamicResource SurfaceColor}"
@@ -276,7 +276,7 @@
                             <Grid ColumnDefinitions="*,Auto">
                                 <Picker
                                     x:Name="CategoryPicker"
-                                    Title="Válasszon kategóriát"
+                                    Title="Select a category"
                                     Grid.Column="0"
                                     Margin="0,0,5,0"
                                     SelectedItem="{Binding Food.Category, Mode=OneWay}"
@@ -302,7 +302,7 @@
 
                     <!--  Food Price  -->
                     <StackLayout Spacing="5">
-                        <Label Style="{StaticResource FieldLabelStyle}" Text="Ár (€)" />
+                        <Label Style="{StaticResource FieldLabelStyle}" Text="Price (€)" />
                         <Frame
                             Padding="10"
                             BackgroundColor="{DynamicResource SurfaceColor}"
@@ -310,12 +310,12 @@
                             <Entry
                                 x:Name="PriceEntry"
                                 Keyboard="Numeric"
-                                Placeholder="Adja meg az árat (pl. 12.50)"
+                                Placeholder="Enter price (e.g. 12.50)"
                                 Style="{StaticResource EntryStyle}"
                                 Text="{Binding Food.Price, StringFormat='{0}', Mode=OneWay}" />
                         </Frame>
                     </StackLayout>
-                    
+
                     <!--  Food Discounted Price  -->
                     <StackLayout Spacing="5">
                         <Label Style="{StaticResource FieldLabelStyle}" Text="Discounted Price (€)" />
@@ -326,7 +326,7 @@
                             <Entry
                                 x:Name="DiscountedPriceEntry"
                                 Keyboard="Plain"
-                                Placeholder="Adja meg az árat (pl. 12.50)"
+                                Placeholder="Enter price (e.g. 12.50)"
                                 Style="{StaticResource EntryStyle}"
                                 Text="{Binding Food.DiscountedPrice, StringFormat='{0}', Mode=OneWay}" />
                         </Frame>
@@ -334,7 +334,7 @@
 
                     <!--  Food Availability  -->
                     <StackLayout Spacing="5">
-                        <Label Style="{StaticResource FieldLabelStyle}" Text="Elérhető" />
+                        <Label Style="{StaticResource FieldLabelStyle}" Text="Available" />
                         <Frame
                             Padding="10"
                             BackgroundColor="{DynamicResource SurfaceColor}"
@@ -342,7 +342,7 @@
                             <StackLayout Orientation="Horizontal" Spacing="10">
                                 <Label
                                     FontSize="16"
-                                    Text="Elérhető"
+                                    Text="Available"
                                     TextColor="{DynamicResource OnSurfaceColor}"
                                     VerticalOptions="Center" />
                                 <Switch
@@ -356,7 +356,7 @@
 
                     <!--  Food Image  -->
                     <StackLayout Spacing="5">
-                        <Label Style="{StaticResource FieldLabelStyle}" Text="Kép" />
+                        <Label Style="{StaticResource FieldLabelStyle}" Text="Image" />
                         <Grid
                             HeightRequest="120"
                             HorizontalOptions="Center"
@@ -385,7 +385,7 @@
                         x:Name="SaveButton"
                         Clicked="OnSaveClicked"
                         Style="{StaticResource PrimaryButtonStyle}"
-                        Text="Mentés" />
+                        Text="Save" />
 
                     <!--  Delete Button  -->
                     <Button
@@ -393,7 +393,7 @@
                         Clicked="OnDeleteClicked"
                         IsVisible="{Binding IsEditMode}"
                         Style="{StaticResource DeleteButtonStyle}"
-                        Text="Törlés" />
+                        Text="Delete" />
                 </StackLayout>
             </ScrollView>
         </StackLayout>

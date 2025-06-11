@@ -74,6 +74,7 @@ namespace QuickReserve.Services
             }
         }
 
+       
         public async Task<string> GetRestaurantIdByUserId(string userId)
         {
             try
@@ -306,6 +307,7 @@ namespace QuickReserve.Services
             target.Tags = source.Tags ?? target.Tags;
             target.Ratings = source.Ratings ?? target.Ratings;
             target.Weight = source.Weight != 0 ? source.Weight : target.Weight;
+            target.DiscountedPrice = source.DiscountedPrice ?? target.DiscountedPrice;
         }
 
         public async Task<Table> GetTableById(string restaurantId, string tableId)
@@ -372,8 +374,6 @@ namespace QuickReserve.Services
         {
             try
             {
-                Console.WriteLine($"ResId: {restaurantId}, TableID: {tableId}");
-                // Lekérjük az adott éttermet
                 var restaurant = await GetRestaurantById(restaurantId);
                 if (restaurant != null)
                 {

@@ -97,7 +97,7 @@
                                             Padding="10"
                                             BackgroundColor="#1abc9c"
                                             BorderWidth="0"
-                                            Clicked="OnViewReservationClicked"
+                                            Clicked="OnViewReservationDetailsClicked"
                                             CornerRadius="25"
                                             FontSize="14"
                                             HorizontalOptions="FillAndExpand"
